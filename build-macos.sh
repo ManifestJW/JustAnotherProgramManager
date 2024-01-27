@@ -1,0 +1,7 @@
+arch -arm64 /opt/homebrew/bin/pyinstaller --onefile main.py --add-data "assets/*:assets/" --name="Twitch Plays Corporate Clash" --noconsole  --icon="assets/flippyHead.ico" --distpath="dist/arm64"
+arch -x86_64 /usr/local/bin/pyinstaller --onefile main.py --add-data "assets/*:assets/" --name="Twitch Plays Corporate Clash" --noconsole  --icon="assets/flippyHead.ico" --distpath="dist/x86_64"
+rm "dist/arm64/Twitch Plays Corporate Clash"
+rm "dist/x86_64/Twitch Plays Corporate Clash"
+cp -r "dist/arm64/" "dist/universal2"
+rm "dist/universal2/Twitch Plays Corporate Clash.app/Contents/MacOS/Twitch Plays Corporate Clash"
+arch -arm64 lipo -create -output "dist/universal2/Twitch Plays Corporate Clash.app/Contents/MacOS/Twitch Plays Corporate Clash" "dist/x86_64/Twitch Plays Corporate Clash.app/Contents/MacOS/Twitch Plays Corporate Clash" "dist/arm64/Twitch Plays Corporate Clash.app/Contents/MacOS/Twitch Plays Corporate Clash"
