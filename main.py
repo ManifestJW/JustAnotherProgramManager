@@ -1,7 +1,7 @@
 # ============================================
 # Program Master
 # Author: Nayla Hanegan (naylahanegan@gmail.com)
-# Date: 1/25/2024
+# Date: 2/29/2024
 # License: MIT
 # ============================================
 
@@ -12,14 +12,13 @@ import queue
 import threading
 import customtkinter
 import version
+import webbrowser
 import platform
 import credits
-from functions import *
 from CTkToolTip import *
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
-
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -119,111 +118,136 @@ class App(customtkinter.CTk):
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
 
         # Category Label
-        self.label = customtkinter.CTkLabel(frame, text="Internet Browsers", font=("Arial", 25, "bold"))
+        self.label = customtkinter.CTkLabel(frame, text="Internet Browsers", font=("Arial", 18, "bold"))
         self.label.place(x=5, y=5)
 
         # Here for padding
-        self.header_label = customtkinter.CTkLabel(frame, text="", font=("Arial", 25, "bold"))
-        self.header_label.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0))  # Adjusted row to 0 and added pady
+        self.header_label = customtkinter.CTkLabel(frame, text="", font=("Arial", 18, "bold"))
+        self.header_label.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
 
         # Create Arc
         if platform.system().lower() == "darwin":
-            self.label = customtkinter.CTkLabel(frame, text="Arc", font=("Arial", 16, "bold"))
-            self.label.grid(row=1, column=2, sticky="w")  # Adjusted column to 2
-            self.arcToggle = customtkinter.CTkCheckBox(frame, text=None)
-            self.arcToggle.grid(row=1, column=1)
-            icon = create_image_icon(frame, "assets/arc.png", 1, 1)
+            self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openArc, fg_color="#323232", hover_color="#323232", width=6)
+            self.label.grid(row=1, column=0, sticky="w")
+            tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser.")
+            self.arcToggle = customtkinter.CTkCheckBox(frame, text="Arc")
+            self.arcToggle.grid(row=1, column=1, sticky="w")
 
         # Create Brave
-        self.label = customtkinter.CTkLabel(frame, text="Brave", font=("Arial", 16, "bold"))
-        self.label.grid(row=2, column=2, sticky="w")  # Adjusted column to 2
-        self.braveToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.braveToggle.grid(row=2, column=1)
-        icon = create_image_icon(frame, "assets/brave.png", 2, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openBrave, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=2, column=0, sticky="w")
+        self.braveToggle = customtkinter.CTkCheckBox(frame, text="Brave")
+        self.braveToggle.grid(row=2, column=1, sticky="w")
 
         # Create Chrome
-        self.label = customtkinter.CTkLabel(frame, text="Chrome", font=("Arial", 16, "bold"))
-        self.label.grid(row=3, column=2, sticky="w")  # Adjusted column to 2
-        self.chromeToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.chromeToggle.grid(row=3, column=1)
-        icon = create_image_icon(frame, "assets/googleChrome.png", 3, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openChrome, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=3, column=0, sticky="w")
+        self.chromeToggle = customtkinter.CTkCheckBox(frame, text="Chrome")
+        self.chromeToggle.grid(row=3, column=1, sticky="w")
 
         # Create Chromium
-        self.label = customtkinter.CTkLabel(frame, text="Chromium", font=("Arial", 16, "bold"))
-        self.label.grid(row=4, column=2, sticky="w")  # Adjusted column to 2
-        self.chromiumToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.chromiumToggle.grid(row=4, column=1)
-        icon = create_image_icon(frame, "assets/chromium.png", 4, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openChromium, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=4, column=0, sticky="w")
+        self.chromiumToggle = customtkinter.CTkCheckBox(frame, text="Chromium")
+        self.chromiumToggle.grid(row=4, column=1, sticky="w")
 
         # Create Edge
-        self.label = customtkinter.CTkLabel(frame, text="Edge", font=("Arial", 16, "bold"))
-        self.label.grid(row=5, column=2, sticky="w")  # Adjusted column to 2
-        self.edgeToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.edgeToggle.grid(row=5, column=1)
-        icon = create_image_icon(frame, "assets/edge.png", 5, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openEdge, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=5, column=0, sticky="w")
+        self.edgeToggle = customtkinter.CTkCheckBox(frame, text="Edge")
+        self.edgeToggle.grid(row=5, column=1, sticky="w")
 
         # Create Firefox
-        self.label = customtkinter.CTkLabel(frame, text="Firefox", font=("Arial", 16, "bold"))
-        self.label.grid(row=6, column=2, sticky="w")  # Adjusted column to 2
-        self.firefoxToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.firefoxToggle.grid(row=6, column=1)
-        icon = create_image_icon(frame, "assets/firefox.png", 6, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFirefox, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=6, column=0, sticky="w")
+        self.firefoxToggle = customtkinter.CTkCheckBox(frame, text="Firefox")
+        self.firefoxToggle.grid(row=6, column=1, sticky="w")
 
         # Create Floorp
-        self.label = customtkinter.CTkLabel(frame, text="Floorp", font=("Arial", 16, "bold"))
-        self.label.grid(row=7, column=2, sticky="w")  # Adjusted column to 2
-        self.floorpToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.floorpToggle.grid(row=7, column=1)
-        icon = create_image_icon(frame, "assets/floorp.png", 7, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFloorp, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=7, column=0, sticky="w")
+        self.floorpToggle = customtkinter.CTkCheckBox(frame, text="Floorp")
+        self.floorpToggle.grid(row=7, column=1, sticky="w")
 
         # Create LibreWolf
-        self.label = customtkinter.CTkLabel(frame, text="LibreWolf", font=("Arial", 16, "bold"))
-        self.label.grid(row=8, column=2, sticky="w")  # Adjusted column to 2
-        self.libreWolfToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.libreWolfToggle.grid(row=8, column=1)
-        icon = create_image_icon(frame, "assets/libreWolf.png", 8, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openLibreWolf, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=8, column=0, sticky="w")
+        self.libreWolfToggle = customtkinter.CTkCheckBox(frame, text="LibreWolf")
+        self.libreWolfToggle.grid(row=8, column=1, sticky="w")
 
         # Create Opera
-        self.label = customtkinter.CTkLabel(frame, text="Opera", font=("Arial", 16, "bold"))
-        self.label.grid(row=9, column=2, sticky="w")  # Adjusted column to 2
-        self.operaToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.operaToggle.grid(row=9, column=1)
-        icon = create_image_icon(frame, "assets/opera.png", 9, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openOpera, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=9, column=0, sticky="w")
+        self.operaToggle = customtkinter.CTkCheckBox(frame, text="Opera")
+        self.operaToggle.grid(row=9, column=1, sticky="w")
 
         # Create Opera GX
-        self.label = customtkinter.CTkLabel(frame, text="Opera GX", font=("Arial", 16, "bold"))
-        self.label.grid(row=10, column=2, sticky="w")  # Adjusted column to 2
-        self.operaGXToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.operaGXToggle.grid(row=10, column=1)
-        icon = create_image_icon(frame, "assets/operaGX.png", 10, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openOperaGX, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=10, column=0, sticky="w")
+        self.operaGXToggle = customtkinter.CTkCheckBox(frame, text="Opera GX")
+        self.operaGXToggle.grid(row=10, column=1, sticky="w")
+
+        # Create Orion
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openOrion, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=11, column=0, sticky="w")
+        self.orionToggle = customtkinter.CTkCheckBox(frame, text="Orion")
+        self.orionToggle.grid(row=11, column=1, sticky="w")
 
         # Create Thorium
-        self.label = customtkinter.CTkLabel(frame, text="Thorium AVX2", font=("Arial", 16, "bold"))
-        self.label.grid(row=11, column=2, sticky="w")  # Adjusted column to 2
-        self.thoriumToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.thoriumToggle.grid(row=11, column=1)
-        icon = create_image_icon(frame, "assets/thorium.png", 11, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openThorium, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=12, column=0, sticky="w")
+        self.thoriumToggle = customtkinter.CTkCheckBox(frame, text="Thorium AXV2")
+        self.thoriumToggle.grid(row=12, column=1, sticky="w")
 
         # Create Tor
-        self.label = customtkinter.CTkLabel(frame, text="Tor", font=("Arial", 16, "bold"))
-        self.label.grid(row=12, column=2, sticky="w")  # Adjusted column to 2
-        self.torToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.torToggle.grid(row=12, column=1)
-        icon = create_image_icon(frame, "assets/tor.png", 12, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTor, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=13, column=0, sticky="w")
+        self.torToggle = customtkinter.CTkCheckBox(frame, text="Tor")
+        self.torToggle.grid(row=13, column=1, sticky="w")
 
         # Create Ungoogled Chromium
-        self.label = customtkinter.CTkLabel(frame, text="Ungoogled", font=("Arial", 16, "bold"))
-        self.label.grid(row=13, column=2, sticky="w")  # Adjusted column to 2
-        self.ungoogledToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.ungoogledToggle.grid(row=13, column=1)
-        icon = create_image_icon(frame, "assets/chromium.png", 13, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openUngoogled, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=15, column=0, sticky="w")
+        self.ungoogledToggle = customtkinter.CTkCheckBox(frame, text="Ungoogled Chromium")
+        self.ungoogledToggle.grid(row=15, column=1, sticky="w")
 
         # Create Vivaldi
-        self.label = customtkinter.CTkLabel(frame, text="Vivaldi", font=("Arial", 16, "bold"))
-        self.label.grid(row=14, column=2, sticky="w")  # Adjusted column to 2
-        self.vivaldiToggle = customtkinter.CTkCheckBox(frame, text=None)
-        self.vivaldiToggle.grid(row=14, column=1)
-        icon = create_image_icon(frame, "assets/vivaldi.png", 14, 1)
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openVivaldi, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=16, column=0, sticky="w")
+        self.vivaldiToggle = customtkinter.CTkCheckBox(frame, text="Vivaldi")
+        self.vivaldiToggle.grid(row=16, column=1, sticky="w")
+
+        # Here for padding
+        self.header_label = customtkinter.CTkLabel(frame, text="", font=("Arial", 18, "bold"))
+        self.header_label.grid(row=0, column=3, sticky="w", padx=5, pady=(10, 0)) 
+
+        # Category Label
+        self.label = customtkinter.CTkLabel(frame, text="Communications", font=("Arial", 18, "bold"))
+        self.label.place(x=215, y=5)
+
+        # Create Discord
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openDiscord, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=1, column=3, sticky="w")
+        self.discordToggle = customtkinter.CTkCheckBox(frame, text="Discord")
+        self.discordToggle.grid(row=1, column=4)
+
+        # Create Ferdium
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFerdium, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=2, column=3, sticky="w")
+        self.ferdiumToggle = customtkinter.CTkCheckBox(frame, text="Ferdium")
+        self.ferdiumToggle.grid(row=2, column=4)
+
+        # Create Guilded
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGuilded, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=3, column=3, sticky="w")
+        self.guildedToggle = customtkinter.CTkCheckBox(frame, text="Guilded")
+        self.guildedToggle.grid(row=3, column=4)
+
+        # Create Textual
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTextual, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=4, column=3, sticky="w")
+        self.textualToggle = customtkinter.CTkCheckBox(frame, text="Textual")
+        self.textualToggle.grid(row=4, column=4)
 
         # Text widget for displaying output
         self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7)
@@ -234,6 +258,63 @@ class App(customtkinter.CTk):
         self.parseButton.place(x=1330 / 2 - 200, y=735)
         return frame
 
+    def openArc(self):
+        webbrowser.open('https://arc.net', new=2)
+
+    def openBrave(self):
+        webbrowser.open('https://brave.com', new=2)
+
+    def openChrome(self):
+        webbrowser.open('https://www.google.com/chrome', new=2)
+
+    def openChromium(self):
+        webbrowser.open('https://www.chromium.org/Home/', new=2)
+
+    def openEdge(self):
+        webbrowser.open('https://www.microsoft.com/en-us/edge', new=2)
+
+    def openFirefox(self):
+        webbrowser.open('https://www.mozilla.org/en-US/firefox/new', new=2)
+
+    def openFloorp(self):
+        webbrowser.open('https://floorp.app', new=2)
+
+    def openLibreWolf(self):
+        webbrowser.open('https://librewolf.net', new=2)
+
+    def openOpera(self):
+        webbrowser.open('https://www.opera.com', new=2)
+
+    def openOperaGX(self):
+        webbrowser.open('https://www.opera.com/gx', new=2)
+
+    def openOrion(self):
+        webbrowser.open('https://kagi.com/orion', new=2)
+
+    def openThorium(self):
+        webbrowser.open('https://thorium.rocks', new=2)
+
+    def openTor(self):
+        webbrowser.open('https://www.torproject.org/download', new=2)
+
+    def openUngoogled(self):
+        webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2)
+
+    def openVivaldi(self):
+        webbrowser.open('https://vivaldi.com', new=2)
+
+    def openDiscord(self):
+        webbrowser.open('https://www.discord.com', new=2)
+
+    def openFerdium(self):
+        webbrowser.open('https://ferdium.org', new=2)
+
+    def openGuilded(self):
+        webbrowser.open('https://www.guilded.gg', new=2)
+
+    def openTextual(self):
+        webbrowser.open('https://www.codeux.com/textual', new=2)
+
     def parseDownloads(self):
         # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
@@ -241,7 +322,7 @@ class App(customtkinter.CTk):
         if platform.system().lower() == "windows":
             commands = "winget install "
         else:
-            commands = "brew install "
+            commands = "brew install --display-times "
 
         if self.arcToggle.get() == 1:
             if platform.system().lower() == "windows":
@@ -303,11 +384,23 @@ class App(customtkinter.CTk):
             else:
                 commands = commands + "opera-gx "
 
+        if self.orionToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                pass
+            else:
+                commands = commands + "orion "
+
         if self.thoriumToggle.get() == 1:
             if platform.system().lower() == "windows":
                 commands = commands + "Alex313031.Thorium.AVX2 "
             else:
                 commands = commands + "alex313031-thorium "
+
+        if self.torToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "TorProject.TorBrowser "
+            else:
+                commands = commands + "tor-browser "
 
         if self.ungoogledToggle.get() == 1:
             if platform.system().lower() == "windows":
@@ -320,6 +413,31 @@ class App(customtkinter.CTk):
                 commands = commands + "VivaldiTechnologies.Vivaldi "
             else:
                 commands = commands + "vivaldi "
+
+        if self.discordToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Discord.Discord "
+            else:
+                commands = commands + "discord "
+
+        if self.ferdiumToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Ferdium.Ferdium "
+            else:
+                commands = commands + "ferdium "
+
+        if self.guildedToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Guilded.Guilded "
+            else:
+                commands = commands + "guilded "
+
+        if self.textualToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                pass
+            else:
+                commands = commands + "textual "
+
 
         def execute_command():
             if commands:
