@@ -208,15 +208,15 @@ class App(customtkinter.CTk):
 
         # Create Ungoogled Chromium
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openUngoogled, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=15, column=0, sticky="w")
+        self.label.grid(row=14, column=0, sticky="w")
         self.ungoogledToggle = customtkinter.CTkCheckBox(frame, text="Ungoogled Chromium")
-        self.ungoogledToggle.grid(row=15, column=1, sticky="w")
+        self.ungoogledToggle.grid(row=14, column=1, sticky="w")
 
         # Create Vivaldi
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openVivaldi, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=16, column=0, sticky="w")
+        self.label.grid(row=15, column=0, sticky="w")
         self.vivaldiToggle = customtkinter.CTkCheckBox(frame, text="Vivaldi")
-        self.vivaldiToggle.grid(row=16, column=1, sticky="w")
+        self.vivaldiToggle.grid(row=15, column=1, sticky="w")
 
         # Here for padding
         self.header_label = customtkinter.CTkLabel(frame, text="", font=("Arial", 18, "bold"))
@@ -238,39 +238,107 @@ class App(customtkinter.CTk):
         self.discordToggle = customtkinter.CTkCheckBox(frame, text="Discord")
         self.discordToggle.grid(row=2, column=4, sticky="w")
 
+        # Create Element
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openElement, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=3, column=3, sticky="w")
+        self.elementToggle = customtkinter.CTkCheckBox(frame, text="Element")
+        self.elementToggle.grid(row=3, column=4, sticky="w")
+
         # Create Ferdium
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFerdium, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=3, column=3, sticky="w")
+        self.label.grid(row=4, column=3, sticky="w")
         self.ferdiumToggle = customtkinter.CTkCheckBox(frame, text="Ferdium")
-        self.ferdiumToggle.grid(row=3, column=4, sticky="w")
+        self.ferdiumToggle.grid(row=4, column=4, sticky="w")
 
         # Create Google Chat Desktop
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGoogleChat, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=4, column=3, sticky="w")
+        self.label.grid(row=5, column=3, sticky="w")
         self.googleChatToggle = customtkinter.CTkCheckBox(frame, text="Google Chat Desktop")
-        self.googleChatToggle.grid(row=4, column=4, sticky="w")
+        self.googleChatToggle.grid(row=5, column=4, sticky="w")
         if platform.system().lower() == "darwin":
            self.googleChatToggle.configure(state=tk.DISABLED)
 
         # Create Guilded
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGuilded, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=5, column=3, sticky="w")
+        self.label.grid(row=6, column=3, sticky="w")
         self.guildedToggle = customtkinter.CTkCheckBox(frame, text="Guilded")
-        self.guildedToggle.grid(row=5, column=4, sticky="w")
+        self.guildedToggle.grid(row=6, column=4, sticky="w")
+
+        # Create HexChat
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openHexChat, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=7, column=3, sticky="w")
+        self.hexChatToggle = customtkinter.CTkCheckBox(frame, text="HexChat")
+        self.hexChatToggle.grid(row=7, column=4, sticky="w")
+        if platform.system().lower() == "darwin":
+           self.hexChatToggle.configure(state=tk.DISABLED)
+
+        # Create Jami
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openJami, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=8, column=3, sticky="w")
+        self.jamiToggle = customtkinter.CTkCheckBox(frame, text="Jami")
+        self.jamiToggle.grid(row=8, column=4, sticky="w")
+
+        # Create Linphone
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openLinPhone, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=9, column=3, sticky="w")
+        self.linphoneToggle = customtkinter.CTkCheckBox(frame, text="Linphone")
+        self.linphoneToggle.grid(row=9, column=4, sticky="w")
+
+        # Create Signal
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openSignal, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=10, column=3, sticky="w")
+        self.signalToggle = customtkinter.CTkCheckBox(frame, text="Signal")
+        self.signalToggle.grid(row=10, column=4, sticky="w")
+
+        # Create Session
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openSession, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=11, column=3, sticky="w")
+        self.sessionToggle = customtkinter.CTkCheckBox(frame, text="Session")
+        self.sessionToggle.grid(row=11, column=4, sticky="w")
+
+        # Create Skype
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openSkype, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=12, column=3, sticky="w")
+        self.skypeToggle = customtkinter.CTkCheckBox(frame, text="Skype")
+        self.skypeToggle.grid(row=12, column=4, sticky="w")
+
+        # Create Slack
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openSlack, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=13, column=3, sticky="w")
+        self.slackToggle = customtkinter.CTkCheckBox(frame, text="Slack")
+        self.slackToggle.grid(row=13, column=4, sticky="w")
+
+        # Create Teams
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTeams, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=14, column=3, sticky="w")
+        self.teamsToggle = customtkinter.CTkCheckBox(frame, text="Microsoft Teams")
+        self.teamsToggle.grid(row=14, column=4, sticky="w")
 
         # Create Team Speak
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTeamSpeak, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=5, column=3, sticky="w")
-        self.teamSpeakToggle = customtkinter.CTkCheckBox(frame, text="Team Speak")
-        self.teamSpeakToggle.grid(row=5, column=4, sticky="w")
+        self.label.grid(row=15, column=3, sticky="w")
+        self.teamSpeakToggle = customtkinter.CTkCheckBox(frame, text="TeamSpeak")
+        self.teamSpeakToggle.grid(row=15, column=4, sticky="w")
 
         # Create Textual
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTextual, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=6, column=3, sticky="w")
+        self.label.grid(row=16, column=3, sticky="w")
         self.textualToggle = customtkinter.CTkCheckBox(frame, text="Textual")
-        self.textualToggle.grid(row=6, column=4, sticky="w")
+        self.textualToggle.grid(row=16, column=4, sticky="w")
         if platform.system().lower() == "windows":
            self.textualToggle.configure(state=tk.DISABLED)
+
+        # Create Telegram
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTeleGram, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=17, column=3, sticky="w")
+        self.teleGramToggle = customtkinter.CTkCheckBox(frame, text="Telegram")
+        self.teleGramToggle.grid(row=17, column=4, sticky="w")
+
+        # Create Thunderbird
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openThunderbird, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=18, column=3, sticky="w")
+        self.thunderBirdToggle = customtkinter.CTkCheckBox(frame, text="Thunderbird")
+        self.thunderBirdToggle.grid(row=18, column=4, sticky="w")
 
         # Text widget for displaying output
         self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232", foreground="#ffffff")
@@ -346,6 +414,40 @@ class App(customtkinter.CTk):
 
     def openGoogleChat(self):
         webbrowser.open('https://github.com/squalou/google-chat-linux')
+
+    def openHexChat(self):
+        webbrowser.open('https://hexchat.github.io')
+
+    def openJami(self):
+        webbrowser.open('https://jami.net')
+
+    def openElement(self):
+        webbrowser.open('https://element.io')
+
+    def openLinPhone(self):
+        webbrowser.open('https://www.linphone.org')
+
+    def openSession(self):
+        webbrowser.open('https://getsession.org')
+
+    def openSignal(self):
+        webbrowser.open('https://signal.org')
+
+    def openSkype(self):
+        webbrowser.open('https://www.skype.com')
+
+    def openSlack(self):
+        webbrowser.open('https://slack.com')
+
+    def openTeams(self):
+        webbrowser.open('https://www.microsoft.com/en/microsoft-teams/group-chat-software')
+
+    def openTeleGram(self):
+        webbrowser.open('https://telegram.org')
+
+    def openThunderbird(self):
+        webbrowser.open('https://www.thunderbird.net')
+
 
     def parseDownloads(self):
         # Disable the button before executing commands
@@ -488,6 +590,72 @@ class App(customtkinter.CTk):
             else:
                 commands = commands + "chatterino "
 
+        if self.hexChatToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "HexChat.HexChat "
+            else:
+                pass
+
+        if self.jamiToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "SFLinux.Jami "
+            else:
+                commands = commands + "jami "
+
+        if self.linPhoneToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "BelledonneCommunications.Linphone "
+            else:
+                commands = commands + "linphone "
+
+        if self.elementToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Element.Element "
+            else:
+                commands = commands + "element "
+
+        if self.sessionToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Oxen.Session "
+            else:
+                commands = commands + "session "
+
+        if self.signalToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "OpenWhisperSystems.Signal "
+            else:
+                commands = commands + "signal "
+
+        if self.skypeToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Microsoft.Skype "
+            else:
+                commands = commands + "skype "
+
+        if self.slackToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "SlackTechnologies.Slack "
+            else:
+                commands = commands + "slack "
+
+        if self.teamsToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Microsoft.Teams "
+            else:
+                commands = commands + "microsoft-teams "
+
+
+        if self.telegramToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Telegram.TelegramDesktop "
+            else:
+                commands = commands + "telegram "
+
+        if self.thunderbirdToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "Mozilla.Thunderbird "
+            else:
+                commands = commands + "thunderbird "
 
         def execute_command():
             if commands:
