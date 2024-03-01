@@ -129,7 +129,7 @@ class App(customtkinter.CTk):
         if platform.system().lower() == "darwin":
             self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openArc, fg_color="#323232", hover_color="#323232", width=6)
             self.label.grid(row=1, column=0, sticky="w")
-            tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser.")
+            tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you.\nLet go of the clicks, the clutter, the distractions with the Arc browser.")
             self.arcToggle = customtkinter.CTkCheckBox(frame, text="Arc")
             self.arcToggle.grid(row=1, column=1, sticky="w")
 
@@ -250,7 +250,7 @@ class App(customtkinter.CTk):
         self.textualToggle.grid(row=4, column=4)
 
         # Text widget for displaying output
-        self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7)
+        self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232")
         self.output_text.place(x=5, y=625)
     
         # Create and place the parseButton during the initialization
@@ -320,15 +320,15 @@ class App(customtkinter.CTk):
         self.parseButton.configure(state=tk.DISABLED)
         
         if platform.system().lower() == "windows":
-            commands = "winget install "
+            commands = "winget install --accept-package-agreements --accept-source-agreements "
         else:
             commands = "brew install --display-times "
-
-        if self.arcToggle.get() == 1:
-            if platform.system().lower() == "windows":
-                pass
-            else:
+        
+        if platform.system().lower() == "darwin":
+            if self.arcToggle.get() == 1:
                 commands = commands + "arc "
+            else:
+                pass
 
         if self.braveToggle.get() == 1:
             if platform.system().lower() == "windows":
