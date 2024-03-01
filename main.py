@@ -126,13 +126,14 @@ class App(customtkinter.CTk):
         self.header_label.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
 
         # Create Arc
-        if platform.system().lower() == "darwin":
-            self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openArc, fg_color="#323232", hover_color="#323232", width=6)
-            self.label.grid(row=1, column=0, sticky="w")
-            tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you.\nLet go of the clicks, the clutter, the distractions with the Arc browser.")
-            self.arcToggle = customtkinter.CTkCheckBox(frame, text="Arc")
-            self.arcToggle.grid(row=1, column=1, sticky="w")
-
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openArc, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=1, column=0, sticky="w")
+        self.arcToggle = customtkinter.CTkCheckBox(frame, text="Arc")
+        self.arcToggle.grid(row=1, column=1, sticky="w")
+        tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you.\nLet go of the clicks, the clutter, the distractions with the Arc browser.")
+        if platform.system().lower() == "windows":
+           self.arcToggle.configure(state=tkinter.DISABLED)
+            
         # Create Brave
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openBrave, fg_color="#323232", hover_color="#323232", width=6)
         self.label.grid(row=2, column=0, sticky="w")
@@ -248,6 +249,8 @@ class App(customtkinter.CTk):
         self.label.grid(row=4, column=3, sticky="w")
         self.textualToggle = customtkinter.CTkCheckBox(frame, text="Textual")
         self.textualToggle.grid(row=4, column=4)
+        if platform.system().lower() == "windows":
+           self.textualToggle.configure(state=tkinter.DISABLED)
 
         # Text widget for displaying output
         self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232", foreground="#ffffff")
