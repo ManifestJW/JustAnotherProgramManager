@@ -226,31 +226,37 @@ class App(customtkinter.CTk):
         self.label = customtkinter.CTkLabel(frame, text="Communications", font=("Arial", 18, "bold"))
         self.label.place(x=215, y=5)
 
+        # Create Chatterino
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openChatterino, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=1, column=3, sticky="w")
+        self.chatterinoToggle = customtkinter.CTkCheckBox(frame, text="Chatterino")
+        self.chatterinoToggle.grid(row=1, column=4, sticky="w")
+
         # Create Discord
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openDiscord, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=1, column=3, sticky="w")
+        self.label.grid(row=2, column=3, sticky="w")
         self.discordToggle = customtkinter.CTkCheckBox(frame, text="Discord")
-        self.discordToggle.grid(row=1, column=4, sticky="w")
+        self.discordToggle.grid(row=2, column=4, sticky="w")
 
         # Create Ferdium
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFerdium, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=2, column=3, sticky="w")
+        self.label.grid(row=3, column=3, sticky="w")
         self.ferdiumToggle = customtkinter.CTkCheckBox(frame, text="Ferdium")
-        self.ferdiumToggle.grid(row=2, column=4, sticky="w")
+        self.ferdiumToggle.grid(row=3, column=4, sticky="w")
 
         # Create Google Chat Desktop
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGoogleChat, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=3, column=3, sticky="w")
+        self.label.grid(row=4, column=3, sticky="w")
         self.googleChatToggle = customtkinter.CTkCheckBox(frame, text="Google Chat Desktop")
-        self.googleChatToggle.grid(row=3, column=4, sticky="w")
+        self.googleChatToggle.grid(row=4, column=4, sticky="w")
         if platform.system().lower() == "darwin":
            self.googleChatToggle.configure(state=tk.DISABLED)
 
         # Create Guilded
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGuilded, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=4, column=3, sticky="w")
+        self.label.grid(row=5, column=3, sticky="w")
         self.guildedToggle = customtkinter.CTkCheckBox(frame, text="Guilded")
-        self.guildedToggle.grid(row=4, column=4, sticky="w")
+        self.guildedToggle.grid(row=5, column=4, sticky="w")
 
         # Create Team Speak
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTeamSpeak, fg_color="#323232", hover_color="#323232", width=6)
@@ -319,6 +325,9 @@ class App(customtkinter.CTk):
 
     def openVivaldi(self):
         webbrowser.open('https://vivaldi.com', new=2)
+
+    def openChatterino(self):
+        webbrowser.open('https://chatterino.com', new=2)
 
     def openDiscord(self):
         webbrowser.open('https://www.discord.com', new=2)
@@ -467,11 +476,17 @@ class App(customtkinter.CTk):
             else:
                 commands = commands + "textual "
 
-        if self.textualToggle.get() == 1:
+        if self.googleChatToggle.get() == 1:
             if platform.system().lower() == "darwin":
                 pass
             else:
                 commands = commands + "squalou.google-chat-linux "
+
+        if self.chatterinoToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "ChatterinoTeam.Chatterino "
+            else:
+                commands = commands + "chatterino "
 
 
         def execute_command():
