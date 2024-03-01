@@ -132,7 +132,7 @@ class App(customtkinter.CTk):
         self.arcToggle.grid(row=1, column=1, sticky="w")
         tooltipLabel = CTkToolTip(self.label, message="Experience a calmer, more personal internet in this browser designed for you.\nLet go of the clicks, the clutter, the distractions with the Arc browser.")
         if platform.system().lower() == "windows":
-           self.arcToggle.configure(state=tkinter.DISABLED)
+           self.arcToggle.configure(state=tk.DISABLED)
             
         # Create Brave
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openBrave, fg_color="#323232", hover_color="#323232", width=6)
