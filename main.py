@@ -250,7 +250,7 @@ class App(customtkinter.CTk):
         self.textualToggle.grid(row=4, column=4)
 
         # Text widget for displaying output
-        self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232")
+        self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232", foreground="#ffffff")
         self.output_text.place(x=5, y=625)
     
         # Create and place the parseButton during the initialization
