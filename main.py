@@ -197,7 +197,7 @@ class App(customtkinter.CTk):
         # Create Thorium
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openThorium, fg_color="#323232", hover_color="#323232", width=6)
         self.label.grid(row=12, column=0, sticky="w")
-        self.thoriumToggle = customtkinter.CTkCheckBox(frame, text="Thorium AXV2")
+        self.thoriumToggle = customtkinter.CTkCheckBox(frame, text="Thorium AVX2")
         self.thoriumToggle.grid(row=12, column=1, sticky="w")
 
         # Create Tor
@@ -230,25 +230,39 @@ class App(customtkinter.CTk):
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openDiscord, fg_color="#323232", hover_color="#323232", width=6)
         self.label.grid(row=1, column=3, sticky="w")
         self.discordToggle = customtkinter.CTkCheckBox(frame, text="Discord")
-        self.discordToggle.grid(row=1, column=4)
+        self.discordToggle.grid(row=1, column=4, sticky="w")
 
         # Create Ferdium
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openFerdium, fg_color="#323232", hover_color="#323232", width=6)
         self.label.grid(row=2, column=3, sticky="w")
         self.ferdiumToggle = customtkinter.CTkCheckBox(frame, text="Ferdium")
-        self.ferdiumToggle.grid(row=2, column=4)
+        self.ferdiumToggle.grid(row=2, column=4, sticky="w")
+
+        # Create Google Chat Desktop
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGoogleChat, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=3, column=3, sticky="w")
+        self.googleChatToggle = customtkinter.CTkCheckBox(frame, text="Google Chat Desktop")
+        self.googleChatToggle.grid(row=3, column=4, sticky="w")
+        if platform.system().lower() == "darwin":
+           self.googleChatToggle.configure(state=tk.DISABLED)
 
         # Create Guilded
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openGuilded, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=3, column=3, sticky="w")
+        self.label.grid(row=4, column=3, sticky="w")
         self.guildedToggle = customtkinter.CTkCheckBox(frame, text="Guilded")
-        self.guildedToggle.grid(row=3, column=4)
+        self.guildedToggle.grid(row=4, column=4, sticky="w")
+
+        # Create Team Speak
+        self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTeamSpeak, fg_color="#323232", hover_color="#323232", width=6)
+        self.label.grid(row=5, column=3, sticky="w")
+        self.teamSpeakToggle = customtkinter.CTkCheckBox(frame, text="Team Speak")
+        self.teamSpeakToggle.grid(row=5, column=4, sticky="w")
 
         # Create Textual
         self.label = customtkinter.CTkButton(frame, text="[?]", font=("Arial", 14, "bold"), text_color="aqua", command=self.openTextual, fg_color="#323232", hover_color="#323232", width=6)
-        self.label.grid(row=4, column=3, sticky="w")
+        self.label.grid(row=6, column=3, sticky="w")
         self.textualToggle = customtkinter.CTkCheckBox(frame, text="Textual")
-        self.textualToggle.grid(row=4, column=4)
+        self.textualToggle.grid(row=6, column=4, sticky="w")
         if platform.system().lower() == "windows":
            self.textualToggle.configure(state=tk.DISABLED)
 
@@ -317,6 +331,12 @@ class App(customtkinter.CTk):
 
     def openTextual(self):
         webbrowser.open('https://www.codeux.com/textual', new=2)
+
+    def openTeamSpeak(self):
+        webbrowser.open('https://www.teamspeak.com/en', new=2)
+
+    def openGoogleChat(self):
+        webbrowser.open('https://github.com/squalou/google-chat-linux')
 
     def parseDownloads(self):
         # Disable the button before executing commands
@@ -435,11 +455,23 @@ class App(customtkinter.CTk):
             else:
                 commands = commands + "guilded "
 
+        if self.teamSpeakToggle.get() == 1:
+            if platform.system().lower() == "windows":
+                commands = commands + "TeamSpeakSystems.TeamSpeakClient "
+            else:
+                commands = commands + "teamspeak-client "
+
         if self.textualToggle.get() == 1:
             if platform.system().lower() == "windows":
                 pass
             else:
                 commands = commands + "textual "
+
+        if self.textualToggle.get() == 1:
+            if platform.system().lower() == "darwin":
+                pass
+            else:
+                commands = commands + "squalou.google-chat-linux "
 
 
         def execute_command():
