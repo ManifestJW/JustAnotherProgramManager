@@ -250,7 +250,7 @@ class App(customtkinter.CTk):
         self.textualToggle = customtkinter.CTkCheckBox(frame, text="Textual")
         self.textualToggle.grid(row=4, column=4)
         if platform.system().lower() == "windows":
-           self.textualToggle.configure(state=tkinter.DISABLED)
+           self.textualToggle.configure(state=tk.DISABLED)
 
         # Text widget for displaying output
         self.output_text = scrolledtext.ScrolledText(frame, wrap=tk.WORD, width=161, height=7, background="#323232", foreground="#ffffff")
