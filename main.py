@@ -111,18 +111,20 @@ class App(customtkinter.CTk):
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
         frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Add padding around the frame
     
+        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
+
         # Create a canvas for the browser frame with a scrollbar
-        browserCanvas = customtkinter.CTkCanvas(frame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
-        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
-    
+        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#2e2e2e", width=210, height=600)  # Dark background for the canvas
+        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#2e2e2e", "#2e2e2e"))  # Dark frame
+
         # Create a vertical scrollbar for the browser frame
-        browserScrollbar = customtkinter.CTkScrollbar(frame, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
-        browserScrollbar.grid(row=1, column=2, sticky="ns")
-    
+        browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        browserScrollbar.grid(row=0, column=1, padx=2, pady=2, sticky="ns")  # Position scrollbar next to the canvas
+
         browserCanvas.configure(yscrollcommand=browserScrollbar.set)
-    
-        browserCanvas.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")
-    
+        browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
+
         # Create a window in the canvas to hold the browser frame
         browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")
     
@@ -130,19 +132,24 @@ class App(customtkinter.CTk):
         self.createBrowserWidgets(browserFrame)
     
         # Create a canvas for the chat frame with a scrollbar
-        chatCanvas = customtkinter.CTkCanvas(frame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        # Create a frame to act as a border for the chat canvas
+        borderFrame = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        borderFrame.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
+        
+        # Create a canvas for the chat frame with a scrollbar
+        chatCanvas = customtkinter.CTkCanvas(borderFrame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
         chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
-    
+        
         # Create a vertical scrollbar for the chat frame
-        chatScrollbar = customtkinter.CTkScrollbar(frame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
-        chatScrollbar.grid(row=1, column=4, sticky="ns")
-    
+        chatScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        chatScrollbar.grid(row=0, column=1, padx=2, pady=2, sticky="ns")  # Position scrollbar next to the canvas
+        
         chatCanvas.configure(yscrollcommand=chatScrollbar.set)
-        chatCanvas.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")
-    
+        chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
+        
         # Create a window in the canvas to hold the chat frame
         chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")
-    
+
         # Create buttons and checkboxes for chat apps
         self.createChatWidgets(chatFrame)
     
