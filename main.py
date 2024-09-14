@@ -38,7 +38,7 @@ class App(customtkinter.CTk):
         self.sidebarFrame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebarFrame.grid_rowconfigure(3, weight=1)
 
-        self.logoLabel = customtkinter.CTkLabel(self.sidebarFrame, text="JAPM", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logoLabel = customtkinter.CTkLabel(self.sidebarFrame, text="Just Another\nProgram Manager", font=customtkinter.CTkFont(size=18, weight="bold"))
         self.logoLabel.grid(row=0, column=0, padx=20, pady=(20, 10))
 
         self.browsersButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView)
@@ -47,7 +47,7 @@ class App(customtkinter.CTk):
         self.creditsButton = customtkinter.CTkButton(self.sidebarFrame, text="Credits", command=self.creditsView)
         self.creditsButton.grid(row=4, column=0, padx=20, pady=10)
 
-        self.versionLabel = customtkinter.CTkLabel(self.sidebarFrame, text=version.appVersion, anchor="w", font=("Arial", 11, "bold"))
+        self.versionLabel = customtkinter.CTkLabel(self.sidebarFrame, text=version.appVersion, anchor="w", font=("Arial", 16, "bold"))
         self.versionLabel.grid(row=5, column=0, padx=20, pady=(10, 0))
 
         self.currentGameFrame = None
@@ -120,7 +120,7 @@ class App(customtkinter.CTk):
 
         # Create a vertical scrollbar for the browser frame
         browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
-        browserScrollbar.grid(row=0, column=1, padx=2, pady=2, sticky="ns")  # Position scrollbar next to the canvas
+        browserScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
 
         browserCanvas.configure(yscrollcommand=browserScrollbar.set)
         browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
@@ -142,7 +142,7 @@ class App(customtkinter.CTk):
         
         # Create a vertical scrollbar for the chat frame
         chatScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
-        chatScrollbar.grid(row=0, column=1, padx=2, pady=2, sticky="ns")  # Position scrollbar next to the canvas
+        chatScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         
         chatCanvas.configure(yscrollcommand=chatScrollbar.set)
         chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
