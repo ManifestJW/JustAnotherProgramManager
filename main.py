@@ -115,8 +115,8 @@ class App(customtkinter.CTk):
         borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
 
         # Create a canvas for the browser frame with a scrollbar
-        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#2e2e2e", width=210, height=600)  # Dark background for the canvas
-        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#2e2e2e", "#2e2e2e"))  # Dark frame
+        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
 
         # Create a vertical scrollbar for the browser frame
         browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
