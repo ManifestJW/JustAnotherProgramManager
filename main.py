@@ -1,5 +1,5 @@
 # ============================================
-# Program Master
+# JAPM (Just Another Program Manager)
 # Author: Nayla Hanegan (naylahanegan@gmail.com)
 # Date: 9/14/2024
 # License: MIT
@@ -25,7 +25,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         # configure window
-        self.title("Program Manager")
+        self.title("Just Another Program Manager")
         self.geometry(f"{1330}x{780}")
 
         # configure grid layout (4x4)
@@ -38,19 +38,16 @@ class App(customtkinter.CTk):
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(3, weight=1)
 
-        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="Program Master", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="JAPM", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
-        self.browsersButton = customtkinter.CTkButton(self.sidebar_frame, text="App Installers", command=self.browsersView)
+        self.browsersButton = customtkinter.CTkButton(self.sidebar_frame, text="Applications", command=self.appsView)
         self.browsersButton.grid(row=1, column=0, padx=20, pady=10)
-
-        self.utilitiesButton = customtkinter.CTkButton(self.sidebar_frame, text="Utilities", command=self.UtilitiesView)
-        self.utilitiesButton.grid(row=2, column=0, padx=20, pady=10)
 
         self.creditsButton = customtkinter.CTkButton(self.sidebar_frame, text="Credits", command=self.creditsView)
         self.creditsButton.grid(row=4, column=0, padx=20, pady=10)
         
-        self.versionLabel = customtkinter.CTkLabel(self.sidebar_frame, text=f"Version: {version.appVersion}", anchor="w", font=("Arial", 14, "bold"))
+        self.versionLabel = customtkinter.CTkLabel(self.sidebar_frame, text=version.appVersion, anchor="w", font=("Arial", 14, "bold"))
         self.versionLabel.grid(row=5, column=0, padx=20, pady=(10, 0))
 
         self.current_game_frame = None
@@ -60,23 +57,14 @@ class App(customtkinter.CTk):
         self.current_game_frame = self.createAppInstaller()
         self.current_game_frame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
 
-    def browsersView(self):
+    def appsView(self):
         self.browsersButton.configure(state="disabled")
-        self.utilitiesButton.configure(state="enabled")
         self.creditsButton.configure(state="enabled")
         self.reset_game_frames()
         self.create_game_frame("App Installers")
 
-    def UtilitiesView(self):
-        self.browsersButton.configure(state="enabled")
-        self.utilitiesButton.configure(state="disabled")
-        self.creditsButton.configure(state="enabled")
-        self.reset_game_frames()
-        self.create_game_frame("Utilities")
-
     def creditsView(self):
         self.browsersButton.configure(state="enabled")
-        self.utilitiesButton.configure(state="enabled")
         self.creditsButton.configure(state="disabled")
         self.reset_game_frames()
         self.create_game_frame("Credits")
@@ -106,28 +94,42 @@ class App(customtkinter.CTk):
         tabview.add("About")
         tabview.add("License")
         tabview.set("About")
-        mit_license_widget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=(get_mit_license_text()))
+        mit_license_widget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=(credits.get_mit_license_text()))
         mit_license_widget.pack(padx=10, pady=10)
-        credits_widget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=(get_credits_text()))
+        credits_widget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=(credits.get_credits_text()))
         credits_widget.pack(padx=10, pady=10)
-        about_widget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=(get_about_text()))
+        about_widget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=(credits.get_about_text()))
         about_widget.pack(padx=10, pady=10)
         return frame
 
     def createAppInstaller(self):
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
 
-        # Category Label
-        self.label = customtkinter.CTkLabel(frame, text="Internet Browsers", font=("Arial", 18, "bold"))
-        self.label.place(x=5, y=5)
-
-        # Here for padding
-        self.header_label = customtkinter.CTkLabel(frame, text="", font=("Arial", 18, "bold"))
-        self.header_label.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
+        # Create a new frame for chat apps
+        browser_frame = customtkinter.CTkFrame(frame, fg_color=("#e0e0e0", "#3a3a3a"))
+        browser_frame.place(x=5, y=5)
 
         # Create buttons and checkboxes for browsers
-        self.create_browser_widgets(frame)
-    
+        self.create_browser_widgets(browser_frame)
+
+        # Create a new frame for chat apps
+        chat_frame = customtkinter.CTkFrame(frame, fg_color=("#e0e0e0", "#3a3a3a"))
+        chat_frame.place(x=220, y=5)
+        self.create_chat_widgets(chat_frame)
+
+        # Category Label
+        self.browser_label = customtkinter.CTkLabel(browser_frame, text="Internet Browsers", font=("Arial", 18, "bold"))
+        self.browser_label.place(x=5, y=5)
+
+        self.chat_label = customtkinter.CTkLabel(chat_frame, text="Chat Apps", font=("Arial", 18, "bold"))
+        self.chat_label.place(x=5, y=5)
+
+        # Here for padding
+        self.tabTag = customtkinter.CTkLabel(browser_frame, text="", font=("Arial", 18, "bold"))
+        self.tabTag.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
+        self.tabTag = customtkinter.CTkLabel(chat_frame, text="", font=("Arial", 18, "bold"))
+        self.tabTag.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
+
         # Create and place the parseButton during the initialization
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Download Programs")
         self.parseButton.place(x=1330 / 2 - 200, y=735)
@@ -154,12 +156,11 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(browsers):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#323232", hover_color="#323232", width=6)
-            pady_value = (5, 0) if i == 0 else (0, 0)
-            button.grid(row=i + len(browsers) + 1, column=0, sticky="w", pady=pady_value)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + len(browsers) + 1, column=0, sticky="w", pady=2, padx=(0, 0))
             
             toggle = customtkinter.CTkCheckBox(frame, text=name)
-            toggle.grid(row=i + len(browsers) + 1, column=1, sticky="w", pady=(0, 0))  # No extra padding for checkboxes
+            toggle.grid(row=i + len(browsers) + 1, column=3, sticky="w", pady=2, padx=(0, 0))
             
             goodName = name.replace(" ", "").lower()
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
@@ -188,13 +189,14 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(chat_apps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#323232", hover_color="#323232", width=6)
-            pady_value = (5, 0) if i == 0 else (0, 0)
-            button.grid(row=i + len(chat_apps) + 1, column=0, sticky="w", pady=pady_value)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + len(chat_apps) + 1, column=2, sticky="w", pady=2, padx=(0, 0))
             
             toggle = customtkinter.CTkCheckBox(frame, text=name)
-            toggle.grid(row=i + len(chat_apps) + 1, column=1, sticky="w", pady=(0, 0))  # No extra padding for checkboxes
-            setattr(self, f"{name.lower()}Toggle", toggle)  # Dynamically set toggle attribute
+            toggle.grid(row=i + len(chat_apps) + 1, column=3, sticky="w", pady=2, padx=(0, 0))
+            
+            goodName = name.replace(" ", "").lower()
+            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def parseDownloads(self):
         # Disable the button before executing commands
@@ -264,24 +266,25 @@ class App(customtkinter.CTk):
             check_output()
 
     def detect_distro(self):
-        with open('/etc/os-release') as f:
-            os_info = f.read().lower()
-            if 'arch' in os_info or 'manjaro' in os_info or 'endeavouros' in os_info:
-                return "arch"
-            elif 'fedora' in os_info or 'centos' in os_info or 'rhel' in os_info:
-                return "fedora"
-            elif 'debian' in os_info or 'ubuntu' in os_info or 'linuxmint' in os_info:
-                return "debian"
-            elif platform.system().lower() == "windows":
-                return "windows"
-            elif platform.system().lower() == "darwin":
-                return "macOS"
-            else:
-                return "unknown"
+        if platform.system().lower() == "linux":
+            with open('/etc/os-release') as f:
+                os_info = f.read().lower()
+                if 'arch' in os_info or 'manjaro' in os_info or 'endeavouros' in os_info:
+                    return "arch"
+                elif 'fedora' in os_info or 'centos' in os_info or 'rhel' in os_info:
+                    return "fedora"
+                elif 'debian' in os_info or 'ubuntu' in os_info or 'linuxmint' in os_info:
+                    return "debian"
+        elif platform.system().lower() == "windows":
+            return "windows"
+        elif platform.system().lower() == "darwin":
+            return "macOS"
+        else:
+            return "unknown"
 
     def build_commands(self, distro):
         commands = ""
-        def append_command(toggle, command_win, command_unix, command_arch):
+        def append_command(toggle, command_win, command_mac, command_arch):
             nonlocal commands
             if toggle.get() == 1:
                 commands += command_win if distro == "windows" else command_mac if distro == "macOS" else command_arch if distro == "arch" else ""
@@ -309,10 +312,10 @@ class App(customtkinter.CTk):
         append_command(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
         append_command(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
         append_command(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
-        append_command(self.discordToggle, "Discord.Discord ", "discord ")
-        append_command(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ")
-        append_command(self.guildedToggle, "Guilded.Guilded ", "guilded ")
-        append_command(self.teamspeakToggle, "TeamSpeakSystems.TeamSpeakClient ", "teamspeak-client ")
+        append_command(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
+        append_command(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
+        append_command(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
+        append_command(self.teamspeakToggle, "TeamSpeakSystems.TeamSpeakClient ", "teamspeak-client ", "teamspeak ")
 
         if self.textualToggle.get() == 1 and distro != "windows":
             commands += "textual "
