@@ -24,67 +24,68 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        # configure window
-        self.title("Just Another Program Manager")
+        # Configure window
+        self.title("Japm")
         self.geometry(f"{1330}x{780}")
 
-        # configure grid layout (4x4)
+        # Configure grid layout (4x4)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure((2, 3), weight=0)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
-        # create sidebar frame with widgets
-        self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(3, weight=1)
+        # Create sidebar frame with widgets
+        self.sidebarFrame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
+        self.sidebarFrame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        self.sidebarFrame.grid_rowconfigure(3, weight=1)
 
-        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="JAPM", font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.logoLabel = customtkinter.CTkLabel(self.sidebarFrame, text="JAPM", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logoLabel.grid(row=0, column=0, padx=20, pady=(20, 10))
 
-        self.browsersButton = customtkinter.CTkButton(self.sidebar_frame, text="Applications", command=self.appsView)
+        self.browsersButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView)
         self.browsersButton.grid(row=1, column=0, padx=20, pady=10)
 
-        self.creditsButton = customtkinter.CTkButton(self.sidebar_frame, text="Credits", command=self.creditsView)
+        self.creditsButton = customtkinter.CTkButton(self.sidebarFrame, text="Credits", command=self.creditsView)
         self.creditsButton.grid(row=4, column=0, padx=20, pady=10)
-        
-        self.versionLabel = customtkinter.CTkLabel(self.sidebar_frame, text=version.appVersion, anchor="w", font=("Arial", 14, "bold"))
+
+        self.versionLabel = customtkinter.CTkLabel(self.sidebarFrame, text=version.appVersion, anchor="w", font=("Arial", 11, "bold"))
         self.versionLabel.grid(row=5, column=0, padx=20, pady=(10, 0))
 
-        self.current_game_frame = None
-    
-        # set default values
+        self.currentGameFrame = None
+
+        # Set default values
         self.browsersButton.configure(state="disabled")
-        self.current_game_frame = self.createAppInstaller()
-        self.current_game_frame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
+        self.currentGameFrame = self.createAppInstaller()
+        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
 
     def appsView(self):
         self.browsersButton.configure(state="disabled")
         self.creditsButton.configure(state="enabled")
-        self.reset_game_frames()
-        self.create_game_frame("App Installers")
+        self.resetGameFrames()
+        self.createGameFrame("App Installers")
 
     def creditsView(self):
         self.browsersButton.configure(state="enabled")
         self.creditsButton.configure(state="disabled")
-        self.reset_game_frames()
-        self.create_game_frame("Credits")
+        self.resetGameFrames()
+        self.createGameFrame("Credits")
 
-    def reset_game_frames(self):
+    def resetGameFrames(self):
         # Reset the main frame to remove any existing game-specific widgets
-        if self.current_game_frame:
-            self.current_game_frame.destroy()
+        if self.currentGameFrame:
+            self.currentGameFrame.destroy()
 
-    def create_game_frame(self, game_name):
-        # Create a new game frame based on the selected game_name
-        self.reset_game_frames()
+    def createGameFrame(self, gameName):
+        # Create a new game frame based on the selected gameName
+        self.resetGameFrames()
 
-        if game_name == "App Installers":
-            self.current_game_frame = self.createAppInstaller()
-        elif game_name == "Utilities":
-            self.current_game_frame = self.createUtilities()
-        elif game_name == "Credits":
-            self.current_game_frame = self.createCredits()
-        self.current_game_frame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
+        if gameName == "App Installers":
+            self.currentGameFrame = self.createAppInstaller()
+        elif gameName == "Utilities":
+            self.currentGameFrame = self.createUtilities()
+        elif gameName == "Credits":
+            self.currentGameFrame = self.createCredits()
+        
+        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
 
     def createCredits(self):
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
@@ -94,50 +95,86 @@ class App(customtkinter.CTk):
         tabview.add("About")
         tabview.add("License")
         tabview.set("About")
-        mit_license_widget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=(credits.get_mit_license_text()))
-        mit_license_widget.pack(padx=10, pady=10)
-        credits_widget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=(credits.get_credits_text()))
-        credits_widget.pack(padx=10, pady=10)
-        about_widget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=(credits.get_about_text()))
-        about_widget.pack(padx=10, pady=10)
+
+        mitLicenseWidget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=credits.get_mit_license_text())
+        mitLicenseWidget.pack(padx=10, pady=10)
+
+        creditsWidget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=credits.get_credits_text())
+        creditsWidget.pack(padx=10, pady=10)
+
+        aboutWidget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=credits.get_about_text())
+        aboutWidget.pack(padx=10, pady=10)
+
         return frame
 
     def createAppInstaller(self):
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
-
-        # Create a new frame for chat apps
-        browser_frame = customtkinter.CTkFrame(frame, fg_color=("#e0e0e0", "#3a3a3a"))
-        browser_frame.place(x=5, y=5)
-
+        frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Add padding around the frame
+    
+        # Create a canvas for the browser frame with a scrollbar
+        browserCanvas = customtkinter.CTkCanvas(frame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+    
+        # Create a vertical scrollbar for the browser frame
+        browserScrollbar = customtkinter.CTkScrollbar(frame, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        browserScrollbar.grid(row=1, column=2, sticky="ns")
+    
+        browserCanvas.configure(yscrollcommand=browserScrollbar.set)
+    
+        browserCanvas.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")
+    
+        # Create a window in the canvas to hold the browser frame
+        browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")
+    
         # Create buttons and checkboxes for browsers
-        self.create_browser_widgets(browser_frame)
+        self.createBrowserWidgets(browserFrame)
+    
+        # Create a canvas for the chat frame with a scrollbar
+        chatCanvas = customtkinter.CTkCanvas(frame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+    
+        # Create a vertical scrollbar for the chat frame
+        chatScrollbar = customtkinter.CTkScrollbar(frame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        chatScrollbar.grid(row=1, column=4, sticky="ns")
+    
+        chatCanvas.configure(yscrollcommand=chatScrollbar.set)
+        chatCanvas.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")
+    
+        # Create a window in the canvas to hold the chat frame
+        chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")
+    
+        # Create buttons and checkboxes for chat apps
+        self.createChatWidgets(chatFrame)
+    
+        # Update the scroll region of the canvas
+        def update_scroll_region(event):
+            browserCanvas.configure(scrollregion=browserCanvas.bbox("all"))
+            chatCanvas.configure(scrollregion=chatCanvas.bbox("all"))
+    
+        browserFrame.bind("<Configure>", update_scroll_region)
+        chatFrame.bind("<Configure>", update_scroll_region)
+    
+        # Category Labels with right padding
+        self.browserLabel = customtkinter.CTkLabel(browserFrame, text="Internet Browsers", font=("Arial", 16, "bold"))
+        self.browserLabel.place(x=5, y=5)  # Use place to position the label
+    
+        self.chatLabel = customtkinter.CTkLabel(chatFrame, text="Chat Apps", font=("Arial", 16, "bold"))
+        self.chatLabel.place(x=5, y=5)  # Use place to position the label
+    
+        # Move the parseButton to be above the frames
+        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected")
+        self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")
+    
+        # Add the Update All Apps button next to Install Selected
+        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150)  # Set a specific width for the button
+        self.updateButton.place(x=165, y=10)  # Place next to the Install Selected button
 
-        # Create a new frame for chat apps
-        chat_frame = customtkinter.CTkFrame(frame, fg_color=("#e0e0e0", "#3a3a3a"))
-        chat_frame.place(x=220, y=5)
-        self.create_chat_widgets(chat_frame)
-
-        # Category Label
-        self.browser_label = customtkinter.CTkLabel(browser_frame, text="Internet Browsers", font=("Arial", 18, "bold"))
-        self.browser_label.place(x=5, y=5)
-
-        self.chat_label = customtkinter.CTkLabel(chat_frame, text="Chat Apps", font=("Arial", 18, "bold"))
-        self.chat_label.place(x=5, y=5)
-
-        # Here for padding
-        self.tabTag = customtkinter.CTkLabel(browser_frame, text="", font=("Arial", 18, "bold"))
-        self.tabTag.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
-        self.tabTag = customtkinter.CTkLabel(chat_frame, text="", font=("Arial", 18, "bold"))
-        self.tabTag.grid(row=0, column=1, sticky="w", padx=5, pady=(10, 0)) 
-
-        # Create and place the parseButton during the initialization
-        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Download Programs")
-        self.parseButton.place(x=1330 / 2 - 200, y=735)
         return frame
 
-    def create_browser_widgets(self, frame):
+    def createBrowserWidgets(self, frame):
         # Define browser options with their corresponding open functions
         browsers = [
+            ("", lambda: None),  # Placeholder that does nothing
             ("Arc", lambda: webbrowser.open('https://arc.net', new=2)),
             ("Brave", lambda: webbrowser.open('https://brave.com', new=2)),
             ("Chrome", lambda: webbrowser.open('https://www.google.com/chrome', new=2)),
@@ -156,44 +193,45 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(browsers):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
-            button.grid(row=i + len(browsers) + 1, column=0, sticky="w", pady=2, padx=(0, 0))
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name)
-            toggle.grid(row=i + len(browsers) + 1, column=3, sticky="w", pady=2, padx=(0, 0))
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-    def create_chat_widgets(self, frame):
+    def createChatWidgets(self, frame):
         # Define chat application options with invalid links
-        chat_apps = [
-            ("Discord", "https://invalid.discord.link"),
-            ("Ferdium", "https://invalid.ferdium.link"),
-            ("Guilded", "https://invalid.guilded.link"),
-            ("TeamSpeak", "https://invalid.teamspeak.link"),
-            ("Textual", "https://invalid.textual.link"),
-            ("Google Chat", "https://invalid.googlechat.link"),
-            ("Chatterino", "https://invalid.chatterino.link"),
-            ("HexChat", "https://invalid.hexchat.link"),
-            ("Jami", "https://invalid.jami.link"),
-            ("Linphone", "https://invalid.linphone.link"),
-            ("Element", "https://invalid.element.link"),
-            ("Session", "https://invalid.session.link"),
-            ("Signal", "https://invalid.signal.link"),
-            ("Skype", "https://invalid.skype.link"),
-            ("Slack", "https://invalid.slack.link"),
-            ("Teams", "https://invalid.teams.link"),
-            ("Telegram", "https://invalid.telegram.link"),
-            ("Thunderbird", "https://invalid.thunderbird.link"),
+        chatApps = [
+            ("", lambda: None),  # Placeholder that does nothing
+            ("Discord", lambda: webbrowser.open('https://discord.com', new=2)),
+            ("Ferdium", lambda: webbrowser.open('https://ferdium.org', new=2)),
+            ("Guilded", lambda: webbrowser.open('https://guilded.gg', new=2)),
+            ("TeamSpeak", lambda: webbrowser.open('https://teamspeak.com', new=2)),
+            ("Textual", lambda: webbrowser.open('https://www.//chatterino.com', new=2)),
+            ("Google Chat", lambda: webbrowser.open('https://github.com/squalou/google-chat-linux', new=2)),
+            ("Chatterino", lambda: webbrowser.open('https:/https://chatterino.com/', new=2)),
+            ("HexChat", lambda: webbrowser.open('https://hexchat.github.io/', new=2)),
+            ("Jami", lambda: webbrowser.open('https://jami.net/', new=2)),
+            ("Linphone", lambda: webbrowser.open('https://www.linphone.org/', new=2)),
+            ("Element", lambda: webbrowser.open('https://element.io', new=2)),
+            ("Session", lambda: webbrowser.open('https://getsession.org', new=2)),
+            ("Signal", lambda: webbrowser.open('https://signal.org/', new=2)),
+            ("Skype", lambda: webbrowser.open('https://www.skype.com/', new=2)),
+            ("Slack", lambda: webbrowser.open('https://slack.com', new=2)),
+            ("Teams", lambda: webbrowser.open('https://www.microsoft.com/en-us/microsoft-teams/group-chat-software', new=2)),
+            ("Telegram", lambda: webbrowser.open('https://telegram.org/', new=2)),
+            ("Thunderbird", lambda: webbrowser.open('https://www.thunderbird.net/', new=2)),
         ]
 
-        for i, (name, command) in enumerate(chat_apps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 14, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
-            button.grid(row=i + len(chat_apps) + 1, column=2, sticky="w", pady=2, padx=(0, 0))
+        for i, (name, command) in enumerate(chatApps):
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name)
-            toggle.grid(row=i + len(chat_apps) + 1, column=3, sticky="w", pady=2, padx=(0, 0))
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
@@ -201,22 +239,22 @@ class App(customtkinter.CTk):
     def parseDownloads(self):
         # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
-        distro = self.detect_distro()
-        commands = self.build_commands(distro)
+        distro = self.detectDistro()
+        commands = self.buildCommands(distro)
 
         if commands:
             # Create a new window for terminal output
-            terminal_window = tk.Toplevel(self)
-            terminal_window.title("Terminal Output")
-            terminal_window.geometry("600x400")
+            terminalWindow = tk.Toplevel(self)
+            terminalWindow.title("Terminal Output")
+            terminalWindow.geometry("600x400")
 
-            terminal_output = scrolledtext.ScrolledText(terminal_window, wrap=tk.WORD, background="#323232", foreground="#ffffff")
-            terminal_output.pack(expand=True, fill='both')
+            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background="#323232", foreground="#ffffff")
+            terminalOutput.pack(expand=True, fill='both')
 
             process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
 
             # Function to read the output asynchronously
-            def read_output(file, queue, lock):
+            def readOutput(file, queue, lock):
                 while True:
                     line = file.readline()
                     if not line:
@@ -225,121 +263,184 @@ class App(customtkinter.CTk):
                         queue.put(line)
 
             # Set up queues and lock
-            stdout_queue = queue.Queue()
-            stderr_queue = queue.Queue()
-            output_lock = threading.Lock()
+            stdoutQueue = queue.Queue()
+            stderrQueue = queue.Queue()
+            outputLock = threading.Lock()
 
             # Create file event handlers
-            stdout_handler = threading.Thread(target=read_output, args=(process.stdout, stdout_queue, output_lock))
-            stderr_handler = threading.Thread(target=read_output, args=(process.stderr, stderr_queue, output_lock))
+            stdoutHandler = threading.Thread(target=readOutput, args=(process.stdout, stdoutQueue, outputLock))
+            stderrHandler = threading.Thread(target=readOutput, args=(process.stderr, stderrQueue, outputLock))
 
             # Start file event handlers
-            stdout_handler.start()
-            stderr_handler.start()
+            stdoutHandler.start()
+            stderrHandler.start()
 
-            def check_output():
-                with output_lock:
-                    while not stdout_queue.empty():
-                        terminal_output.configure(state='normal')
-                        terminal_output.insert(tk.END, stdout_queue.get())
-                        terminal_output.yview(tk.END)  # Scroll to the bottom
-                        terminal_output.configure(state='disabled')
+            def checkOutput():
+                with outputLock:
+                    while not stdoutQueue.empty():
+                        terminalOutput.configure(state='normal')
+                        terminalOutput.insert(tk.END, stdoutQueue.get())
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
 
-                    while not stderr_queue.empty():
-                        terminal_output.configure(state='normal')
-                        terminal_output.insert(tk.END, stderr_queue.get())
-                        terminal_output.yview(tk.END)  # Scroll to the bottom
-                        terminal_output.configure(state='disabled')
+                    while not stderrQueue.empty():
+                        terminalOutput.configure(state='normal')
+                        terminalOutput.insert(tk.END, stderrQueue.get())
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
 
                 if process.poll() is None:
                     # The process is still running, so check again after a short delay
-                    terminal_output.after(100, check_output)
+                    terminalOutput.after(100, checkOutput)
                 else:
                     # Command finished, clean up
-                    stdout_handler.join()
-                    stderr_handler.join()
+                    stdoutHandler.join()
+                    stderrHandler.join()
 
                     # Enable the button after command execution is complete
                     self.parseButton.configure(state=tk.NORMAL)
 
             # Start checking for output
-            check_output()
+            checkOutput()
 
-    def detect_distro(self):
+    def detectDistro(self):
         if platform.system().lower() == "linux":
             with open('/etc/os-release') as f:
-                os_info = f.read().lower()
-                if 'arch' in os_info or 'manjaro' in os_info or 'endeavouros' in os_info:
+                osInfo = f.read().lower()
+                if 'arch' in osInfo or 'manjaro' in osInfo or 'endeavouros' in osInfo:
                     return "arch"
-                elif 'fedora' in os_info or 'centos' in os_info or 'rhel' in os_info:
+                elif 'fedora' in osInfo or 'centos' in osInfo or 'rhel' in osInfo:
                     return "fedora"
-                elif 'debian' in os_info or 'ubuntu' in os_info or 'linuxmint' in os_info:
+                elif 'debian' in osInfo or 'ubuntu' in osInfo or 'linuxmint' in osInfo:
                     return "debian"
         elif platform.system().lower() == "windows":
             return "windows"
         elif platform.system().lower() == "darwin":
-            return "macOS"
+            return "macos"
         else:
             return "unknown"
 
-    def build_commands(self, distro):
+    def buildCommands(self, distro):
         commands = ""
-        def append_command(toggle, command_win, command_mac, command_arch):
+        def appendCommand(toggle, commandWin, commandMac, commandArch):
             nonlocal commands
             if toggle.get() == 1:
-                commands += command_win if distro == "windows" else command_mac if distro == "macOS" else command_arch if distro == "arch" else ""
+                commands += commandWin if distro == "windows" else commandMac if distro == "macos" else commandArch if distro == "arch" else ""
             
         # Example commands for brew and winget
-        if distro == "macOS":
+        if distro == "macos":
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "  # Initial command for winget on Windows
         elif distro == "arch":
-            commands += "yay -Syyuu --noconfirm "  # Initial command for yay on Arch
+            commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
-        append_command(self.arcToggle, "", "arc ", "")
-        append_command(self.braveToggle, "Brave.Brave ", "brave-browser ", "brave-browser ")
-        append_command(self.chromeToggle, "Google.Chrome ", "google-chrome ", "google-chrome ")
-        append_command(self.chromiumToggle, "Hibbiki.Chromium ", "chromium ", "chromium ")
-        append_command(self.edgeToggle, "Microsoft.Edge ", "microsoft-edge ", "microsoft-edge-stable-bin ")
-        append_command(self.firefoxToggle, "Mozilla.Firefox ", "firefox ", "firefox ")
-        append_command(self.floorpToggle, "Ablaze.Floorp ", "floorp ", "floorp-bin ")
-        append_command(self.librewolfToggle, "LibreWolf.LibreWolf ", "librewolf ", "librewolf-bin ")
-        append_command(self.operaToggle, "Opera.Opera ", "opera ", "opera ")
-        append_command(self.operagxToggle, "Opera.OperaGX ", "opera-gx ", "")
-        append_command(self.orionToggle, "", "orion ", "")
-        append_command(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
-        append_command(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
-        append_command(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
-        append_command(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
-        append_command(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
-        append_command(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
-        append_command(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
-        append_command(self.teamspeakToggle, "TeamSpeakSystems.TeamSpeakClient ", "teamspeak-client ", "teamspeak ")
-
-        if self.textualToggle.get() == 1 and distro != "windows":
-            commands += "textual "
-
-        if self.googleChatToggle.get() == 1 and distro != "macOS":
-            commands += "squalou.google-chat-linux "
-
-        append_command(self.chatterinoToggle, "ChatterinoTeam.Chatterino ", "chatterino ")
-
-        if self.hexChatToggle.get() == 1 and distro == "windows":
-            commands += "HexChat.HexChat "
-
-        append_command(self.jamiToggle, "SFLinux.Jami ", "jami ")
-        append_command(self.linPhoneToggle, "BelledonneCommunications.Linphone ", "linphone ")
-        append_command(self.elementToggle, "Element.Element ", "element ")
-        append_command(self.sessionToggle, "Oxen.Session ", "session ")
-        append_command(self.signalToggle, "OpenWhisperSystems.Signal ", "signal ")
-        append_command(self.skypeToggle, "Microsoft.Skype ", "skype ")
-        append_command(self.slackToggle, "SlackTechnologies.Slack ", "slack ")
-        append_command(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ")
-        append_command(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ")
-        append_command(self.thunderbirdToggle, "Mozilla.Thunderbird ", "thunderbird ")
+        appendCommand(self.arcToggle, "TheBrowserCompany.Arc ", "arc ", "")
+        appendCommand(self.braveToggle, "Brave.Brave ", "brave-browser ", "brave-browser ")
+        appendCommand(self.chromeToggle, "Google.Chrome ", "google-chrome ", "google-chrome ")
+        appendCommand(self.chromiumToggle, "Hibbiki.Chromium ", "chromium ", "chromium ")
+        appendCommand(self.edgeToggle, "Microsoft.Edge ", "microsoft-edge ", "microsoft-edge-stable-bin ")
+        appendCommand(self.firefoxToggle, "Mozilla.Firefox ", "firefox ", "firefox ")
+        appendCommand(self.floorpToggle, "Ablaze.Floorp ", "floorp ", "floorp-bin ")
+        appendCommand(self.librewolfToggle, "LibreWolf.LibreWolf ", "librewolf ", "librewolf-bin ")
+        appendCommand(self.operaToggle, "Opera.Opera ", "opera ", "opera ")
+        appendCommand(self.operagxToggle, "Opera.OperaGX ", "opera-gx ", "")
+        appendCommand(self.orionToggle, "", "orion ", "")
+        appendCommand(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
+        appendCommand(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
+        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
+        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
+        appendCommand(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
+        appendCommand(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
+        appendCommand(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
+        appendCommand(self.teamspeakToggle, "TeamSpeakSystems.TeamSpeakClient ", "teamspeak-client ", "teamspeak ")
+        appendCommand(self.textualToggle, "", "textual", "")
+        appendCommand(self.googlechatToggle, "squalou.google-chat-linux ", "", "google-chat-linux-bin ")
+        appendCommand(self.chatterinoToggle, "ChatterinoTeam.Chatterino ", "chatterino ", "chatterino2-bin ")
+        appendCommand(self.hexchatToggle, "HexChat.HexChat ", "", "hexchat")
+        appendCommand(self.jamiToggle, "SFLinux.Jami ", "jami ", "jami ")
+        appendCommand(self.linphoneToggle, "BelledonneCommunications.Linphone ", "linphone ", "linphone-desktop ")
+        appendCommand(self.elementToggle, "Element.Element ", "element ", "element-desktop ")
+        appendCommand(self.sessionToggle, "Oxen.Session ", "session ", "session-desktop-bin ")
+        appendCommand(self.signalToggle, "OpenWhisperSystems.Signal ", "signal ", "signal-desktop-beta-bin ")
+        appendCommand(self.skypeToggle, "Microsoft.Skype ", "skype ", "skypeforlinux-bin ")
+        appendCommand(self.slackToggle, "SlackTechnologies.Slack ", "slack ", "slack-desktop ")
+        appendCommand(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ", "teams ")
+        appendCommand(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ", "telegram-desktop ")
+        appendCommand(self.thunderbirdToggle, "Mozilla.Thunderbird ", "thunderbird ", "thunderbird ")
 
         return commands
+
+    def updateAllApps(self):
+        # Disable the button before executing commands
+        self.updateButton.configure(state=tk.DISABLED)
+
+        # Create a new window for terminal output
+        terminalWindow = tk.Toplevel(self)
+        terminalWindow.title("Terminal Output")
+        terminalWindow.geometry("600x400")
+
+        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background="#323232", foreground="#ffffff")
+        terminalOutput.pack(expand=True, fill='both')
+
+        # Command to run
+        if platform.system().lower() == "darwin":
+            command = "brew upgrade"
+        elif platform.system().lower() == "windows":
+            command = "winget upgrade --all"
+        else:
+            command = "yay -Syyuu"
+
+        # Run the command in a separate thread
+        def run_command():
+            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+
+            # Function to read the output asynchronously
+            def read_output(file, queue):
+                while True:
+                    line = file.readline()
+                    if not line:
+                        break
+                    queue.put(line)
+
+            # Set up queues
+            stdoutQueue = queue.Queue()
+            stderrQueue = queue.Queue()
+
+            # Create threads to read stdout and stderr
+            stdoutHandler = threading.Thread(target=read_output, args=(process.stdout, stdoutQueue))
+            stderrHandler = threading.Thread(target=read_output, args=(process.stderr, stderrQueue))
+
+            # Start the threads
+            stdoutHandler.start()
+            stderrHandler.start()
+
+            # Check for output
+            def check_output():
+                while not stdoutQueue.empty():
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, stdoutQueue.get())
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
+
+                while not stderrQueue.empty():
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, stderrQueue.get())
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
+
+                if process.poll() is None:
+                    terminalOutput.after(100, check_output)  # Check again after a short delay
+                else:
+                    stdoutHandler.join()
+                    stderrHandler.join()
+                    self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
+
+            # Start checking for output
+            check_output()
+
+        # Start the command in a separate thread
+        threading.Thread(target=run_command).start()
 
 if __name__ == "__main__":
     app = App()
