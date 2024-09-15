@@ -346,12 +346,12 @@ class App(customtkinter.CTk):
             return False
         
     def isChocoInstalled(self):
-            try:
-                # Check if Chocolatey is installed by running a command
-                subprocess.run(["choco", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                return True
-            except:
-                return False
+        try:
+            # Check if Chocolatey is installed by running a command
+            subprocess.run(["choco", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return True
+        except:
+            return False
             
     def detectDistro(self):
         if platform.system().lower() == "linux":
