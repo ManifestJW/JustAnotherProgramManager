@@ -9,20 +9,34 @@ import tkinter as tk
 from tkinter import scrolledtext
 import subprocess
 import queue
+import colorlib
 import threading
 import customtkinter
 import version
 import webbrowser
 import platform
 import credits
+import darkdetect
 from CTkToolTip import *
 
-customtkinter.set_appearance_mode("Dark")
-customtkinter.set_default_color_theme("blue")
+
+customtkinter.set_appearance_mode(darkdetect.theme())
 
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        
+        # Colorlib
+        global sysColor
+        global sysColorAlt
+        sysColor, sysColorAlt = colorlib.get_system_colors()  # Call the function from colorlib
+
+        # dark color Var
+        global colorBg
+        if darkdetect.theme() == "Dark":
+            colorBg = "#3a3a3a"
+        else:
+            colorBg = "#ffffff"
 
         # Configure window properties
         self.title("Just Another Program Manager")  # Set the window title
@@ -43,10 +57,10 @@ class App(customtkinter.CTk):
         self.logoLabel.grid(row=0, column=0, padx=20, pady=(20, 10))  # Position logo label
 
         # Create buttons for navigation
-        self.applicationsButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView)
+        self.applicationsButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView, fg_color=sysColor, hover_color=sysColorAlt)
         self.applicationsButton.grid(row=1, column=0, padx=20, pady=10)  # Position Applications button
 
-        self.creditsButton = customtkinter.CTkButton(self.sidebarFrame, text="Credits", command=self.creditsView)
+        self.creditsButton = customtkinter.CTkButton(self.sidebarFrame, text="Credits", command=self.creditsView, fg_color=sysColor, hover_color=sysColorAlt)
         self.creditsButton.grid(row=4, column=0, padx=20, pady=10)  # Position Credits button
 
         # Display application version in the sidebar
@@ -92,8 +106,8 @@ class App(customtkinter.CTk):
 
     def createCredits(self):
         # Create the credits frame with tabs for different sections
-        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
-        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, fg_color=("#fcfcfc", "#323232"))  # Create tab view
+        frame = customtkinter.CTkFrame(self, fg_color=("#ffffff", "#323232"))  # Create frame with light and dark mode colors
+        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, fg_color=("#ffffff", "#323232"), segmented_button_selected_hover_color=sysColorAlt, segmented_button_selected_color=sysColor)  # Create tab view
         tabview.pack(padx=20, pady=20)  # Pack the tab view into the frame
         tabview.add("Credits")  # Add Credits tab
         tabview.add("About")  # Add About tab
@@ -118,13 +132,14 @@ class App(customtkinter.CTk):
         # Create the app installer frame with various sections
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
         frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Position the frame with padding
-    
+
         # Create a border frame for the browser section
-        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
+        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
         borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
-        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for browser widgets
-        browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        
+        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg=colorBg, width=210, height=690)  # Dark background for the canvas
+        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for browser widgets
+        browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
         browserScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         browserCanvas.configure(yscrollcommand=browserScrollbar.set)  # Link scrollbar to canvas
         browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
@@ -132,11 +147,11 @@ class App(customtkinter.CTk):
         self.createBrowserWidgets(browserFrame)  # Create browser widgets in the frame
     
         # Create a border frame for the chat section
-        borderFrameChat = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
+        borderFrameChat = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
         borderFrameChat.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        chatCanvas = customtkinter.CTkCanvas(borderFrameChat, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
-        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for chat widgets
-        chatScrollbar = customtkinter.CTkScrollbar(borderFrameChat, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        chatCanvas = customtkinter.CTkCanvas(borderFrameChat, bg=colorBg, width=210, height=690)  # Dark background for the canvas
+        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for chat widgets
+        chatScrollbar = customtkinter.CTkScrollbar(borderFrameChat, orientation="vertical", command=chatCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
         chatScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         chatCanvas.configure(yscrollcommand=chatScrollbar.set)  # Link scrollbar to canvas
         chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
@@ -144,11 +159,11 @@ class App(customtkinter.CTk):
         self.createChatWidgets(chatFrame)  # Create chat widgets in the frame
 
         # Create a border frame for the development section
-        borderFrameDev = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
+        borderFrameDev = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
         borderFrameDev.grid(row=1, column=6, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
-        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for development widgets
-        devScrollbar = customtkinter.CTkScrollbar(borderFrameDev, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg=colorBg, width=210, height=690)  # Dark background for the canvas
+        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for development widgets
+        devScrollbar = customtkinter.CTkScrollbar(borderFrameDev, orientation="vertical", command=devCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
         devScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         devCanvas.configure(yscrollcommand=devScrollbar.set)  # Link scrollbar to canvas
         devCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
@@ -156,11 +171,11 @@ class App(customtkinter.CTk):
         self.createDevWidgets(devFrame)  # Create development widgets in the frame
 
         # Create a border frame for the documentation section
-        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
+        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
         borderFrameDocu.grid(row=1, column=9, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
-        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for documentation widgets
-        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg=colorBg, width=210, height=690)  # Dark background for the canvas
+        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for documentation widgets
+        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=devCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
         docuScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         docuCanvas.configure(yscrollcommand=docuScrollbar.set)  # Link scrollbar to canvas
         docuCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
@@ -189,11 +204,11 @@ class App(customtkinter.CTk):
         self.docuLabel.place(x=5, y=5)  # Position documentation label
 
         # Create the Install Selected button above the frames
-        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color="#00FFFF")  # Aqua color
+        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
         self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
     
         # Create the Update All Apps button next to Install Selected
-        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color="#00FFFF")  # Aqua color
+        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color=sysColor, hover_color=sysColorAlt)
         self.updateButton.place(x=165, y=10)  # Position next to the Install Selected button
 
         return frame  # Return the app installer frame
@@ -221,7 +236,7 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(browsers):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
@@ -255,7 +270,7 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(chatApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
@@ -272,7 +287,7 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(devApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
@@ -289,7 +304,7 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(docuApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
@@ -310,7 +325,7 @@ class App(customtkinter.CTk):
             terminalWindow.title("Terminal Output")
             terminalWindow.geometry("600x400")
 
-            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background="#323232", foreground="#ffffff")
+            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background=colorBg, foreground=colorBg)
             terminalOutput.pack(expand=True, fill='both')
 
             process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)

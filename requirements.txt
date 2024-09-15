@@ -3,3 +3,5 @@ tk
 pyinstaller
 Pillow
 CTKToolTip
+darkdetect
+get-system-color; sys_platform == 'win32'
