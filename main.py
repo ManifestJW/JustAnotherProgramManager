@@ -318,7 +318,7 @@ class App(customtkinter.CTk):
             ("Git", lambda: webbrowser.open('https://git-scm.com', new=2), ["win32", "macos", "arch"]),
             ("Github Desktop", lambda: webbrowser.open('https://github.com/apps/desktop', new=2), ["win32", "macos", "arch"]),
             ("Golang", lambda: webbrowser.open('https://go.dev/', new=2), ["win32", "macos", "arch"]),
-            ("IntelliJ IDEA", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2), ["win32", "macos", "arch"]),
+            ("IntelliJ IDEA Community", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2), ["win32", "macos", "arch"]),
             ("Java Temurin 8", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
             ("Java Temurin 11", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
             ("Java Temurin 17", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
@@ -327,7 +327,7 @@ class App(customtkinter.CTk):
             ("Node.js 20", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
             ("Node.js 22", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
             ("Notepad++", lambda: webbrowser.open('https://notepad-plus-plus.org/', new=2), ["win32"]),
-            ("PyCharm", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2), ["win32", "macos", "arch"]),
+            ("PyCharm Community", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2), ["win32", "macos", "arch"]),
             ("Python 2.7", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
             ("Python 3.12", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
             ("Pulsar", lambda: webbrowser.open('https://pulsar-edit.dev/', new=2), ["win32", "macos", "arch"]),
@@ -337,6 +337,7 @@ class App(customtkinter.CTk):
             ("Visual Studio Code", lambda: webbrowser.open('https://code.visualstudio.com/', new=2), ["win32", "macos", "arch"]),
             ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2), ["win32"]),
             ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2), ["win32", "macos", "arch"]),
+            ("Fleet Public Preview", lambda: webbrowser.open('https://www.jetbrains.com/help/fleet/', new=2), ["win32", "macos", "arch"]),
         ]
         
         # Filter based on the current platform
@@ -553,7 +554,7 @@ class App(customtkinter.CTk):
         appendCommand(self.visualstudiocodeToggle, "Microsoft.VisualStudioCode ", "visualstudiocode ", "visual-studio-code-bin ")
         appendCommand(self.visualstudiocommunityToggle, "Microsoft.VisualStudio.2022.Community ", "", "")
         appendCommand(self.vscodiumToggle, "VSCodium.VSCodium ", "vscodium ", "vscodium-bin ")
-        appendCommand(self.xcodeToggle, "", "", "")
+        appendCommand(self.fleetToggle, "JetBrains.FleetLauncher.Preview ", "fleet ", " jetbrains-fleet ")
 
         return commands
 
