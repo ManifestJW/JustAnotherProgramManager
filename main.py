@@ -512,7 +512,7 @@ class App(customtkinter.CTk):
             if platform.system().lower() == "darwin":
                 command = "brew upgrade --display-times "
             elif platform.system().lower() == "windows":
-                command = "winget upgrade --all"
+                command = "winget upgrade --all & choco update all"
             else:
                 command = "yay -Syyuu --noconfirm "
 
