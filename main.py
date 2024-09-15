@@ -74,15 +74,13 @@ class App(customtkinter.CTk):
         if self.currentGameFrame:
             self.currentGameFrame.destroy()
 
-    def createGameFrame(self, gameName):
+    def createGameFrame(self, appType):
         # Create a new game frame based on the selected gameName
         self.resetGameFrames()
 
-        if gameName == "App Installers":
+        if appType == "App Installers":
             self.currentGameFrame = self.createAppInstaller()
-        elif gameName == "Utilities":
-            self.currentGameFrame = self.createUtilities()
-        elif gameName == "Credits":
+        elif appType == "Credits":
             self.currentGameFrame = self.createCredits()
         
         self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
@@ -113,45 +111,47 @@ class App(customtkinter.CTk):
     
         borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
         borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-
-        # Create a canvas for the browser frame with a scrollbar
         browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
         browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
-
-        # Create a vertical scrollbar for the browser frame
         browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         browserScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-
         browserCanvas.configure(yscrollcommand=browserScrollbar.set)
         browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-
-        # Create a window in the canvas to hold the browser frame
         browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")
-    
-        # Create buttons and checkboxes for browsers
         self.createBrowserWidgets(browserFrame)
     
-        # Create a canvas for the chat frame with a scrollbar
-        # Create a frame to act as a border for the chat canvas
         borderFrame = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
         borderFrame.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        
-        # Create a canvas for the chat frame with a scrollbar
         chatCanvas = customtkinter.CTkCanvas(borderFrame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
         chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
-        
-        # Create a vertical scrollbar for the chat frame
         chatScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         chatScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        
         chatCanvas.configure(yscrollcommand=chatScrollbar.set)
         chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        
-        # Create a window in the canvas to hold the chat frame
         chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")
-
-        # Create buttons and checkboxes for chat apps
         self.createChatWidgets(chatFrame)
+
+        borderFrameDev = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        borderFrameDev.grid(row=1, column=6, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
+        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+        devScrollbar = customtkinter.CTkScrollbar(borderFrameDev, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        devScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
+        devCanvas.configure(yscrollcommand=devScrollbar.set)
+        devCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
+        devCanvas.create_window((0, 0), window=devFrame, anchor="nw")
+        self.createDevWidgets(devFrame)
+
+        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        borderFrameDocu.grid(row=1, column=9, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
+        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
+        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        docuScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
+        docuCanvas.configure(yscrollcommand=docuScrollbar.set)
+        docuCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
+        docuCanvas.create_window((0, 0), window=docuFrame, anchor="nw")
+        self.createDocuWidgets(docuFrame)
     
         # Update the scroll region of the canvas
         def update_scroll_region(event):
@@ -165,9 +165,15 @@ class App(customtkinter.CTk):
         self.browserLabel = customtkinter.CTkLabel(browserFrame, text="Internet Browsers", font=("Arial", 16, "bold"))
         self.browserLabel.place(x=5, y=5)  # Use place to position the label
     
-        self.chatLabel = customtkinter.CTkLabel(chatFrame, text="Chat Apps", font=("Arial", 16, "bold"))
+        self.chatLabel = customtkinter.CTkLabel(chatFrame, text="Communication", font=("Arial", 16, "bold"))
         self.chatLabel.place(x=5, y=5)  # Use place to position the label
     
+        self.devLabel = customtkinter.CTkLabel(devFrame, text="Development", font=("Arial", 16, "bold"))
+        self.devLabel.place(x=5, y=5)  # Use place to position the label
+
+        self.docuLabel = customtkinter.CTkLabel(docuFrame, text="Documents", font=("Arial", 16, "bold"))
+        self.docuLabel.place(x=5, y=5)  # Use place to position the label
+
         # Move the parseButton to be above the frames
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected")
         self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")
@@ -234,6 +240,40 @@ class App(customtkinter.CTk):
         ]
 
         for i, (name, command) in enumerate(chatApps):
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+            
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+            
+            goodName = name.replace(" ", "").lower()
+            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+    def createDevWidgets(self, frame):
+        # Define chat application options with invalid links
+        devApps = [
+            ("", lambda: None),  # Placeholder that does nothing
+            ("Git", lambda: webbrowser.open('https://git-scm.com', new=2)),
+        ]
+
+        for i, (name, command) in enumerate(devApps):
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+            
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+            
+            goodName = name.replace(" ", "").lower()
+            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+    def createDocuWidgets(self, frame):
+        # Define chat application options with invalid links
+        docuApps = [
+            ("", lambda: None),  # Placeholder that does nothing
+            ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2)),
+        ]
+
+        for i, (name, command) in enumerate(docuApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color="aqua", command=command, fg_color="#3a3a3a", hover_color="#3a3a3a", width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
@@ -374,7 +414,9 @@ class App(customtkinter.CTk):
         appendCommand(self.slackToggle, "SlackTechnologies.Slack ", "slack ", "slack-desktop ")
         appendCommand(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ", "teams ")
         appendCommand(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ", "telegram-desktop ")
-        appendCommand(self.thunderbirdToggle, "Mozilla.Thunderbird ", "thunderbird ", "thunderbird ")
+        appendCommand(self.thunderbirdToggle, "Mozilla..ThThunderbird ", "thunderbird ", "thunderbird ")
+        appendCommand(self.adobereaderdcToggle, "Adobe.Acrobat.Reader.64-bit ", "adobe-acrobat-reader ", "")
+        appendCommand(self.gitToggle, "Git.Git ", "git ", "git ")
 
         return commands
 
