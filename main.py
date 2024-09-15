@@ -357,6 +357,7 @@ class App(customtkinter.CTk):
             threading.Thread(target=wait_and_install_chocolatey).start()  # Start waiting for GSudo installation
 
     def wait_for_installation(self, check_function, install_function):
+        distro = self.detectDistro()  # Define distro here
         while not check_function():  # Wait until the installation is complete
             time.sleep(1)  # Sleep to prevent busy waiting
         install_function()  # Call the installation function once the check passes
