@@ -343,6 +343,7 @@ class App(customtkinter.CTk):
 
     def buildCommands(self, distro):
         commands = ""
+        commands2 = ""
         def appendCommand(toggle, command):
             nonlocal commands
             if toggle.get() == 1:
@@ -350,12 +351,21 @@ class App(customtkinter.CTk):
                     commands += command
                 except:
                     pass # is not on this OS
+    
+        def appendCommandChoco(toggle, command):
+            nonlocal commands
+            if toggle.get() == 1:
+                try:
+                    commands2 += command
+                except:
+                    pass # is not on this OS
+
         # Example commands for brew and winget
         if distro == "macos":
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
         elif distro == "windows":
-            commands += "winget install --accept-package-agreements --accept-source-agreements "  # Initial command for winget on Windows
-            commands += "& choco install -y "
+            commands += "winget install --accept-package-agreements --accept-source-agreements "
+            commands2 += "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo & sudo choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
@@ -373,7 +383,7 @@ class App(customtkinter.CTk):
                         pass
                     try:
                         if self.commands_data[category][app]['windows-choco'] != "":  # Add support for Chocolatey
-                            appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                            appendCommandChoco(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
                                           self.commands_data[category][app]['windows-choco'])
                     except:
                         pass
