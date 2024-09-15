@@ -212,11 +212,16 @@ class App(customtkinter.CTk):
                 if self.commands_data[section_name][app]['macos-brew'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
             elif self.detectDistro() == "windows":
-                if self.commands_data[section_name][app]['windows-winget'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
-                if self.commands_data[section_name][app]['windows-choco'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
-
+                try:
+                    if self.commands_data[section_name][app]['windows-winget'] != "":
+                        browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
+                except:
+                    pass
+                try:
+                    if self.commands_data[section_name][app]['windows-choco'] != "":
+                        browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
+                except:
+                    pass
             elif self.detectDistro() == "arch":
                 if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
