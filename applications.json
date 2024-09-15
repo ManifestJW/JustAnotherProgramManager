@@ -97,7 +97,7 @@
             "url": "https://zen-browser.app"
         }
     },
-    "communications": {
+    "communication": {
         "Beeper": {
             "windows-winget": "Beeper.Beeper ",
             "macos-brew": "beeper ",

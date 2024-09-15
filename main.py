@@ -151,90 +151,13 @@ class App(customtkinter.CTk):
         # Create the app installer frame with various sections
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
         frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Position the frame with padding
-
-        # Create a border frame for the browser section
-        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
-        borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
         
-        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg=colorBg, width=210, height=690)  # Dark background for the canvas
-        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for browser widgets
-        browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
-        browserScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        browserCanvas.configure(yscrollcommand=browserScrollbar.set)  # Link scrollbar to canvas
-        browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")  # Create window in canvas for browser frame
-        self.createBrowserWidgets(browserFrame)  # Create browser widgets in the frame
-    
-        # Create a border frame for the chat section
-        borderFrameChat = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
-        borderFrameChat.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        chatCanvas = customtkinter.CTkCanvas(borderFrameChat, bg=colorBg, width=210, height=690)  # Dark background for the canvas
-        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for chat widgets
-        chatScrollbar = customtkinter.CTkScrollbar(borderFrameChat, orientation="vertical", command=chatCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
-        chatScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        chatCanvas.configure(yscrollcommand=chatScrollbar.set)  # Link scrollbar to canvas
-        chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")  # Create window in canvas for chat frame
-        self.createChatWidgets(chatFrame)  # Create chat widgets in the frame
-
-        # Create a border frame for the development section
-        borderFrameDev = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
-        borderFrameDev.grid(row=1, column=6, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg=colorBg, width=210, height=690)  # Dark background for the canvas
-        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for development widgets
-        devScrollbar = customtkinter.CTkScrollbar(borderFrameDev, orientation="vertical", command=devCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
-        devScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        devCanvas.configure(yscrollcommand=devScrollbar.set)  # Link scrollbar to canvas
-        devCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        devCanvas.create_window((0, 0), window=devFrame, anchor="nw")  # Create window in canvas for development frame
-        self.createDevWidgets(devFrame)  # Create development widgets in the frame
-
-        # Create a border frame for the documentation section
-        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)  # Aqua border color
-        borderFrameDocu.grid(row=1, column=9, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg=colorBg, width=210, height=690)  # Dark background for the canvas
-        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for documentation widgets
-        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=docuCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
-        docuScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        docuCanvas.configure(yscrollcommand=docuScrollbar.set)  # Link scrollbar to canvas
-        docuCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        docuCanvas.create_window((0, 0), window=docuFrame, anchor="nw")  # Create window in canvas for documentation frame
-        self.createDocuWidgets(docuFrame)  # Create documentation widgets in the frame
-    
-        # Update the scroll region of the canvas when the frame is resized
-        def update_scroll_region(event):
-            browserCanvas.configure(scrollregion=browserCanvas.bbox("all"))  # Update scroll region for browser canvas
-            chatCanvas.configure(scrollregion=chatCanvas.bbox("all"))  # Update scroll region for chat canvas
-            devCanvas.configure(scrollregion=devCanvas.bbox("all"))  # Update scroll region for chat canvas
-            docuCanvas.configure(scrollregion=docuCanvas.bbox("all"))  # Update scroll region for chat canvas
-
-        browserFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for browser frame
-        chatFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
-        devFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
-        docuFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
-
-        mousescroll.bind_mouse_wheel(browserCanvas)
-        mousescroll.bind_mouse_wheel(chatCanvas)
-        mousescroll.bind_mouse_wheel(devCanvas)
-        mousescroll.bind_mouse_wheel(docuCanvas)
-
-        # Create category labels for each section with right padding
-        self.browserLabel = customtkinter.CTkLabel(browserFrame, text="Internet Browsers", font=("Arial", 16, "bold"))
-        self.browserLabel.place(x=5, y=5)  # Position browser label
-    
-        self.chatLabel = customtkinter.CTkLabel(chatFrame, text="Communication", font=("Arial", 16, "bold"))
-        self.chatLabel.place(x=5, y=5)  # Position chat label
-    
-        self.devLabel = customtkinter.CTkLabel(devFrame, text="Development", font=("Arial", 16, "bold"))
-        self.devLabel.place(x=5, y=5)  # Position development label
-
-        self.docuLabel = customtkinter.CTkLabel(docuFrame, text="Documents", font=("Arial", 16, "bold"))
-        self.docuLabel.place(x=5, y=5)  # Position documentation label
+        for index, key in enumerate(self.commands_data.keys()):  # Loop through each key with an index
+            self.createSection(frame, key, 1, index)  # Increment column index by 1 for each section
 
         # Create the Install Selected button above the frames
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
         self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
-        
         self.update_install_button_state(self.parseButton)  # Call the method to initialize button state
 
         # Create the Update All Apps button next to Install Selected
@@ -243,21 +166,53 @@ class App(customtkinter.CTk):
 
         return frame  # Return the app installer frame
 
+    def createSection(self, frame, section_name, row, column):
+        # Create a border frame for the section
+        borderFrame = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)
+        borderFrame.grid(row=row, column=column, padx=(5, 0), pady=(5, 5), sticky="nsew")
+    
+        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690)
+        sectionFrame = customtkinter.CTkFrame(sectionCanvas, fg_color=("#ffffff", "#3a3a3a"))
+        sectionScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=sectionCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)
+        sectionScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")
+        sectionCanvas.configure(yscrollcommand=sectionScrollbar.set)
+        sectionCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")
+        sectionCanvas.create_window((0, 0), window=sectionFrame, anchor="nw")
 
-    def createWidgets(self, frame, category):
+
+        # Update the scroll region of the canvas when the frame is resized
+        def update_scroll_region(event):
+            sectionCanvas.configure(scrollregion=sectionFrame.bbox("all"))  # Update scroll region for each canvas
+        
+        # Bind resize events for each section frame
+        sectionFrame.bind("<Configure>", update_scroll_region)
+    
+        mousescroll.bind_mouse_wheel(sectionCanvas)
+
+        for key in self.commands_data.keys():  # Loop through each key
+            self.createWidgets(sectionFrame, section_name)
+            self.createCategoryLabel(sectionFrame, section_name.capitalize())
+
+        return sectionCanvas, sectionFrame  # Return the canvas and frame for further use if needed
+
+    def createCategoryLabel(self, frame, text):
+        label = customtkinter.CTkLabel(frame, text=text, font=("Arial", 16, "bold"))
+        label.place(x=5, y=5)  # Position label
+        return label
+
+    def createWidgets(self, frame, section_name):
         # Define the command list for the specific category
-        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][category]['url'], new=2), ["win32", "macos", "arch"])]
-
-        for app in self.commands_data[category]:
+        browsers = [("", lambda: None, ["win32", "macos", "arch"])]
+        for app in self.commands_data[section_name]:
             if self.detectDistro() == "macos":
-                if self.commands_data[category][app]['macos-brew'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "macos"))
+                if self.commands_data[section_name][app]['macos-brew'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
             elif self.detectDistro() == "win32":
-                if self.commands_data[category][app]['windows-winget'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "win32"))
+                if self.commands_data[section_name][app]['windows-winget'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "win32"))
             elif self.detectDistro() == "arch":
-                if self.commands_data[category][app]['archlinux-pacman-aur'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "arch"))
+                if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
 
         # Filter based on the current platform
         available_browsers = [
@@ -300,19 +255,6 @@ class App(customtkinter.CTk):
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
-
-    # Usage examples for creating widgets
-    def createBrowserWidgets(self, frame):
-        self.createWidgets(frame, 'browsers')
-
-    def createChatWidgets(self, frame):
-        self.createWidgets(frame, 'communications')
-
-    def createDevWidgets(self, frame):
-        self.createWidgets(frame, 'development')
-
-    def createDocuWidgets(self, frame):
-        self.createWidgets(frame, 'documents')
 
     def executeCommands(self, commands, title="Terminal Output"):
         if not commands:
