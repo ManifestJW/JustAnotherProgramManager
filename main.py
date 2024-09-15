@@ -23,7 +23,10 @@ import json
 import resourceFetch
 from CTkToolTip import *
 
-customtkinter.set_appearance_mode(darkdetect.theme())
+if platform.system().lower() == "linux":
+    customtkinter.set_appearance_mode("Dark")
+else:
+    customtkinter.set_appearance_mode(darkdetect.theme())
 
 # Load commands from JSON file
 def load_commands():
@@ -32,8 +35,11 @@ def load_commands():
 
 class App(customtkinter.CTk):
     def __init__(self):
-        super().__init__()
-        self.commands_data = load_commands()
+        super().__init__()        
+        self.after(1, lambda: threading.Thread(target=self.initialize_app).start())  # Delay before loading app in a separate thread
+       
+    def initialize_app(self):
+        self.commands_data = load_commands()  # Load commands immediately
 
         # Colorlib
         global sysColor
@@ -53,7 +59,6 @@ class App(customtkinter.CTk):
         # Configure window properties
         self.title("Just Another Program Manager")  # Set the window title
         self.geometry(f"{1330}x{780}")  # Set the window size
-
         # Configure grid layout for the main application window
         self.grid_columnconfigure(1, weight=1)  # Allow column 1 to expand
         self.grid_columnconfigure((2, 3), weight=0)  # Fixed width for columns 2 and 3
@@ -171,7 +176,7 @@ class App(customtkinter.CTk):
         borderFrame = customtkinter.CTkFrame(frame, fg_color=sysColor, width=240, height=690)
         borderFrame.grid(row=row, column=column, padx=(5, 0), pady=(5, 5), sticky="nsew")
     
-        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690, bd=0, highlightthickness=0, relief='ridge')
+        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690)
         sectionFrame = customtkinter.CTkFrame(sectionCanvas, fg_color=("#ffffff", "#3a3a3a"))
         sectionScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=sectionCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)
         sectionScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")
