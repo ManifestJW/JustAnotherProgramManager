@@ -320,6 +320,8 @@ class App(customtkinter.CTk):
 
     def parseDownloads(self):       
         # Disable the button before executing commands
+        chocoFirstInst = False  # Define as True if Chocolatey just finished installing
+
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
 
@@ -362,7 +364,18 @@ class App(customtkinter.CTk):
         # Check if all conditions are satisfied before executing commands
         if distro == "windows":
             if not (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
+                if chocoFirstInst == True:
+                    distro = self.detectDistro()
+                    commands = self.buildCommands(distro)  # Build the commands based on selected applications
+
+                    if distro == "arch":
+                        commands = f"pkexec {commands}"
+
+                    # Execute commands once all conditions are satisfied
+                    self.executeCommands(commands, title="Download Output")
+                    return
                 time.sleep(1)
+                
             else:
                 distro = self.detectDistro()
                 commands = self.buildCommands(distro)  # Build the commands based on selected applications
