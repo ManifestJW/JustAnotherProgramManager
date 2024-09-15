@@ -268,7 +268,7 @@ class App(customtkinter.CTk):
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-    def executeCommands(self, commands, title="Terminal Output"):
+    def executeCommands(self, commands, title="Terminal Output", autoClose=False):
         if not commands:
             return  # Exit if there are no commands to execute
 
@@ -301,7 +301,8 @@ class App(customtkinter.CTk):
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
-                terminalWindow.destroy()  # Close the terminal window
+                if autoClose == False:
+                    terminalWindow.destroy()  # Close the terminal window
                 msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.",
                   icon="check")
 
@@ -318,12 +319,25 @@ class App(customtkinter.CTk):
         # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
+        
+        if not self.isWingetInstalled() and distro == "windows":
+            winget_url = "https://aka.ms/getwinget"
+            combined_command = f"powershell -Command \"Invoke-WebRequest -Uri '{winget_url}' -OutFile 'winget.appx'; Add-AppxPackage -Path 'winget.appx'\""
+            self.executeCommands(combined_command, title="Installing WinGet...", autoClose=True)
+
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         if distro == "arch":
             commands = f"pkexec {commands}"
 
         self.executeCommands(commands, title="Download Output")
-
+    
+    def isWingetInstalled(self):
+        try:
+            subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return True
+        except:
+            return False
+        
     def detectDistro(self):
         if platform.system().lower() == "linux":
             with open('/etc/os-release') as f:
@@ -353,7 +367,7 @@ class App(customtkinter.CTk):
                     pass # is not on this OS
     
         def appendCommandChoco(toggle, command):
-            nonlocal commands
+            nonlocal commands2
             if toggle.get() == 1:
                 try:
                     commands2 += command
@@ -365,7 +379,7 @@ class App(customtkinter.CTk):
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "
-            commands2 += "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo & sudo choco install -y "
+            commands2 += "sudo choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
@@ -398,7 +412,7 @@ class App(customtkinter.CTk):
                 else:
                     pass
             
-        return commands
+        return commands + " & " + commands2
 
     def updateAllApps(self):
         msg = CTkMessagebox.CTkMessagebox(title="Alert!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
