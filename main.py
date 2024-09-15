@@ -358,6 +358,7 @@ class App(customtkinter.CTk):
 
         if not self.isGsudoInstalled() and distro == "windows":
             threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, check_and_install_chocolatey)).start()
+        
         # Check if all conditions are satisfied before executing commands
         if (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled() and distro == "windows") or distro != "windows":
             distro = self.detectDistro()
@@ -365,6 +366,7 @@ class App(customtkinter.CTk):
             
             if distro == "arch":
                 commands = f"pkexec {commands}"
+            
             # Execute commands once all conditions are satisfied
             self.executeCommands(commands, title="Download Output")  
 
