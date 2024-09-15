@@ -36,9 +36,6 @@ def load_commands():
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()        
-        self.after(1, lambda: threading.Thread(target=self.initialize_app).start())  # Delay before loading app in a separate thread
-       
-    def initialize_app(self):
         self.commands_data = load_commands()  # Load commands immediately
 
         # Colorlib
@@ -50,8 +47,10 @@ class App(customtkinter.CTk):
         global colorBg
         if darkdetect.theme() == "Dark":
             colorBg = "#3a3a3a"
+            colorFg = "#ffffff"
         else:
-            colorBg = "#ffffff"
+            colorBg = "#3a3a3a"
+            colorFg = "#ffffff"
 
         global toggles
         toggles = []
@@ -176,7 +175,7 @@ class App(customtkinter.CTk):
         borderFrame = customtkinter.CTkFrame(frame, fg_color=sysColor, width=240, height=690)
         borderFrame.grid(row=row, column=column, padx=(5, 0), pady=(5, 5), sticky="nsew")
     
-        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690)
+        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690, bd=0, highlightthickness=0, relief='ridge')
         sectionFrame = customtkinter.CTkFrame(sectionCanvas, fg_color=("#ffffff", "#3a3a3a"))
         sectionScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=sectionCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)
         sectionScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")
@@ -266,11 +265,11 @@ class App(customtkinter.CTk):
             return  # Exit if there are no commands to execute
 
         # Create a new window for terminal output
-        terminalWindow = tk.Toplevel(self)
+        terminalWindow = customtkinter.CTkToplevel(self)
         terminalWindow.title(title)
         terminalWindow.geometry("600x400")
 
-        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
+        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, bg=colorBg, fg="#ffffff")  # Set dark background and light text
         terminalOutput.pack(expand=True, fill='both')
 
         # Run the command in a separate thread
@@ -312,6 +311,9 @@ class App(customtkinter.CTk):
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
+        if distro == "arch":
+            commands = f"pkexec {commands}"
+
         self.executeCommands(commands, title="Download Output")
 
     def detectDistro(self):
@@ -380,13 +382,15 @@ class App(customtkinter.CTk):
 
             # Command to run
             if platform.system().lower() == "darwin":
-                command = "brew upgrade"
+                command = "brew upgrade --display-times "
             elif platform.system().lower() == "windows":
                 command = "winget upgrade --all"
             else:
-                command = "yay -Syyuu"
+                command = "yay -Syyuu --noconfirm "
 
-            self.executeCommands(command)
+            if platform.system().lower() == "linux":
+                commands = f"pkexec {commands}"
+            self.executeCommands(command, "Update ALL Apps")
 
 if __name__ == "__main__":
     app = App()
