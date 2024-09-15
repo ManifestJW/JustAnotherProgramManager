@@ -203,6 +203,7 @@ class App(customtkinter.CTk):
             ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2)),
             ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2)),
             ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2)),
+            ("Zen", lambda: webbrowser.open('https://zen-browser.app/', new=2)),
         ]
 
         for i, (name, command) in enumerate(browsers):
@@ -395,8 +396,9 @@ class App(customtkinter.CTk):
         appendCommand(self.orionToggle, "", "orion ", "")
         appendCommand(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
         appendCommand(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
-        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
-        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
+        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin ")
+        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi ")
+        appendCommand(self.zenToggle, "Zen-Team.Zen-Browser ", "zen-browser ", "zen-browser-bin ")
         appendCommand(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
         appendCommand(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
         appendCommand(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
