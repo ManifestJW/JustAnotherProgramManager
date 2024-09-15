@@ -322,18 +322,18 @@ class App(customtkinter.CTk):
         distro = self.detectDistro()  # Detect the operating system distribution
         
         # Check if Winget is installed, if not, install it first
-        if not self.isWingetInstalled() and distro == "windows":
+        if (not self.isWingetInstalled() and distro == "windows"):
             winget_url = "https://aka.ms/getwinget"
             combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
             self.executeCommands(combined_command, title="Installing WinGet...")  # Install Winget
 
         # After Winget is installed, check for GSudo installation
-        if not self.isGsudoInstalled() and distro == "windows":
+        if (not self.isGsudoInstalled() and distro == "windows"):
             gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
             self.executeCommands(gsudo_command, title="Installing GSudo...")  # Install GSudo
 
         # Finally, install Chocolatey if not already installed
-        if not self.isChocoInstalled() and distro == "windows":
+        if (not self.isChocoInstalled() and distro == "windows"):
             choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
             self.executeCommands(choco_command, title="Installing Chocolatey...")  # Install Chocolatey
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
