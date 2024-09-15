@@ -360,7 +360,9 @@ class App(customtkinter.CTk):
             threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, check_and_install_chocolatey)).start()
         
         # Check if all conditions are satisfied before executing commands
-        if (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled() and distro == "windows") or distro != "windows":
+        if not (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled() and distro == "windows") and distro == "windows":
+            time.sleep(1)
+        else:
             distro = self.detectDistro()
             commands = self.buildCommands(distro)  # Build the commands based on selected applications
             
@@ -369,7 +371,7 @@ class App(customtkinter.CTk):
             
             # Execute commands once all conditions are satisfied
             self.executeCommands(commands, title="Download Output")  
-
+    
     def wait_for_installation(self, check_function, install_function):
         # Wait until the check_function returns True, then run install_function
         while not check_function():
