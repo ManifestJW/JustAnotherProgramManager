@@ -282,8 +282,10 @@ class App(customtkinter.CTk):
 
         # Run the command in a separate thread
         def run_command():
-            process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-
+            if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy"]):  # Check if it's a PowerShell command
+                process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+            else:
+                process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
             # Unified function to read output and update terminal
             def update_terminal_output():
                 for line in iter(process.stdout.readline, ''):
