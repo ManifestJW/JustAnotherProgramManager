@@ -321,7 +321,7 @@ class App(customtkinter.CTk):
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
         
-         Install Winget in a separate thread only if not already installed
+        # Install Winget in a separate thread only if not already installed
         if not self.isWingetInstalled() and distro == "windows":
             def install_winget():
                 combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
