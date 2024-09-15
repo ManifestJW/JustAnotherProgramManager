@@ -356,8 +356,8 @@ class App(customtkinter.CTk):
         elif self.isWingetInstalled() and not self.isGsudoInstalled():  # Check if GSudo is not installed
             threading.Thread(target=install_gsudo).start()  # Start GSudo installation
         elif not self.isChocoInstalled():  # Check if Chocolatey is not installed
-            threading.Thread(target=install_choco).start()  # Start Chocolatey installation
-            
+            threading.Thread(target=install_chocolatey).start()  # Start Chocolatey installation
+
         # Start the installation of Chocolatey after GSudo is installed
         def check_and_install_chocolatey():
             if self.isGsudoInstalled() and not self.isChocoInstalled() and distro == "windows":
