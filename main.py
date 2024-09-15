@@ -360,7 +360,7 @@ class App(customtkinter.CTk):
         while not check_function():
             time.sleep(1)  # Wait for a second before checking again
         install_function()  # Run the installation function
-        
+        distro = detectDistro()
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         
         if distro == "arch":
