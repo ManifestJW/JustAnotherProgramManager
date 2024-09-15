@@ -389,7 +389,7 @@ class App(customtkinter.CTk):
                 command = "yay -Syyuu --noconfirm "
 
             if platform.system().lower() == "linux":
-                commands = f"pkexec {commands}"
+                command = f"pkexec {command}"
             self.executeCommands(command, "Update ALL Apps")
 
 if __name__ == "__main__":
