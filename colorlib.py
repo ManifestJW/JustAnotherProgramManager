@@ -10,6 +10,11 @@ import subprocess
 if sys.platform == "win32":
     from get_system_color import *
 
+
+def darken_color(r,g,b, factor):
+    return [r*factor, g*factor, b*factor]
+
+
 def get_system_colors():
     if sys.platform == "darwin":
         try:
