@@ -275,7 +275,7 @@ class App(customtkinter.CTk):
             # Unified function to read output and update terminal
             def update_terminal_output():
                 for line in iter(process.stdout.readline, ''):
-                    terminalOutput.configure(state='normal')
+                    terminalOutput.configure(state='normal', font=(10))
                     terminalOutput.insert(tk.END, line)
                     terminalOutput.yview(tk.END)  # Scroll to the bottom
                     terminalOutput.configure(state='disabled')
@@ -290,6 +290,9 @@ class App(customtkinter.CTk):
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
                 terminalWindow.destroy()  # Close the terminal window
+                msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.",
+                  icon="check")
+
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
@@ -363,7 +366,7 @@ class App(customtkinter.CTk):
         return commands
 
     def updateAllApps(self):
-        msg = CTkMessagebox.CTkMessagebox(title="Warning Message!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
+        msg = CTkMessagebox.CTkMessagebox(title="Alert!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
                   icon="warning", option_1="Cancel", option_2="OK")
         if msg.get()=="OK":
             
