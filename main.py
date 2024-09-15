@@ -16,6 +16,7 @@ import version
 import webbrowser
 import platform
 import credits
+import time
 import darkdetect
 import mousescroll
 import CTkMessagebox
@@ -268,7 +269,7 @@ class App(customtkinter.CTk):
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-    def executeCommands(self, commands, title="Terminal Output", autoClose=False):
+    def executeCommands(self, commands, title="Terminal Output"):
         if not commands:
             return  # Exit if there are no commands to execute
 
@@ -303,11 +304,11 @@ class App(customtkinter.CTk):
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
-                if autoClose == False:
-                    terminalWindow.destroy()  # Close the terminal window
                 msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.",
                   icon="check")
-
+                msg.show()
+                time.sleep(3)
+                self.terminalWindow.destroy()
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
@@ -324,15 +325,15 @@ class App(customtkinter.CTk):
         
         if not self.isWingetInstalled() and distro == "windows":
             winget_url = "https://aka.ms/getwinget"
-            combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression | Out-Null"
-            self.executeCommands(combined_command, title="Installing WinGet...", autoClose=True)
+            combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
+            self.executeCommands(combined_command, title="Installing WinGet...")
 
         if not self.isChocoInstalled() and distro == "windows":
             if not self.isGsudoInstalled() and distro == "windows":
                 gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
-                self.executeCommands(gsudo_command, title="Installing GSudo...", autoClose=True)
+                self.executeCommands(gsudo_command, title="Installing GSudo...")
             choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-            self.executeCommands(choco_command, title="Installing Chocolatey...", autoClose=True)
+            self.executeCommands(choco_command, title="Installing Chocolatey...")
 
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         if distro == "arch":
