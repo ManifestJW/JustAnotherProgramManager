@@ -357,12 +357,6 @@ class App(customtkinter.CTk):
         if self.isGsudoInstalled() and not self.isChocoInstalled() and distro == "windows":
             threading.Thread(target=lambda: self.wait_for_installation(self.isChocoInstalled, install_chocolatey)).start()
 
-    def wait_for_installation(self, check_function, install_function):
-        # Wait until the check_function returns True, then run install_function
-        while not check_function():
-            time.sleep(1)  # Wait for a second before checking again
-        install_function()  # Run the installation function
-        
         # Check if all conditions are satisfied before executing commands
         if self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled():
             distro = self.detectDistro()
@@ -371,7 +365,13 @@ class App(customtkinter.CTk):
             if distro == "arch":
                 commands = f"pkexec {commands}"
             # Execute commands once all conditions are satisfied
-            self.executeCommands(commands, title="Download Output")
+            self.executeCommands(commands, title="Download Output")  
+               
+    def wait_for_installation(self, check_function, install_function):
+        # Wait until the check_function returns True, then run install_function
+        while not check_function():
+            time.sleep(1)  # Wait for a second before checking again
+        install_function()  # Run the installation function
         
     def isWingetInstalled(self):
         try:
