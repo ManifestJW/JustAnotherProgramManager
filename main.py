@@ -341,74 +341,74 @@ class App(customtkinter.CTk):
             goodName = name.replace(" ", "").lower()
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-    def parseDownloads(self):
-        # Disable the button before executing commands
-        self.parseButton.configure(state=tk.DISABLED)
-        distro = self.detectDistro()  # Detect the operating system distribution
-        commands = self.buildCommands(distro)  # Build the commands based on selected applications
+    def parseDownloads(self):       
+       # Disable the button before executing commands
+       self.parseButton.configure(state=tk.DISABLED)
+       distro = self.detectDistro()  # Detect the operating system distribution
+       commands = self.buildCommands(distro)  # Build the commands based on selected applications
 
-        if commands:
-            # Create a new window for terminal output
-            terminalWindow = tk.Toplevel(self)
-            terminalWindow.title("Terminal Output")
-            terminalWindow.geometry("600x400")
+       if commands:
+           # Create a new window for terminal output
+           terminalWindow = tk.Toplevel(self)
+           terminalWindow.title("Terminal Output")
+           terminalWindow.geometry("600x400")
 
-            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background=colorBg, foreground=colorBg)
-            terminalOutput.pack(expand=True, fill='both')
+           terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
+           terminalOutput.pack(expand=True, fill='both')
 
-            process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+           process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
 
-            # Function to read the output asynchronously
-            def readOutput(file, queue, lock):
-                while True:
-                    line = file.readline()
-                    if not line:
-                        break
-                    with lock:
-                        queue.put(line)
+           # Function to read the output asynchronously
+           def readOutput(file, queue, lock):
+               while True:
+                   line = file.readline()
+                   if not line:
+                       break
+                   with lock:
+                       queue.put(line)
 
-            # Set up queues and lock
-            stdoutQueue = queue.Queue()
-            stderrQueue = queue.Queue()
-            outputLock = threading.Lock()
+           # Set up queues and lock
+           stdoutQueue = queue.Queue()
+           stderrQueue = queue.Queue()
+           outputLock = threading.Lock()
 
-            # Create file event handlers
-            stdoutHandler = threading.Thread(target=readOutput, args=(process.stdout, stdoutQueue, outputLock))
-            stderrHandler = threading.Thread(target=readOutput, args=(process.stderr, stderrQueue, outputLock))
+           # Create file event handlers
+           stdoutHandler = threading.Thread(target=readOutput, args=(process.stdout, stdoutQueue, outputLock))
+           stderrHandler = threading.Thread(target=readOutput, args=(process.stderr, stderrQueue, outputLock))
 
-            # Start file event handlers
-            stdoutHandler.start()
-            stderrHandler.start()
+           # Start file event handlers
+           stdoutHandler.start()
+           stderrHandler.start()
 
-            def checkOutput():
-                with outputLock:
-                    while not stdoutQueue.empty():
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stdoutQueue.get())
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
+           def checkOutput():
+               with outputLock:
+                   while not stdoutQueue.empty():
+                       terminalOutput.configure(state='normal')
+                       terminalOutput.insert(tk.END, stdoutQueue.get())
+                       terminalOutput.yview(tk.END)  # Scroll to the bottom
+                       terminalOutput.configure(state='disabled')
 
-                    while not stderrQueue.empty():
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stderrQueue.get())
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
+                   while not stderrQueue.empty():
+                       terminalOutput.configure(state='normal')
+                       terminalOutput.insert(tk.END, stderrQueue.get())
+                       terminalOutput.yview(tk.END)  # Scroll to the bottom
+                       terminalOutput.configure(state='disabled')
 
-                if process.poll() is None:
-                    # The process is still running, so check again after a short delay
-                    terminalOutput.after(100, checkOutput)
-                else:
-                    # Command finished, clean up
-                    stdoutHandler.join()
-                    stderrHandler.join()
+               if process.poll() is None:
+                   # The process is still running, so check again after a short delay
+                   terminalOutput.after(100, checkOutput)
+               else:
+                   # Command finished, clean up
+                   stdoutHandler.join()
+                   stderrHandler.join()
 
-                    terminalWindow.destroy()  # Close the terminal window
+                   terminalWindow.destroy()  # Close the terminal window
 
-                    # Enable the button after command execution is complete
-                    self.parseButton.configure(state=tk.NORMAL)
+                   # Enable the button after command execution is complete
+                   self.parseButton.configure(state=tk.NORMAL)
 
-            # Start checking for output
-            checkOutput()
+           # Start checking for output
+           checkOutput()
 
     def detectDistro(self):
         if platform.system().lower() == "linux":
@@ -525,7 +525,7 @@ class App(customtkinter.CTk):
         terminalWindow.title("Terminal Output")
         terminalWindow.geometry("600x400")
 
-        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, background="#323232", foreground="#ffffff")
+        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
         terminalOutput.pack(expand=True, fill='both')
 
         # Command to run
