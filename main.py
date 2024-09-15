@@ -269,7 +269,7 @@ class App(customtkinter.CTk):
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-    def executeCommands(self, commands, title="Terminal Output"):
+    def executeCommands(self, commands, title="Terminal Output", noNag=False):
         if not commands:
             return  # Exit if there are no commands to execute
 
@@ -304,9 +304,11 @@ class App(customtkinter.CTk):
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
-                msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.",
-                  icon="check", option_1="OK")
-                if msg.get() == "OK":
+                if noNag == False:
+                    msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.", icon="check", option_1="OK")
+                    if msg.get() == "OK":
+                        terminalWindow.destroy()
+                else:
                     terminalWindow.destroy()
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
@@ -322,25 +324,25 @@ class App(customtkinter.CTk):
         distro = self.detectDistro()  # Detect the operating system distribution
 
         # Function to install a package using a command
-        def install_package(command, title):
-            self.executeCommands(command, title=title)
+        def install_package(command, title, noNag):
+            self.executeCommands(command, title=title, noNag=noNag)
 
         # Function to install Winget
         def install_winget():
             command = "Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
-            install_package(command, "Installing WinGet...")
+            install_package(command, "Installing WinGet...", noNag=True)
 
         # Function to install GSudo
         def install_gsudo():
             if not self.isGsudoInstalled() and distro == "windows":
                 command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
-                install_package(command, "Installing GSudo...")
+                install_package(command, "Installing GSudo...", noNag=True)
 
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
                 command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-                install_package(command, "Installing Chocolatey...")
+                install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
         if not self.isWingetInstalled() and distro == "windows":
