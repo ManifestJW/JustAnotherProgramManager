@@ -321,7 +321,7 @@ class App(customtkinter.CTk):
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
-            goodName = name.replace(" ", "").lower()
+            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDocuWidgets(self, frame):
@@ -503,8 +503,8 @@ class App(customtkinter.CTk):
         appendCommand(self.nodejs22Toggle, "OpenJS.NodeJS ", "node ", "nodejs ")
         appendCommand(self.notepadplusplusToggle, "Notepad++.Notepad++ ", "", "")
         appendCommand(self.pycharmToggle, "JetBrains.PyCharm.Community ", "pycharm-ce ", "pycharm-community-edition ")
-        appendCommand(self.python2Toggle, "Python.Python.2 ", "", "python2 ")
-        appendCommand(self.python3Toggle, "Python.Python.3.12 ", "python ", "python ")
+        appendCommand(self.python27Toggle, "Python.Python.2 ", "", "python2 ")
+        appendCommand(self.python312Toggle, "Python.Python.3.12 ", "python ", "python ")
         appendCommand(self.pulsarToggle, "Pulsar-Edit.Pulsar ", "pulsar ", "pulsar-bin ")
         appendCommand(self.replitdesktopToggle, "Replit.Replit ", "replit ", "")
         appendCommand(self.rustToggle, "Rustlang.Rust.MSVC ", "rust ", "rust ")
