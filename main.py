@@ -245,6 +245,8 @@ class App(customtkinter.CTk):
             ("Zen", lambda: webbrowser.open('https://zen-browser.app', new=2)),
         ]
 
+        browsers = sorted(browsers, key=lambda x: x[0].lower())  # Sort by the first element of each tuple (browser name)
+
         for i, (name, command) in enumerate(browsers):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
@@ -279,6 +281,8 @@ class App(customtkinter.CTk):
             ("Telegram", lambda: webbrowser.open('https://telegram.org/', new=2)),
             ("Thunderbird", lambda: webbrowser.open('https://www.thunderbird.net/', new=2)),
         ]
+
+        chatApps = sorted(chatApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
 
         for i, (name, command) in enumerate(chatApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
@@ -324,6 +328,8 @@ class App(customtkinter.CTk):
             ("Xcode", lambda: webbrowser.open('https://developer.apple.com/xcode/', new=2)),
         ]
 
+        devApps = sorted(devApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
+
         for i, (name, command) in enumerate(devApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
@@ -340,6 +346,8 @@ class App(customtkinter.CTk):
             ("", lambda: None),  # Placeholder that does nothing
             ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2)),
         ]
+
+        docuApps = sorted(docuApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
 
         for i, (name, command) in enumerate(docuApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
