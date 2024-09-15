@@ -239,7 +239,7 @@ class App(customtkinter.CTk):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
@@ -249,6 +249,7 @@ class App(customtkinter.CTk):
         # Define chat application options with invalid links
         chatApps = [
             ("", lambda: None),  # Placeholder that does nothing
+            ("Beeper", lambda: webbrowser.open('https://www.beeper.com', new=2)),
             ("Discord", lambda: webbrowser.open('https://discord.com', new=2)),
             ("Ferdium", lambda: webbrowser.open('https://ferdium.org', new=2)),
             ("Guilded", lambda: webbrowser.open('https://guilded.gg', new=2)),
@@ -273,7 +274,7 @@ class App(customtkinter.CTk):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
@@ -290,7 +291,7 @@ class App(customtkinter.CTk):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
@@ -307,7 +308,7 @@ class App(customtkinter.CTk):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12)
+            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
             goodName = name.replace(" ", "").lower()
@@ -448,8 +449,9 @@ class App(customtkinter.CTk):
         appendCommand(self.slackToggle, "SlackTechnologies.Slack ", "slack ", "slack-desktop ")
         appendCommand(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ", "teams ")
         appendCommand(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ", "telegram-desktop ")
-        appendCommand(self.thunderbirdToggle, "Mozilla..ThThunderbird ", "thunderbird ", "thunderbird ")
-
+        appendCommand(self.thunderbirdToggle, "Mozilla.Thunderbird ", "thunderbird ", "thunderbird ")
+        appendCommand(self.beeperToggle, "Beeper.Beeper ", "beeper ", "beeper-latest-bin ")
+        
         # Documents
         appendCommand(self.adobereaderdcToggle, "Adobe.Acrobat.Reader.64-bit ", "adobe-acrobat-reader ", "")
 
