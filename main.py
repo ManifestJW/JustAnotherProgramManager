@@ -321,15 +321,18 @@ class App(customtkinter.CTk):
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
         
-        # Install Winget in a separate thread only if not already installed
+         Install Winget in a separate thread only if not already installed
         if not self.isWingetInstalled() and distro == "windows":
             def install_winget():
                 combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
                 self.executeCommands(combined_command, title="Installing WinGet...")  # Install Winget
             threading.Thread(target=install_winget).start()  # Start the installation in a new thread
 
-            # Wait for Winget installation to complete before checking for GSudo
-            threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_gsudo)).start()
+            # Use a nested function to avoid free variable issue
+            def wait_and_install_gsudo():
+                self.wait_for_installation(self.isWingetInstalled, install_gsudo)
+
+            threading.Thread(target=wait_and_install_gsudo).start()  # Start waiting for Winget installation
 
         # Function to install GSudo
         def install_gsudo():
@@ -344,7 +347,15 @@ class App(customtkinter.CTk):
                 self.executeCommands(choco_command, title="Installing Chocolatey...")  # Install Chocolatey
 
         # Wait for GSudo installation to complete before checking for Chocolatey
-        threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, install_chocolatey)).start()
+        def wait_and_install_chocolatey():
+            self.wait_for_installation(self.isGsudoInstalled, install_chocolatey)
+
+        threading.Thread(target=wait_and_install_chocolatey).start()  # Start waiting for GSudo installation
+
+    def wait_for_installation(self, check_function, install_function):
+        while not check_function():  # Wait until the installation is complete
+            time.sleep(1)  # Sleep to prevent busy waiting
+        install_function()  # Call the installation function once the check passes
 
     def wait_for_installation(self, check_function, install_function):
         while not check_function():  # Wait until the installation is complete
