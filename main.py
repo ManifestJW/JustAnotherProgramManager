@@ -125,26 +125,26 @@ class App(customtkinter.CTk):
 
     def createCredits(self):
         # Create the credits frame with tabs for different sections
-        frame = customtkinter.CTkFrame(self, fg_color=("#ffffff", "#323232"))  # Create frame with light and dark mode colors
-        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, fg_color=("#ffffff", "#323232"), segmented_button_selected_hover_color=sysColorAlt, segmented_button_selected_color=sysColor)  # Create tab view
-        tabview.pack(padx=20, pady=20)  # Pack the tab view into the frame
-        tabview.add("Credits")  # Add Credits tab
-        tabview.add("About")  # Add About tab
-        tabview.add("License")  # Add License tab
+        frame = customtkinter.CTkFrame(self, fg_color=("#ffffff", "#323232"))
+        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, 
+                                            fg_color=("#ffffff", "#323232"), 
+                                            segmented_button_selected_hover_color=sysColorAlt, 
+                                            segmented_button_selected_color=sysColor)
+        tabview.pack(padx=20, pady=20)
+
+        # Define tabs and their content
+        tabs = {
+            "Credits": credits.get_credits_text(),
+            "About": credits.get_about_text(),
+            "License": credits.get_mit_license_text()
+        }
+
+        for tab_name, content in tabs.items():
+            tabview.add(tab_name)  # Add each tab
+            label = customtkinter.CTkLabel(tabview.tab(tab_name), width=80, height=20, text=content)
+            label.pack(padx=10, pady=10)  # Pack the label into the tab
+
         tabview.set("About")  # Set default tab to About
-
-        # Add content to the License tab
-        mitLicenseWidget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=credits.get_mit_license_text())
-        mitLicenseWidget.pack(padx=10, pady=10)  # Pack the license text
-
-        # Add content to the Credits tab
-        creditsWidget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=credits.get_credits_text())
-        creditsWidget.pack(padx=10, pady=10)  # Pack the credits text
-
-        # Add content to the About tab
-        aboutWidget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=credits.get_about_text())
-        aboutWidget.pack(padx=10, pady=10)  # Pack the about text
-
         return frame  # Return the credits frame
 
     def createAppInstaller(self):
