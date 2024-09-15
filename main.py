@@ -375,6 +375,8 @@ class App(customtkinter.CTk):
                     stdoutHandler.join()
                     stderrHandler.join()
 
+                    terminalWindow.destroy()  # Close the terminal window
+
                     # Enable the button after command execution is complete
                     self.parseButton.configure(state=tk.NORMAL)
 
@@ -523,6 +525,8 @@ class App(customtkinter.CTk):
                 else:
                     stdoutHandler.join()
                     stderrHandler.join()
+                    
+                    terminalWindow.destroy()  # Close the terminal window
                     self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start checking for output
