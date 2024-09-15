@@ -338,6 +338,7 @@ class App(customtkinter.CTk):
             ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2), ["win32"]),
             ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2), ["win32", "macos", "arch"]),
             ("Fleet Public Preview", lambda: webbrowser.open('https://www.jetbrains.com/help/fleet/', new=2), ["win32", "macos", "arch"]),
+            ("Ruby", lambda: webbrowser.open('https://www.ruby-lang.org/en/', new=2), ["win32", "macos", "arch"]),
         ]
         
         # Filter based on the current platform
@@ -555,6 +556,7 @@ class App(customtkinter.CTk):
         appendCommand(self.visualstudiocommunityToggle, "Microsoft.VisualStudio.2022.Community ", "", "")
         appendCommand(self.vscodiumToggle, "VSCodium.VSCodium ", "vscodium ", "vscodium-bin ")
         appendCommand(self.fleetToggle, "JetBrains.FleetLauncher.Preview ", "fleet ", " jetbrains-fleet ")
+        appendCommand(self.rubyToggle, "RubyInstallerTeam.RubyWithDevKit.3.1 ", "ruby ", "ruby ")
 
         return commands
 
