@@ -305,10 +305,9 @@ class App(customtkinter.CTk):
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
                 msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.",
-                  icon="check")
-                msg.show()
-                time.sleep(3)
-                self.terminalWindow.destroy()
+                  icon="check", option_1="OK")
+                if msg.get() == "OK":
+                    terminalWindow.destroy()
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
@@ -316,7 +315,6 @@ class App(customtkinter.CTk):
 
         # Start the command in a separate thread
         threading.Thread(target=run_command).start()
-
 
     def parseDownloads(self):       
         # Disable the button before executing commands
