@@ -284,7 +284,34 @@ class App(customtkinter.CTk):
         # Define development application options with invalid links
         devApps = [
             ("", lambda: None),  # Placeholder that does nothing
+            ("Android Studio", lambda: webbrowser.open('https://developer.android.com/studio', new=2)),
+            ("Bootstrap Studio", lambda: webbrowser.open('https://bootstrapstudio.io/', new=2)),
+            ("Cursor", lambda: webbrowser.open('https://www.cursor.com/', new=2)),
+            ("Docker Desktop", lambda: webbrowser.open('https://www.docker.com/products/docker-desktop/', new=2)),
+            ("Eclipse", lambda: webbrowser.open('https://eclipseide.org/', new=2)),
             ("Git", lambda: webbrowser.open('https://git-scm.com', new=2)),
+            ("Github Desktop", lambda: webbrowser.open('https://github.com/apps/desktop', new=2)),
+            ("Golang", lambda: webbrowser.open('https://go.dev/', new=2)),
+            ("IntelliJ IDEA", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2)),
+            ("Java Temurin 8", lambda: webbrowser.open('https://adoptium.net/', new=2)),
+            ("Java Temurin 11", lambda: webbrowser.open('https://adoptium.net/', new=2)),
+            ("Java Temurin 17", lambda: webbrowser.open('https://adoptium.net/', new=2)),
+            ("Java Temurin 21", lambda: webbrowser.open('https://adoptium.net/', new=2)),
+            ("NetBeans", lambda: webbrowser.open('https://netbeans.apache.org/front/main/index.html', new=2)),
+            ("Node.js 20", lambda: webbrowser.open('https://nodejs.org/en', new=2)),
+            ("Node.js 22", lambda: webbrowser.open('https://nodejs.org/en', new=2)),
+            ("Notepad++", lambda: webbrowser.open('https://notepad-plus-plus.org/', new=2)),
+            ("PyCharm", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2)),
+            ("Python 2.7", lambda: webbrowser.open('https://www.python.org/', new=2)),
+            ("Python 3.12", lambda: webbrowser.open('https://www.python.org/', new=2)),
+            ("Pulsar", lambda: webbrowser.open('https://pulsar-edit.dev/', new=2)),
+            ("Replit Desktop", lambda: webbrowser.open('https://replit.com/desktop', new=2)),
+            ("Rust", lambda: webbrowser.open('https://www.rust-lang.org/', new=2)),
+            ("Tortoise Git", lambda: webbrowser.open('https://tortoisegit.org/', new=2)),
+            ("Visual Studio Code", lambda: webbrowser.open('https://code.visualstudio.com/', new=2)),
+            ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2)),
+            ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2)),
+            ("Xcode", lambda: webbrowser.open('https://developer.apple.com/xcode/', new=2)),
         ]
 
         for i, (name, command) in enumerate(devApps):
@@ -458,7 +485,34 @@ class App(customtkinter.CTk):
         appendCommand(self.adobereaderdcToggle, "Adobe.Acrobat.Reader.64-bit ", "adobe-acrobat-reader ", "")
 
         # Development
+        appendCommand(self.androidstudioToggle, "Google.AndroidStudio ", "android-studio ", "android-studio ")
+        appendCommand(self.bootstrapstudioToggle, "", "bootstrap-studio ", "bootstrap-studio ")
+        appendCommand(self.cursorToggle, "Anysphere.Cursor ", "cursor ", "cursor-bin ")
+        appendCommand(self.dockerdesktopToggle, "Docker.DockerDesktop ", "docker ", "docker-desktop ")
+        appendCommand(self.eclipseToggle, "", "eclipse-ide ", "eclipse-java-bin ")
         appendCommand(self.gitToggle, "Git.Git ", "git ", "git ")
+        appendCommand(self.githubdesktopToggle, "GitHub.GitHubDesktop ", "github ", "github-desktop-bin ")
+        appendCommand(self.golangToggle, "GoLang.Go ", "go ", "go ")
+        appendCommand(self.intellijideaToggle, "JetBrains.IntelliJIDEA.Community ", "intellij-idea ", "intellij-idea-community-edition ")
+        appendCommand(self.javatemurin8Toggle, "EclipseAdoptium.Temurin.8.JDK ", "temurin@8 ", "jdk8-temurin ")
+        appendCommand(self.javatemurin11Toggle, "EclipseAdoptium.Temurin.11.JDK ", "temurin@11 ", "jdk11-temurin ")
+        appendCommand(self.javatemurin17Toggle, "EclipseAdoptium.Temurin.17.JDK ", "temurin@17 ", "jdk17-temurin ")
+        appendCommand(self.javatemurin21Toggle, "EclipseAdoptium.Temurin.21.JDK ", "temurin@21 ", "jdk21-temurin ")
+        appendCommand(self.netbeansToggle, "Apache.NetBeans ", "netbeans ", "netbeans ")
+        appendCommand(self.nodejs20Toggle, "OpenJS.NodeJS.LTS ", "node@20 ", "nodejs-lts-iron ")
+        appendCommand(self.nodejs22Toggle, "OpenJS.NodeJS ", "node ", "nodejs ")
+        appendCommand(self.notepadplusplusToggle, "Notepad++.Notepad++ ", "", "")
+        appendCommand(self.pycharmToggle, "JetBrains.PyCharm.Community ", "pycharm-ce ", "pycharm-community-edition ")
+        appendCommand(self.python2Toggle, "Python.Python.2 ", "", "python2 ")
+        appendCommand(self.python3Toggle, "Python.Python.3.12 ", "python ", "python ")
+        appendCommand(self.pulsarToggle, "Pulsar-Edit.Pulsar ", "pulsar ", "pulsar-bin ")
+        appendCommand(self.replitdesktopToggle, "Replit.Replit ", "replit ", "")
+        appendCommand(self.rustToggle, "Rustlang.Rust.MSVC ", "rust ", "rust ")
+        appendCommand(self.tortoisegitToggle, "TortoiseGit.TortoiseGit ", "", "")
+        appendCommand(self.visualstudiocodeToggle, "Microsoft.VisualStudioCode ", "visualstudiocode ", "visual-studio-code-bin ")
+        appendCommand(self.visualstudiocommunityToggle, "Microsoft.VisualStudio.2022.Community ", "", "")
+        appendCommand(self.vscodiumToggle, "VSCodium.VSCodium ", "vscodium ", "vscodium-bin ")
+        appendCommand(self.xcodeToggle, "", "", "")
 
         return commands
 
