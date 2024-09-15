@@ -337,8 +337,12 @@ class App(customtkinter.CTk):
         if distro == "arch":
             commands = f"pkexec {commands}"
         
+        while not ((self.isWingetInstalled() and self.isChocoInstalled() and distro == "windows") or distro != "windows"):
+            time.sleep(5)  # Sleep for a short duration to prevent high CPU usage
+
+        # Execute commands once the conditions are satisfied
         self.executeCommands(commands, title="Download Output")
-    
+
     def isWingetInstalled(self):
         try:
             subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
