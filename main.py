@@ -320,58 +320,55 @@ class App(customtkinter.CTk):
         # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
-        
+
+        # Function to install a package using a command
+        def install_package(command, title):
+            self.executeCommands(command, title=title)
+
         # Function to install Winget
         def install_winget():
-            combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
-            self.executeCommands(combined_command, title="Installing WinGet...")  # Install Winget
+            command = "Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
+            install_package(command, "Installing WinGet...")
 
         # Function to install GSudo
         def install_gsudo():
             if not self.isGsudoInstalled() and distro == "windows":
-                gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
-                self.executeCommands(gsudo_command, title="Installing GSudo...")  # Install GSudo
+                command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
+                install_package(command, "Installing GSudo...")
 
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
-                choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-                self.executeCommands(choco_command, title="Installing Chocolatey...")  # Install Chocolatey
+                command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                install_package(command, "Installing Chocolatey...")
 
-        # Install Winget in a separate thread only if not already installed
+        # Install Winget if not already installed
         if not self.isWingetInstalled() and distro == "windows":
-            threading.Thread(target=install_winget).start()  # Start the installation in a new thread
+            threading.Thread(target=install_winget).start()  # Start Winget installation
 
             # Wait for Winget installation to complete before checking for GSudo
-            def wait_and_install_gsudo():
-                self.wait_for_installation(self.isWingetInstalled, install_gsudo)
-            threading.Thread(target=wait_and_install_gsudo).start()  # Start waiting for Winget installation
+            threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_gsudo)).start()
 
-        # Start the installation of GSudo only if it is not already installed
+        # Start the installation of GSudo if not already installed
         if not self.isGsudoInstalled() and distro == "windows":
-            threading.Thread(target=self.wait_for_installation, args=(self.isGsudoInstalled, self.install_gsudo)).start()  # Start waiting for GSudo installation
+            threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, install_gsudo)).start()
 
-        # Start the installation of Chocolatey only after GSudo is installed
+        # Start the installation of Chocolatey after GSudo is installed
         if self.isGsudoInstalled() and not self.isChocoInstalled() and distro == "windows":
-            threading.Thread(target=self.wait_for_installation, args=(self.isChocoInstalled, self.install_chocolatey)).start()  # Start waiting for Chocolatey installation
+            threading.Thread(target=lambda: self.wait_for_installation(self.isChocoInstalled, install_chocolatey)).start()
 
     def wait_for_installation(self, check_function, install_function):
         # Wait until the check_function returns True, then run install_function
         while not check_function():
             time.sleep(1)  # Wait for a second before checking again
         install_function()  # Run the installation function
-        distro = detectDistro()
+        distro = self.detectDistro()
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         
         if distro == "arch":
             commands = f"pkexec {commands}"
-        
-        while not ((self.isWingetInstalled() and self.isChocoInstalled() and distro == "windows") or distro != "windows"):
-            time.sleep(5)  # Sleep for a short duration to prevent high CPU usage
-
         # Execute commands once the conditions are satisfied
         self.executeCommands(commands, title="Download Output")
-
     def isWingetInstalled(self):
         try:
             subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
