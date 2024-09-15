@@ -244,16 +244,20 @@ class App(customtkinter.CTk):
         return frame  # Return the app installer frame
 
 
-    def createBrowserWidgets(self, frame):
-        # Define browser options with their corresponding open functions
-        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
-        for browser in self.commands_data['browsers']:
-            if self.commands_data['browsers'][browser]['macos-brew'] != "":
-                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
-            if self.commands_data['browsers'][browser]['windows-winget'] != "":
-                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
-            if self.commands_data['browsers'][browser]['archlinux-pacman-aur'] != "":
-                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
+    def createWidgets(self, frame, category):
+        # Define the command list for the specific category
+        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][category]['url'], new=2), ["win32", "macos", "arch"])]
+
+        for app in self.commands_data[category]:
+            if self.detectDistro() == "macos":
+                if self.commands_data[category][app]['macos-brew'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "macos"))
+            elif self.detectDistro() == "win32":
+                if self.commands_data[category][app]['windows-winget'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "win32"))
+            elif self.detectDistro() == "arch":
+                if self.commands_data[category][app]['archlinux-pacman-aur'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data['documents'][app]['url'], new=2), "arch"))
 
         # Filter based on the current platform
         available_browsers = [
@@ -266,214 +270,49 @@ class App(customtkinter.CTk):
         for i, (name, command) in enumerate(available_browsers):
             goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
 
-            # Create the toggle checkbox for the browser
+            # Create the toggle checkbox for the application
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
 
-            
-            
             # Add the toggle to the list
             toggles.append(toggle)
             toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
-            # Create the button for the browser
+
+            # Create the button for the application
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
-        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
+        # Create dummy toggles and buttons for applications not available on the current platform
         for i, (name, command, _) in enumerate(browsers):
-            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
+            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_apps
                 goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-    
-                # Create a dummy toggle checkbox for the unavailable chat app
+
+                # Create a dummy toggle checkbox for the unavailable app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
                 toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
-            
 
                 # Add the toggle to the list
                 toggles.append(toggle)
                 toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
 
-                # Create a dummy button for the unavailable chat app
+                # Create a dummy button for the unavailable app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
+    # Usage examples for creating widgets
+    def createBrowserWidgets(self, frame):
+        self.createWidgets(frame, 'browsers')
 
     def createChatWidgets(self, frame):
-        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
-        for browser in self.commands_data['communications']:
-            if self.detectDistro() == "macos":
-                if self.commands_data['communications'][browser]['macos-brew'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
-            elif self.detectDistro() == "win32":
-                if self.commands_data['communications'][browser]['windows-winget'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
-            elif self.detectDistro() == "arch":
-                if self.commands_data['communications'][browser]['archlinux-pacman-aur'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
-
-        # Filter based on the current platform
-        available_browsers = [
-            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
-        ]
-
-        # Sort the available browsers list alphabetically by the browser name
-        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
-
-        for i, (name, command) in enumerate(available_browsers):
-            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-
-            # Create the toggle checkbox for the browser
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
-            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-
-            
-            
-            # Add the toggle to the list
-            toggles.append(toggle)
-            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
-            # Create the button for the browser
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
-
-        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(browsers):
-            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
-                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-    
-                # Create a dummy toggle checkbox for the unavailable chat app
-                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
-            
-
-                # Add the toggle to the list
-                toggles.append(toggle)
-                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
-                # Create a dummy button for the unavailable chat app
-                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+        self.createWidgets(frame, 'communications')
 
     def createDevWidgets(self, frame):
-        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
-        for browser in self.commands_data['development']:
-            if self.detectDistro() == "macos":
-                if self.commands_data['development'][browser]['macos-brew'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
-            elif self.detectDistro() == "win32":
-                if self.commands_data['development'][browser]['windows-winget'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
-            elif self.detectDistro() == "arch":
-                if self.commands_data['development'][browser]['archlinux-pacman-aur'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
-
-        # Filter based on the current platform
-        available_browsers = [
-            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
-        ]
-
-        # Sort the available browsers list alphabetically by the browser name
-        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
-
-        for i, (name, command) in enumerate(available_browsers):
-            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-
-            # Create the toggle checkbox for the browser
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
-            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-
-            
-            
-            # Add the toggle to the list
-            toggles.append(toggle)
-            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
-            # Create the button for the browser
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
-
-        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(browsers):
-            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
-                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-    
-                # Create a dummy toggle checkbox for the unavailable chat app
-                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
-            
-
-                # Add the toggle to the list
-                toggles.append(toggle)
-                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
-                # Create a dummy button for the unavailable chat app
-                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+        self.createWidgets(frame, 'development')
 
     def createDocuWidgets(self, frame):
-        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
-        for browser in self.commands_data['documents']:
-            if self.detectDistro() == "macos":
-                if self.commands_data['documents'][browser]['macos-brew'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
-            elif self.detectDistro() == "win32":
-                if self.commands_data['documents'][browser]['windows-winget'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
-            elif self.detectDistro() == "arch":
-                if self.commands_data['documents'][browser]['archlinux-pacman-aur'] != "":
-                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
-
-        # Filter based on the current platform
-        available_browsers = [
-            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
-        ]
-
-        # Sort the available browsers list alphabetically by the browser name
-        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
-
-        for i, (name, command) in enumerate(available_browsers):
-            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-
-            # Create the toggle checkbox for the browser
-            toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
-            toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-
-            
-            
-            # Add the toggle to the list
-            toggles.append(toggle)
-            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
-            # Create the button for the browser
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-            setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
-
-        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(browsers):
-            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
-                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-    
-                # Create a dummy toggle checkbox for the unavailable chat app
-                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
-            
-
-                # Add the toggle to the list
-                toggles.append(toggle)
-                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
-                # Create a dummy button for the unavailable chat app
-                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+        self.createWidgets(frame, 'documents')
 
     def executeCommands(self, commands, title="Terminal Output"):
         if not commands:
