@@ -322,13 +322,20 @@ class App(customtkinter.CTk):
         
         if not self.isWingetInstalled() and distro == "windows":
             winget_url = "https://aka.ms/getwinget"
-            combined_command = f"powershell -Command \"Invoke-WebRequest -Uri '{winget_url}' -OutFile 'winget.appx'; Add-AppxPackage -Path 'winget.appx'\""
+            combined_command = f"Invoke-WebRequest -Uri '{winget_url}' -OutFile 'winget.appx'; Add-AppxPackage -Path 'winget.appx'"
             self.executeCommands(combined_command, title="Installing WinGet...", autoClose=True)
+
+        if not self.isChocoInstalled() and distro == "windows":
+            if not self.isGsudoInstalled() and distro == "windows":
+                gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
+                self.executeCommands(gsudo_command, title="Installing GSudo...", autoClose=True)
+            choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+            self.executeCommands(choco_command, title="Installing Chocolatey...", autoClose=True)
 
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         if distro == "arch":
             commands = f"pkexec {commands}"
-
+        
         self.executeCommands(commands, title="Download Output")
     
     def isWingetInstalled(self):
@@ -338,6 +345,14 @@ class App(customtkinter.CTk):
         except:
             return False
         
+    def isChocoInstalled(self):
+            try:
+                # Check if Chocolatey is installed by running a command
+                subprocess.run(["choco", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                return True
+            except:
+                return False
+            
     def detectDistro(self):
         if platform.system().lower() == "linux":
             with open('/etc/os-release') as f:
