@@ -247,7 +247,7 @@
             "url": "https://www.docker.com/products/docker-desktop/"
         },
         "Eclipse": {
-            "windows-winget": "",
+            "windows-choco": "eclipse-java-oxygen ",
             "macos-brew": "eclipse-ide ",
             "archlinux-pacman-aur": "eclipse-java-bin ",
             "url": "https://eclipseide.org/"

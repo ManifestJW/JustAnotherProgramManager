@@ -214,6 +214,9 @@ class App(customtkinter.CTk):
             elif self.detectDistro() == "windows":
                 if self.commands_data[section_name][app]['windows-winget'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
+                if self.commands_data[section_name][app]['windows-choco'] != "":
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
+
             elif self.detectDistro() == "arch":
                 if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
@@ -347,6 +350,7 @@ class App(customtkinter.CTk):
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "  # Initial command for winget on Windows
+            commands += "& choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
@@ -359,6 +363,9 @@ class App(customtkinter.CTk):
                     if self.commands_data[category][app]['windows-winget'] != "":
                         appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
                                       self.commands_data[category][app]['windows-winget'])
+                    if self.commands_data[category][app]['windows-choco'] != "":  # Add support for Chocolatey
+                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                      self.commands_data[category][app]['windows-choco'])
                 elif self.detectDistro() == "macos":
                     if self.commands_data[category][app]['macos-brew'] != "":
                         appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
