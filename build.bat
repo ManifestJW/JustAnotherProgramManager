@@ -1,1 +1,0 @@
-pyinstaller --onefile .\main.py --add-data "applications.json;/" --name="Just Another Program Master" --noconsole
