@@ -475,74 +475,55 @@ class App(customtkinter.CTk):
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
+    def executeCommands(self, commands, title="Terminal Output"):
+        if not commands:
+            return  # Exit if there are no commands to execute
+
+        # Create a new window for terminal output
+        terminalWindow = tk.Toplevel(self)
+        terminalWindow.title(title)
+        terminalWindow.geometry("600x400")
+
+        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
+        terminalOutput.pack(expand=True, fill='both')
+
+        # Run the command in a separate thread
+        def run_command():
+            process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+
+            # Unified function to read output and update terminal
+            def update_terminal_output():
+                for line in iter(process.stdout.readline, ''):
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, line)
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
+
+                for line in iter(process.stderr.readline, ''):
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, line)
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
+
+                process.stdout.close()
+                process.stderr.close()
+                process.wait()  # Wait for the process to finish
+                terminalWindow.destroy()  # Close the terminal window
+                self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
+
+            # Start the terminal output update in a separate thread
+            threading.Thread(target=update_terminal_output).start()
+
+        # Start the command in a separate thread
+        threading.Thread(target=run_command).start()
+
+
     def parseDownloads(self):       
-       # Disable the button before executing commands
-       self.parseButton.configure(state=tk.DISABLED)
-       distro = self.detectDistro()  # Detect the operating system distribution
-       commands = self.buildCommands(distro)  # Build the commands based on selected applications
-
-       if commands:
-           # Create a new window for terminal output
-           terminalWindow = tk.Toplevel(self)
-           terminalWindow.title("Terminal Output")
-           terminalWindow.geometry("600x400")
-
-           terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
-           terminalOutput.pack(expand=True, fill='both')
-
-           process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-
-           # Function to read the output asynchronously
-           def readOutput(file, queue, lock):
-               while True:
-                   line = file.readline()
-                   if not line:
-                       break
-                   with lock:
-                       queue.put(line)
-
-           # Set up queues and lock
-           stdoutQueue = queue.Queue()
-           stderrQueue = queue.Queue()
-           outputLock = threading.Lock()
-
-           # Create file event handlers
-           stdoutHandler = threading.Thread(target=readOutput, args=(process.stdout, stdoutQueue, outputLock))
-           stderrHandler = threading.Thread(target=readOutput, args=(process.stderr, stderrQueue, outputLock))
-
-           # Start file event handlers
-           stdoutHandler.start()
-           stderrHandler.start()
-
-           def checkOutput():
-               with outputLock:
-                   while not stdoutQueue.empty():
-                       terminalOutput.configure(state='normal')
-                       terminalOutput.insert(tk.END, stdoutQueue.get())
-                       terminalOutput.yview(tk.END)  # Scroll to the bottom
-                       terminalOutput.configure(state='disabled')
-
-                   while not stderrQueue.empty():
-                       terminalOutput.configure(state='normal')
-                       terminalOutput.insert(tk.END, stderrQueue.get())
-                       terminalOutput.yview(tk.END)  # Scroll to the bottom
-                       terminalOutput.configure(state='disabled')
-
-               if process.poll() is None:
-                   # The process is still running, so check again after a short delay
-                   terminalOutput.after(100, checkOutput)
-               else:
-                   # Command finished, clean up
-                   stdoutHandler.join()
-                   stderrHandler.join()
-
-                   terminalWindow.destroy()  # Close the terminal window
-
-                   # Enable the button after command execution is complete
-                   self.parseButton.configure(state=tk.NORMAL)
-
-           # Start checking for output
-           checkOutput()
+        # Disable the button before executing commands
+        self.parseButton.configure(state=tk.DISABLED)
+        distro = self.detectDistro()  # Detect the operating system distribution
+        commands = self.buildCommands(distro)  # Build the commands based on selected applications
+        self.executeCommands(commands, title="Download Output")
 
     def detectDistro(self):
         if platform.system().lower() == "linux":
@@ -604,16 +585,9 @@ class App(customtkinter.CTk):
         msg = CTkMessagebox.CTkMessagebox(title="Warning Message!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
                   icon="warning", option_1="Cancel", option_2="OK")
         if msg.get()=="OK":
+            
             # Disable the button before executing commands
             self.updateButton.configure(state=tk.DISABLED)
-
-            # Create a new window for terminal output
-            terminalWindow = tk.Toplevel(self)
-            terminalWindow.title("Terminal Output")
-            terminalWindow.geometry("600x400")
-
-            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
-            terminalOutput.pack(expand=True, fill='both')
 
             # Command to run
             if platform.system().lower() == "darwin":
@@ -623,58 +597,7 @@ class App(customtkinter.CTk):
             else:
                 command = "yay -Syyuu"
 
-            # Run the command in a separate thread
-            def run_command():
-                process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-
-                # Function to read the output asynchronously
-                def read_output(file, queue):
-                    while True:
-                        line = file.readline()
-                        if not line:
-                            break
-                        queue.put(line)
-
-                # Set up queues
-                stdoutQueue = queue.Queue()
-                stderrQueue = queue.Queue()
-
-                # Create threads to read stdout and stderr
-                stdoutHandler = threading.Thread(target=read_output, args=(process.stdout, stdoutQueue))
-                stderrHandler = threading.Thread(target=read_output, args=(process.stderr, stderrQueue))
-
-                # Start the threads
-                stdoutHandler.start()
-                stderrHandler.start()
-
-                # Check for output
-                def check_output():
-                    while not stdoutQueue.empty():
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stdoutQueue.get())
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
-
-                    while not stderrQueue.empty():
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stderrQueue.get())
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
-
-                    if process.poll() is None:
-                        terminalOutput.after(100, check_output)  # Check again after a short delay
-                    else:
-                        stdoutHandler.join()
-                        stderrHandler.join()
-
-                        terminalWindow.destroy()  # Close the terminal window
-                        self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
-
-                # Start checking for output
-                check_output()
-
-            # Start the command in a separate thread
-            threading.Thread(target=run_command).start()
+            self.executeCommands(command)
 
 if __name__ == "__main__":
     app = App()
