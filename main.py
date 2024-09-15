@@ -19,15 +19,22 @@ import credits
 import darkdetect
 import mousescroll
 import CTkMessagebox
+import json
 from CTkToolTip import *
 
 
 customtkinter.set_appearance_mode(darkdetect.theme())
 
+# Load commands from JSON file
+def load_commands():
+    with open('applications.json', 'r') as file:
+        return json.load(file)
+
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        
+        self.commands_data = load_commands()
+
         # Colorlib
         global sysColor
         global sysColorAlt
@@ -239,25 +246,14 @@ class App(customtkinter.CTk):
 
     def createBrowserWidgets(self, frame):
         # Define browser options with their corresponding open functions
-        browsers = [
-            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
-            ("Arc", lambda: webbrowser.open('https://arc.net', new=2), ["win32", "macos"]),
-            ("Brave", lambda: webbrowser.open('https://brave.com', new=2), ["win32", "macos", "arch"]),
-            ("Chrome", lambda: webbrowser.open('https://www.google.com/chrome', new=2), ["win32", "macos", "arch"]),
-            ("Chromium", lambda: webbrowser.open('https://www.chromium.org/Home/', new=2), ["win32", "macos", "arch"]),
-            ("Edge", lambda: webbrowser.open('https://www.microsoft.com/en-us/edge', new=2), ["win32", "macos", "arch"]),
-            ("Firefox", lambda: webbrowser.open('https://www.mozilla.org/en-US/firefox/new', new=2), ["win32", "macos", "arch"]),
-            ("Floorp", lambda: webbrowser.open('https://floorp.app', new=2), ["win32", "macos", "arch"]),
-            ("LibreWolf", lambda: webbrowser.open('https://librewolf.net', new=2), ["win32", "macos", "arch"]),
-            ("Opera", lambda: webbrowser.open('https://www.opera.com', new=2), ["win32", "macos", "arch"]),
-            ("Opera GX", lambda: webbrowser.open('https://www.opera.com/gx', new=2), ["win32", "macos"]),
-            ("Orion", lambda: webbrowser.open('https://kagi.com/orion', new=2), ["macos"]),
-            ("Thorium", lambda: webbrowser.open('https://thorium.rocks', new=2), ["win32", "macos", "arch"]),
-            ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2), ["win32", "macos", "arch"]),
-            ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2), ["win32", "macos", "arch"]),
-            ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2), ["win32", "macos", "arch"]),
-            ("Zen", lambda: webbrowser.open('https://zen-browser.app', new=2), ["win32", "macos", "arch"]),
-        ]
+        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
+        for browser in self.commands_data['browsers']:
+            if self.commands_data['browsers'][browser]['macos-brew'] != "":
+                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
+            if self.commands_data['browsers'][browser]['windows-winget'] != "":
+                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
+            if self.commands_data['browsers'][browser]['archlinux-pacman-aur'] != "":
+                browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
 
         # Filter based on the current platform
         available_browsers = [
@@ -306,214 +302,178 @@ class App(customtkinter.CTk):
 
 
     def createChatWidgets(self, frame):
-        # Define chat application options with invalid links
-        chatApps = [
-            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
-            ("Beeper", lambda: webbrowser.open('https://www.beeper.com', new=2), ["win32", "macos", "arch"]),
-            ("Discord", lambda: webbrowser.open('https://discord.com', new=2), ["win32", "macos", "arch"]),
-            ("Ferdium", lambda: webbrowser.open('https://ferdium.org', new=2), ["win32", "macos", "arch"]),
-            ("Guilded", lambda: webbrowser.open('https://guilded.gg', new=2), ["win32", "macos", "arch"]),
-            ("TeamSpeak", lambda: webbrowser.open('https://teamspeak.com', new=2), ["win32", "macos", "arch"]),
-            ("Textual", lambda: webbrowser.open('https://www.//chatterino.com', new=2), ["win32", "macos", "arch"]),
-            ("Google Chat", lambda: webbrowser.open('https://github.com/squalou/google-chat-linux', new=2), ["win32", "arch"]),
-            ("Chatterino", lambda: webbrowser.open('https:/https://chatterino.com/', new=2), ["win32", "macos", "arch"]),
-            ("HexChat", lambda: webbrowser.open('https://hexchat.github.io/', new=2), ["win32", "arch"]),
-            ("Jami", lambda: webbrowser.open('https://jami.net/', new=2), ["win32", "macos", "arch"]),
-            ("Linphone", lambda: webbrowser.open('https://www.linphone.org/', new=2), ["win32", "macos", "arch"]),
-            ("Element", lambda: webbrowser.open('https://element.io', new=2), ["win32", "macos", "arch"]),
-            ("Session", lambda: webbrowser.open('https://getsession.org', new=2), ["win32", "macos", "arch"]),
-            ("Signal", lambda: webbrowser.open('https://signal.org/', new=2), ["win32", "macos", "arch"]),
-            ("Skype", lambda: webbrowser.open('https://www.skype.com/', new=2), ["win32", "macos", "arch"]),
-            ("Slack", lambda: webbrowser.open('https://slack.com', new=2), ["win32", "macos", "arch"]),
-            ("Teams", lambda: webbrowser.open('https://www.microsoft.com/en-us/microsoft-teams/group-chat-software', new=2), ["win32", "macos", "arch"]),
-            ("Telegram", lambda: webbrowser.open('https://telegram.org/', new=2), ["win32", "macos", "arch"]),
-            ("Thunderbird", lambda: webbrowser.open('https://www.thunderbird.net/', new=2), ["win32", "macos", "arch"]),
-        ]
+        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
+        for browser in self.commands_data['communications']:
+            if self.detectDistro() == "macos":
+                if self.commands_data['communications'][browser]['macos-brew'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
+            elif self.detectDistro() == "win32":
+                if self.commands_data['communications'][browser]['windows-winget'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
+            elif self.detectDistro() == "arch":
+                if self.commands_data['communications'][browser]['archlinux-pacman-aur'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
 
         # Filter based on the current platform
-        available_chatApps = [
-            (name, command) for name, command, platforms in chatApps if self.detectDistro() in platforms
+        available_browsers = [
+            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
         ]
 
         # Sort the available browsers list alphabetically by the browser name
-        available_chatApps = sorted(available_chatApps, key=lambda x: x[0].lower())
+        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
 
-        for i, (name, command) in enumerate(available_chatApps):
+        for i, (name, command) in enumerate(available_browsers):
             goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-            
+
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
 
+            
+            
             # Add the toggle to the list
             toggles.append(toggle)
-            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
- 
-            
+            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
         # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(chatApps):
-            if name not in [app[0] for app in available_chatApps]:  # Check if the app is not in available_chatApps
+        for i, (name, command, _) in enumerate(browsers):
+            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
                 goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-
+    
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_chatApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-                
+                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+            
 
                 # Add the toggle to the list
                 toggles.append(toggle)
                 toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
 
-
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_chatApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDevWidgets(self, frame):
-        # Define development application options with invalid links
-        devApps = [
-            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
-            ("Android Studio", lambda: webbrowser.open('https://developer.android.com/studio', new=2), ["win32", "macos", "arch"]),
-            ("Bootstrap Studio", lambda: webbrowser.open('https://bootstrapstudio.io/', new=2), ["macos", "arch"]), # win32 soonTM
-            ("Cursor", lambda: webbrowser.open('https://www.cursor.com/', new=2), ["win32", "macos", "arch"]),
-            ("Docker Desktop", lambda: webbrowser.open('https://www.docker.com/products/docker-desktop/', new=2), ["win32", "macos", "arch"]),
-            ("Eclipse", lambda: webbrowser.open('https://eclipseide.org/', new=2), ["macos", "arch"]), # win32 soonTM
-            ("Git", lambda: webbrowser.open('https://git-scm.com', new=2), ["win32", "macos", "arch"]),
-            ("Github Desktop", lambda: webbrowser.open('https://github.com/apps/desktop', new=2), ["win32", "macos", "arch"]),
-            ("Golang", lambda: webbrowser.open('https://go.dev/', new=2), ["win32", "macos", "arch"]),
-            ("IntelliJ IDEA Community", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2), ["win32", "macos", "arch"]),
-            ("Java Temurin 8", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
-            ("Java Temurin 11", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
-            ("Java Temurin 17", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
-            ("Java Temurin 21", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
-            ("NetBeans", lambda: webbrowser.open('https://netbeans.apache.org/front/main/index.html', new=2), ["win32", "macos", "arch"]),
-            ("Node.js 20", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
-            ("Node.js 22", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
-            ("Notepad++", lambda: webbrowser.open('https://notepad-plus-plus.org/', new=2), ["win32"]),
-            ("PyCharm Community", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2), ["win32", "macos", "arch"]),
-            ("Python 2.7", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
-            ("Python 3.12", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
-            ("Pulsar", lambda: webbrowser.open('https://pulsar-edit.dev/', new=2), ["win32", "macos", "arch"]),
-            ("Replit Desktop", lambda: webbrowser.open('https://replit.com/desktop', new=2), ["win32", "macos"]),
-            ("Rust", lambda: webbrowser.open('https://www.rust-lang.org/', new=2), ["win32", "macos", "arch"]),
-            ("Tortoise Git", lambda: webbrowser.open('https://tortoisegit.org/', new=2), ["win32"]),
-            ("Visual Studio Code", lambda: webbrowser.open('https://code.visualstudio.com/', new=2), ["win32", "macos", "arch"]),
-            ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2), ["win32"]),
-            ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2), ["win32", "macos", "arch"]),
-            ("Fleet Public Preview", lambda: webbrowser.open('https://www.jetbrains.com/help/fleet/', new=2), ["win32", "macos", "arch"]),
-            ("Ruby", lambda: webbrowser.open('https://www.ruby-lang.org/en/', new=2), ["win32", "macos", "arch"]),
-        ]
-        
+        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
+        for browser in self.commands_data['development']:
+            if self.detectDistro() == "macos":
+                if self.commands_data['development'][browser]['macos-brew'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
+            elif self.detectDistro() == "win32":
+                if self.commands_data['development'][browser]['windows-winget'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
+            elif self.detectDistro() == "arch":
+                if self.commands_data['development'][browser]['archlinux-pacman-aur'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
+
         # Filter based on the current platform
-        available_devApps = [
-            (name, command) for name, command, platforms in devApps if self.detectDistro() in platforms
+        available_browsers = [
+            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
         ]
 
         # Sort the available browsers list alphabetically by the browser name
-        available_devApps = sorted(available_devApps, key=lambda x: x[0].lower())
+        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
 
-        for i, (name, command) in enumerate(available_devApps):
+        for i, (name, command) in enumerate(available_browsers):
             goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-            
+
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+
             
             
             # Add the toggle to the list
             toggles.append(toggle)
-            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
-
+            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
         # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(devApps):
-            if name not in [app[0] for app in available_devApps]:  # Check if the app is not in available_chatApps
+        for i, (name, command, _) in enumerate(browsers):
+            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
                 goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
     
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_devApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-                
+                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+            
 
                 # Add the toggle to the list
                 toggles.append(toggle)
                 toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
 
-
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_devApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDocuWidgets(self, frame):
-        # Define documentation application options with invalid links
-        docuApps = [
-            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
-            ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2), ["win32", "macos"]),
-        ]
+        browsers = [("", lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), ["win32", "macos", "arch"])]
+        for browser in self.commands_data['documents']:
+            if self.detectDistro() == "macos":
+                if self.commands_data['documents'][browser]['macos-brew'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "macos"))
+            elif self.detectDistro() == "win32":
+                if self.commands_data['documents'][browser]['windows-winget'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "win32"))
+            elif self.detectDistro() == "arch":
+                if self.commands_data['documents'][browser]['archlinux-pacman-aur'] != "":
+                    browsers.append((browser, lambda: webbrowser.open(self.commands_data['documents'][browser]['url'], new=2), "arch"))
 
         # Filter based on the current platform
-        available_docuApps = [
-            (name, command) for name, command, platforms in docuApps if self.detectDistro() in platforms
+        available_browsers = [
+            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
         ]
 
         # Sort the available browsers list alphabetically by the browser name
-        available_docuApps = sorted(available_docuApps, key=lambda x: x[0].lower())
+        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
 
-        for i, (name, command) in enumerate(available_docuApps):
+        for i, (name, command) in enumerate(available_browsers):
             goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
-            
+
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
 
+            
+            
             # Add the toggle to the list
             toggles.append(toggle)
-            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
-
-            
-            # Dynamically set toggle attribute based on the original browsers list
-            for original_name, _, platforms in docuApps:
-                if original_name == name:  # Check if the name matches
-                    setattr(self, f"{goodName}Toggle", toggle)  # Set the toggle attribute
-            
+            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
         # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
-        for i, (name, command, _) in enumerate(docuApps):
-            if name not in [app[0] for app in available_docuApps]:  # Check if the app is not in available_chatApps
+        for i, (name, command, _) in enumerate(browsers):
+            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
                 goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
     
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
-                toggle.grid(row=i + len(available_docuApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-                
+                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+            
 
                 # Add the toggle to the list
                 toggles.append(toggle)
                 toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
 
-
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
-                button.grid(row=i + len(available_docuApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
                 setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
-
 
     def parseDownloads(self):       
        # Disable the button before executing commands
@@ -618,79 +578,35 @@ class App(customtkinter.CTk):
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
-        # Internet Browsers
-        appendCommand(self.arcToggle, "TheBrowserCompany.Arc ", "arc ", "")
-        appendCommand(self.braveToggle, "Brave.Brave ", "brave-browser ", "brave-browser ")
-        appendCommand(self.chromeToggle, "Google.Chrome ", "google-chrome ", "google-chrome ")
-        appendCommand(self.chromiumToggle, "Hibbiki.Chromium ", "chromium ", "chromium ")
-        appendCommand(self.edgeToggle, "Microsoft.Edge ", "microsoft-edge ", "microsoft-edge-stable-bin ")
-        appendCommand(self.firefoxToggle, "Mozilla.Firefox ", "firefox ", "firefox ")
-        appendCommand(self.floorpToggle, "Ablaze.Floorp ", "floorp ", "floorp-bin ")
-        appendCommand(self.librewolfToggle, "LibreWolf.LibreWolf ", "librewolf ", "librewolf-bin ")
-        appendCommand(self.operaToggle, "Opera.Opera ", "opera ", "opera ")
-        appendCommand(self.operagxToggle, "Opera.OperaGX ", "opera-gx ", "")
-        appendCommand(self.orionToggle, "", "orion ", "")
-        appendCommand(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
-        appendCommand(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
-        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin ")
-        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi ")
-        appendCommand(self.zenToggle, "Zen-Team.Zen-Browser ", "zen-browser ", "zen-browser-bin ")
+        for browser in self.commands_data['browsers']:
+            # Check if the keys exist before accessing them
+            if 'windows-winget' in self.commands_data['browsers'][browser]:
+                appendCommand(getattr(self, f"{browser.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                              self.commands_data['browsers'][browser]['windows-winget'],
+                              self.commands_data['browsers'][browser]['macos-brew'],
+                              self.commands_data['browsers'][browser]['archlinux-pacman-aur'])
 
-        # Communications
-        appendCommand(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
-        appendCommand(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
-        appendCommand(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
-        appendCommand(self.teamspeakToggle, "TeamSpeakSystems.TeamSpeakClient ", "teamspeak-client ", "teamspeak ")
-        appendCommand(self.textualToggle, "", "textual", "")
-        appendCommand(self.googlechatToggle, "squalou.google-chat-linux ", "", "google-chat-linux-bin ")
-        appendCommand(self.chatterinoToggle, "ChatterinoTeam.Chatterino ", "chatterino ", "chatterino2-bin ")
-        appendCommand(self.hexchatToggle, "HexChat.HexChat ", "", "hexchat")
-        appendCommand(self.jamiToggle, "SFLinux.Jami ", "jami ", "jami ")
-        appendCommand(self.linphoneToggle, "BelledonneCommunications.Linphone ", "linphone ", "linphone-desktop ")
-        appendCommand(self.elementToggle, "Element.Element ", "element ", "element-desktop ")
-        appendCommand(self.sessionToggle, "Oxen.Session ", "session ", "session-desktop-bin ")
-        appendCommand(self.signalToggle, "OpenWhisperSystems.Signal ", "signal ", "signal-desktop-beta-bin ")
-        appendCommand(self.skypeToggle, "Microsoft.Skype ", "skype ", "skypeforlinux-bin ")
-        appendCommand(self.slackToggle, "SlackTechnologies.Slack ", "slack ", "slack-desktop ")
-        appendCommand(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ", "teams ")
-        appendCommand(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ", "telegram-desktop ")
-        appendCommand(self.thunderbirdToggle, "Mozilla.Thunderbird ", "thunderbird ", "thunderbird ")
-        appendCommand(self.beeperToggle, "Beeper.Beeper ", "beeper ", "beeper-latest-bin ")
-        
-        # Documents
-        appendCommand(self.adobereaderdcToggle, "Adobe.Acrobat.Reader.64-bit ", "adobe-acrobat-reader ", "")
+        for chat_app in self.commands_data['communications']:
+            if 'windows-winget' in self.commands_data['communications'][chat_app]:
+                appendCommand(getattr(self, f"{chat_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                              self.commands_data['communications'][chat_app]['windows-winget'],
+                              self.commands_data['communications'][chat_app]['macos-brew'],
+                              self.commands_data['communications'][chat_app]['archlinux-pacman-aur'])
 
-        # Development
-        appendCommand(self.androidstudioToggle, "Google.AndroidStudio ", "android-studio ", "android-studio ")
-        appendCommand(self.bootstrapstudioToggle, "", "bootstrap-studio ", "bootstrap-studio ")
-        appendCommand(self.cursorToggle, "Anysphere.Cursor ", "cursor ", "cursor-bin ")
-        appendCommand(self.dockerdesktopToggle, "Docker.DockerDesktop ", "docker ", "docker-desktop ")
-        appendCommand(self.eclipseToggle, "", "eclipse-ide ", "eclipse-java-bin ")
-        appendCommand(self.gitToggle, "Git.Git ", "git ", "git ")
-        appendCommand(self.githubdesktopToggle, "GitHub.GitHubDesktop ", "github ", "github-desktop-bin ")
-        appendCommand(self.golangToggle, "GoLang.Go ", "go ", "go ")
-        appendCommand(self.intellijideacommunityToggle, "JetBrains.IntelliJIDEA.Community ", "intellij-idea ", "intellij-idea-community-edition ")
-        appendCommand(self.javatemurin8Toggle, "EclipseAdoptium.Temurin.8.JDK ", "temurin@8 ", "jdk8-temurin ")
-        appendCommand(self.javatemurin11Toggle, "EclipseAdoptium.Temurin.11.JDK ", "temurin@11 ", "jdk11-temurin ")
-        appendCommand(self.javatemurin17Toggle, "EclipseAdoptium.Temurin.17.JDK ", "temurin@17 ", "jdk17-temurin ")
-        appendCommand(self.javatemurin21Toggle, "EclipseAdoptium.Temurin.21.JDK ", "temurin@21 ", "jdk21-temurin ")
-        appendCommand(self.netbeansToggle, "Apache.NetBeans ", "netbeans ", "netbeans ")
-        appendCommand(self.nodejs20Toggle, "OpenJS.NodeJS.LTS ", "node@20 ", "nodejs-lts-iron ")
-        appendCommand(self.nodejs22Toggle, "OpenJS.NodeJS ", "node ", "nodejs ")
-        appendCommand(self.notepadplusplusToggle, "Notepad++.Notepad++ ", "", "")
-        appendCommand(self.pycharmcommunityToggle, "JetBrains.PyCharm.Community ", "pycharm-ce ", "pycharm-community-edition ")
-        appendCommand(self.python27Toggle, "Python.Python.2 ", "", "python2 ")
-        appendCommand(self.python312Toggle, "Python.Python.3.12 ", "python ", "python ")
-        appendCommand(self.pulsarToggle, "Pulsar-Edit.Pulsar ", "pulsar ", "pulsar-bin ")
-        appendCommand(self.replitdesktopToggle, "Replit.Replit ", "replit ", "")
-        appendCommand(self.rustToggle, "Rustlang.Rust.MSVC ", "rust ", "rust ")
-        appendCommand(self.tortoisegitToggle, "TortoiseGit.TortoiseGit ", "", "")
-        appendCommand(self.visualstudiocodeToggle, "Microsoft.VisualStudioCode ", "visualstudiocode ", "visual-studio-code-bin ")
-        appendCommand(self.visualstudiocommunityToggle, "Microsoft.VisualStudio.2022.Community ", "", "")
-        appendCommand(self.vscodiumToggle, "VSCodium.VSCodium ", "vscodium ", "vscodium-bin ")
-        appendCommand(self.fleetpublicpreviewToggle, "JetBrains.FleetLauncher.Preview ", "fleet ", " jetbrains-fleet ")
-        appendCommand(self.rubyToggle, "RubyInstallerTeam.RubyWithDevKit.3.1 ", "ruby ", "ruby ")
+        for dev_app in self.commands_data['development']:
+            if 'windows-winget' in self.commands_data['development'][dev_app]:
+                appendCommand(getattr(self, f"{dev_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                              self.commands_data['development'][dev_app]['windows-winget'],
+                              self.commands_data['development'][dev_app]['macos-brew'],
+                              self.commands_data['development'][dev_app]['archlinux-pacman-aur'])
 
+        for docu_app in self.commands_data['documents']:
+            if 'windows-winget' in self.commands_data['documents'][docu_app]:
+                appendCommand(getattr(self, f"{docu_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                              self.commands_data['documents'][docu_app]['windows-winget'],
+                              self.commands_data['documents'][docu_app]['macos-brew'],
+                              self.commands_data['documents'][docu_app]['archlinux-pacman-aur'])
+            
         return commands
 
     def updateAllApps(self):
