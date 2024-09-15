@@ -362,13 +362,17 @@ class App(customtkinter.CTk):
         while not check_function():
             time.sleep(1)  # Wait for a second before checking again
         install_function()  # Run the installation function
-        distro = self.detectDistro()
-        commands = self.buildCommands(distro)  # Build the commands based on selected applications
         
-        if distro == "arch":
-            commands = f"pkexec {commands}"
-        # Execute commands once the conditions are satisfied
-        self.executeCommands(commands, title="Download Output")
+        # Check if all conditions are satisfied before executing commands
+        if self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled():
+            distro = self.detectDistro()
+            commands = self.buildCommands(distro)  # Build the commands based on selected applications
+            
+            if distro == "arch":
+                commands = f"pkexec {commands}"
+            # Execute commands once all conditions are satisfied
+            self.executeCommands(commands, title="Download Output")
+        
     def isWingetInstalled(self):
         try:
             subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
