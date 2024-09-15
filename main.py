@@ -353,7 +353,6 @@ class App(customtkinter.CTk):
         
         # Start the installation of GSudo only if it is not already installed
         if not self.isGsudoInstalled() and distro == "windows":
-            threading.Thread(target=install_gsudo).start()  # Start the installation in a new thread
             threading.Thread(target=wait_and_install_chocolatey).start()  # Start waiting for GSudo installation
 
     def wait_for_installation(self, check_function, install_function):
