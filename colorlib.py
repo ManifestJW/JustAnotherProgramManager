@@ -54,5 +54,7 @@ def get_system_colors():
         sysColor3 = get_windows_system_color()[2]
         sysColorAlt = darken_color(sysColor1, sysColor2, sysColor3, 0.75)
         sysColorAlt = "#{0:02x}{1:02x}{2:02x}".format(int(sysColorAlt[0]), int(sysColorAlt[1]), int(sysColorAlt[2]))
-
+    else:
+        sysColor = "#007aff" # Blue
+        sysColorAlt = "#0054b3"
     return sysColor, sysColorAlt

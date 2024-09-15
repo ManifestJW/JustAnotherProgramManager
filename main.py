@@ -20,14 +20,14 @@ import darkdetect
 import mousescroll
 import CTkMessagebox
 import json
+import resourceFetch
 from CTkToolTip import *
-
 
 customtkinter.set_appearance_mode(darkdetect.theme())
 
 # Load commands from JSON file
 def load_commands():
-    with open('applications.json', 'r') as file:
+    with open(resourceFetch.fetchResource('applications.json'), 'r') as file:
         return json.load(file)
 
 class App(customtkinter.CTk):
@@ -168,10 +168,10 @@ class App(customtkinter.CTk):
 
     def createSection(self, frame, section_name, row, column):
         # Create a border frame for the section
-        borderFrame = customtkinter.CTkFrame(frame, fg_color=sysColor, border_width=2, width=240, height=690)
+        borderFrame = customtkinter.CTkFrame(frame, fg_color=sysColor, width=240, height=690)
         borderFrame.grid(row=row, column=column, padx=(5, 0), pady=(5, 5), sticky="nsew")
     
-        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690)
+        sectionCanvas = customtkinter.CTkCanvas(borderFrame, bg=colorBg, width=210, height=690, bd=0, highlightthickness=0, relief='ridge')
         sectionFrame = customtkinter.CTkFrame(sectionCanvas, fg_color=("#ffffff", "#3a3a3a"))
         sectionScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=sectionCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)
         sectionScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")
