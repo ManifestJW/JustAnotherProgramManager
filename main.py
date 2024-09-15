@@ -347,19 +347,19 @@ class App(customtkinter.CTk):
                 self.wait_for_installation(self.isWingetInstalled, install_gsudo)
             threading.Thread(target=wait_and_install_gsudo).start()  # Start waiting for Winget installation
 
-        # Wait for GSudo installation to complete before checking for Chocolatey
-        def wait_and_install_chocolatey():
-            self.wait_for_installation(self.isGsudoInstalled, install_chocolatey)
-        
         # Start the installation of GSudo only if it is not already installed
         if not self.isGsudoInstalled() and distro == "windows":
-            threading.Thread(target=wait_and_install_chocolatey).start()  # Start waiting for GSudo installation
+            threading.Thread(target=self.wait_for_installation, args=(self.isGsudoInstalled, self.install_gsudo)).start()  # Start waiting for GSudo installation
+
+        # Start the installation of Chocolatey only after GSudo is installed
+        if self.isGsudoInstalled() and not self.isChocoInstalled() and distro == "windows":
+            threading.Thread(target=self.wait_for_installation, args=(self.isChocoInstalled, self.install_chocolatey)).start()  # Start waiting for Chocolatey installation
 
     def wait_for_installation(self, check_function, install_function):
-        distro = self.detectDistro()  # Define distro here
-        while not check_function():  # Wait until the installation is complete
-            time.sleep(1)  # Sleep to prevent busy waiting
-        install_function()  # Call the installation function once the check passes
+        # Wait until the check_function returns True, then run install_function
+        while not check_function():
+            time.sleep(1)  # Wait for a second before checking again
+        install_function()  # Run the installation function
         
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         
