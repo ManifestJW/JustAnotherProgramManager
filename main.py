@@ -226,28 +226,34 @@ class App(customtkinter.CTk):
     def createBrowserWidgets(self, frame):
         # Define browser options with their corresponding open functions
         browsers = [
-            ("", lambda: None),  # Placeholder that does nothing
-            ("Arc", lambda: webbrowser.open('https://arc.net', new=2)),
-            ("Brave", lambda: webbrowser.open('https://brave.com', new=2)),
-            ("Chrome", lambda: webbrowser.open('https://www.google.com/chrome', new=2)),
-            ("Chromium", lambda: webbrowser.open('https://www.chromium.org/Home/', new=2)),
-            ("Edge", lambda: webbrowser.open('https://www.microsoft.com/en-us/edge', new=2)),
-            ("Firefox", lambda: webbrowser.open('https://www.mozilla.org/en-US/firefox/new', new=2)),
-            ("Floorp", lambda: webbrowser.open('https://floorp.app', new=2)),
-            ("LibreWolf", lambda: webbrowser.open('https://librewolf.net', new=2)),
-            ("Opera", lambda: webbrowser.open('https://www.opera.com', new=2)),
-            ("Opera GX", lambda: webbrowser.open('https://www.opera.com/gx', new=2)),
-            ("Orion", lambda: webbrowser.open('https://kagi.com/orion', new=2)),
-            ("Thorium", lambda: webbrowser.open('https://thorium.rocks', new=2)),
-            ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2)),
-            ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2)),
-            ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2)),
-            ("Zen", lambda: webbrowser.open('https://zen-browser.app', new=2)),
+            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
+            ("Arc", lambda: webbrowser.open('https://arc.net', new=2), ["win32", "macos"]),
+            ("Brave", lambda: webbrowser.open('https://brave.com', new=2), ["win32", "macos", "arch"]),
+            ("Chrome", lambda: webbrowser.open('https://www.google.com/chrome', new=2), ["win32", "macos", "arch"]),
+            ("Chromium", lambda: webbrowser.open('https://www.chromium.org/Home/', new=2), ["win32", "macos", "arch"]),
+            ("Edge", lambda: webbrowser.open('https://www.microsoft.com/en-us/edge', new=2), ["win32", "macos", "arch"]),
+            ("Firefox", lambda: webbrowser.open('https://www.mozilla.org/en-US/firefox/new', new=2), ["win32", "macos", "arch"]),
+            ("Floorp", lambda: webbrowser.open('https://floorp.app', new=2), ["win32", "macos", "arch"]),
+            ("LibreWolf", lambda: webbrowser.open('https://librewolf.net', new=2), ["win32", "macos", "arch"]),
+            ("Opera", lambda: webbrowser.open('https://www.opera.com', new=2), ["win32", "macos", "arch"]),
+            ("Opera GX", lambda: webbrowser.open('https://www.opera.com/gx', new=2), ["win32", "macos"]),
+            ("Orion", lambda: webbrowser.open('https://kagi.com/orion', new=2), ["macos"]),
+            ("Thorium", lambda: webbrowser.open('https://thorium.rocks', new=2), ["win32", "macos", "arch"]),
+            ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2), ["win32", "macos", "arch"]),
+            ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2), ["win32", "macos", "arch"]),
+            ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2), ["win32", "macos", "arch"]),
+            ("Zen", lambda: webbrowser.open('https://zen-browser.app', new=2), ["win32", "macos", "arch"]),
         ]
 
-        browsers = sorted(browsers, key=lambda x: x[0].lower())  # Sort by the first element of each tuple (browser name)
+        # Filter based on the current platform
+        available_browsers = [
+            (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
+        ]
 
-        for i, (name, command) in enumerate(browsers):
+        # Sort the available browsers list alphabetically by the browser name
+        available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
+
+        for i, (name, command) in enumerate(available_browsers):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
@@ -260,31 +266,37 @@ class App(customtkinter.CTk):
     def createChatWidgets(self, frame):
         # Define chat application options with invalid links
         chatApps = [
-            ("", lambda: None),  # Placeholder that does nothing
-            ("Beeper", lambda: webbrowser.open('https://www.beeper.com', new=2)),
-            ("Discord", lambda: webbrowser.open('https://discord.com', new=2)),
-            ("Ferdium", lambda: webbrowser.open('https://ferdium.org', new=2)),
-            ("Guilded", lambda: webbrowser.open('https://guilded.gg', new=2)),
-            ("TeamSpeak", lambda: webbrowser.open('https://teamspeak.com', new=2)),
-            ("Textual", lambda: webbrowser.open('https://www.//chatterino.com', new=2)),
-            ("Google Chat", lambda: webbrowser.open('https://github.com/squalou/google-chat-linux', new=2)),
-            ("Chatterino", lambda: webbrowser.open('https:/https://chatterino.com/', new=2)),
-            ("HexChat", lambda: webbrowser.open('https://hexchat.github.io/', new=2)),
-            ("Jami", lambda: webbrowser.open('https://jami.net/', new=2)),
-            ("Linphone", lambda: webbrowser.open('https://www.linphone.org/', new=2)),
-            ("Element", lambda: webbrowser.open('https://element.io', new=2)),
-            ("Session", lambda: webbrowser.open('https://getsession.org', new=2)),
-            ("Signal", lambda: webbrowser.open('https://signal.org/', new=2)),
-            ("Skype", lambda: webbrowser.open('https://www.skype.com/', new=2)),
-            ("Slack", lambda: webbrowser.open('https://slack.com', new=2)),
-            ("Teams", lambda: webbrowser.open('https://www.microsoft.com/en-us/microsoft-teams/group-chat-software', new=2)),
-            ("Telegram", lambda: webbrowser.open('https://telegram.org/', new=2)),
-            ("Thunderbird", lambda: webbrowser.open('https://www.thunderbird.net/', new=2)),
+            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
+            ("Beeper", lambda: webbrowser.open('https://www.beeper.com', new=2), ["win32", "macos", "arch"]),
+            ("Discord", lambda: webbrowser.open('https://discord.com', new=2), ["win32", "macos", "arch"]),
+            ("Ferdium", lambda: webbrowser.open('https://ferdium.org', new=2), ["win32", "macos", "arch"]),
+            ("Guilded", lambda: webbrowser.open('https://guilded.gg', new=2), ["win32", "macos", "arch"]),
+            ("TeamSpeak", lambda: webbrowser.open('https://teamspeak.com', new=2), ["win32", "macos", "arch"]),
+            ("Textual", lambda: webbrowser.open('https://www.//chatterino.com', new=2), ["win32", "macos", "arch"]),
+            ("Google Chat", lambda: webbrowser.open('https://github.com/squalou/google-chat-linux', new=2), ["win32", "arch"]),
+            ("Chatterino", lambda: webbrowser.open('https:/https://chatterino.com/', new=2), ["win32", "macos", "arch"]),
+            ("HexChat", lambda: webbrowser.open('https://hexchat.github.io/', new=2), ["win32", "arch"]),
+            ("Jami", lambda: webbrowser.open('https://jami.net/', new=2), ["win32", "macos", "arch"]),
+            ("Linphone", lambda: webbrowser.open('https://www.linphone.org/', new=2), ["win32", "macos", "arch"]),
+            ("Element", lambda: webbrowser.open('https://element.io', new=2), ["win32", "macos", "arch"]),
+            ("Session", lambda: webbrowser.open('https://getsession.org', new=2), ["win32", "macos", "arch"]),
+            ("Signal", lambda: webbrowser.open('https://signal.org/', new=2), ["win32", "macos", "arch"]),
+            ("Skype", lambda: webbrowser.open('https://www.skype.com/', new=2), ["win32", "macos", "arch"]),
+            ("Slack", lambda: webbrowser.open('https://slack.com', new=2), ["win32", "macos", "arch"]),
+            ("Teams", lambda: webbrowser.open('https://www.microsoft.com/en-us/microsoft-teams/group-chat-software', new=2), ["win32", "macos", "arch"]),
+            ("Telegram", lambda: webbrowser.open('https://telegram.org/', new=2), ["win32", "macos", "arch"]),
+            ("Thunderbird", lambda: webbrowser.open('https://www.thunderbird.net/', new=2), ["win32", "macos", "arch"]),
         ]
 
-        chatApps = sorted(chatApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
+        # Filter based on the current platform
+        available_chatApps = [
+            (name, command) for name, command, platforms in chatApps if self.detectDistro() in platforms
+        ]
 
-        for i, (name, command) in enumerate(chatApps):
+        # Sort the available browsers list alphabetically by the browser name
+        available_chatApps = sorted(available_chatApps, key=lambda x: x[0].lower())
+
+        for i, (name, command) in enumerate(available_chatApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
@@ -297,40 +309,45 @@ class App(customtkinter.CTk):
     def createDevWidgets(self, frame):
         # Define development application options with invalid links
         devApps = [
-            ("", lambda: None),  # Placeholder that does nothing
-            ("Android Studio", lambda: webbrowser.open('https://developer.android.com/studio', new=2)),
-            ("Bootstrap Studio", lambda: webbrowser.open('https://bootstrapstudio.io/', new=2)),
-            ("Cursor", lambda: webbrowser.open('https://www.cursor.com/', new=2)),
-            ("Docker Desktop", lambda: webbrowser.open('https://www.docker.com/products/docker-desktop/', new=2)),
-            ("Eclipse", lambda: webbrowser.open('https://eclipseide.org/', new=2)),
-            ("Git", lambda: webbrowser.open('https://git-scm.com', new=2)),
-            ("Github Desktop", lambda: webbrowser.open('https://github.com/apps/desktop', new=2)),
-            ("Golang", lambda: webbrowser.open('https://go.dev/', new=2)),
-            ("IntelliJ IDEA", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2)),
-            ("Java Temurin 8", lambda: webbrowser.open('https://adoptium.net/', new=2)),
-            ("Java Temurin 11", lambda: webbrowser.open('https://adoptium.net/', new=2)),
-            ("Java Temurin 17", lambda: webbrowser.open('https://adoptium.net/', new=2)),
-            ("Java Temurin 21", lambda: webbrowser.open('https://adoptium.net/', new=2)),
-            ("NetBeans", lambda: webbrowser.open('https://netbeans.apache.org/front/main/index.html', new=2)),
-            ("Node.js 20", lambda: webbrowser.open('https://nodejs.org/en', new=2)),
-            ("Node.js 22", lambda: webbrowser.open('https://nodejs.org/en', new=2)),
-            ("Notepad++", lambda: webbrowser.open('https://notepad-plus-plus.org/', new=2)),
-            ("PyCharm", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2)),
-            ("Python 2.7", lambda: webbrowser.open('https://www.python.org/', new=2)),
-            ("Python 3.12", lambda: webbrowser.open('https://www.python.org/', new=2)),
-            ("Pulsar", lambda: webbrowser.open('https://pulsar-edit.dev/', new=2)),
-            ("Replit Desktop", lambda: webbrowser.open('https://replit.com/desktop', new=2)),
-            ("Rust", lambda: webbrowser.open('https://www.rust-lang.org/', new=2)),
-            ("Tortoise Git", lambda: webbrowser.open('https://tortoisegit.org/', new=2)),
-            ("Visual Studio Code", lambda: webbrowser.open('https://code.visualstudio.com/', new=2)),
-            ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2)),
-            ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2)),
-            ("Xcode", lambda: webbrowser.open('https://developer.apple.com/xcode/', new=2)),
+            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
+            ("Android Studio", lambda: webbrowser.open('https://developer.android.com/studio', new=2), ["win32", "macos", "arch"]),
+            ("Bootstrap Studio", lambda: webbrowser.open('https://bootstrapstudio.io/', new=2), ["macos", "arch"]), # win32 soonTM
+            ("Cursor", lambda: webbrowser.open('https://www.cursor.com/', new=2), ["win32", "macos", "arch"]),
+            ("Docker Desktop", lambda: webbrowser.open('https://www.docker.com/products/docker-desktop/', new=2), ["win32", "macos", "arch"]),
+            ("Eclipse", lambda: webbrowser.open('https://eclipseide.org/', new=2), ["macos", "arch"]), # win32 soonTM
+            ("Git", lambda: webbrowser.open('https://git-scm.com', new=2), ["win32", "macos", "arch"]),
+            ("Github Desktop", lambda: webbrowser.open('https://github.com/apps/desktop', new=2), ["win32", "macos", "arch"]),
+            ("Golang", lambda: webbrowser.open('https://go.dev/', new=2), ["win32", "macos", "arch"]),
+            ("IntelliJ IDEA", lambda: webbrowser.open('https://www.jetbrains.com/idea/', new=2), ["win32", "macos", "arch"]),
+            ("Java Temurin 8", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
+            ("Java Temurin 11", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
+            ("Java Temurin 17", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
+            ("Java Temurin 21", lambda: webbrowser.open('https://adoptium.net/', new=2), ["win32", "macos", "arch"]),
+            ("NetBeans", lambda: webbrowser.open('https://netbeans.apache.org/front/main/index.html', new=2), ["win32", "macos", "arch"]),
+            ("Node.js 20", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
+            ("Node.js 22", lambda: webbrowser.open('https://nodejs.org/en', new=2), ["win32", "macos", "arch"]),
+            ("Notepad++", lambda: webbrowser.open('https://notepad-plus-plus.org/', new=2), ["win32"]),
+            ("PyCharm", lambda: webbrowser.open('https://www.jetbrains.com/pycharm/', new=2), ["win32", "macos", "arch"]),
+            ("Python 2.7", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
+            ("Python 3.12", lambda: webbrowser.open('https://www.python.org/', new=2), ["win32", "macos", "arch"]),
+            ("Pulsar", lambda: webbrowser.open('https://pulsar-edit.dev/', new=2), ["win32", "macos", "arch"]),
+            ("Replit Desktop", lambda: webbrowser.open('https://replit.com/desktop', new=2), ["win32", "macos"]),
+            ("Rust", lambda: webbrowser.open('https://www.rust-lang.org/', new=2), ["win32", "macos", "arch"]),
+            ("Tortoise Git", lambda: webbrowser.open('https://tortoisegit.org/', new=2), ["win32"]),
+            ("Visual Studio Code", lambda: webbrowser.open('https://code.visualstudio.com/', new=2), ["win32", "macos", "arch"]),
+            ("Visual Studio Community", lambda: webbrowser.open('https://visualstudio.microsoft.com/vs/community/', new=2), ["win32"]),
+            ("VSCodium", lambda: webbrowser.open('https://vscodium.com/', new=2), ["win32", "macos", "arch"]),
+        ]
+        
+        # Filter based on the current platform
+        available_devApps = [
+            (name, command) for name, command, platforms in devApps if self.detectDistro() in platforms
         ]
 
-        devApps = sorted(devApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
+        # Sort the available browsers list alphabetically by the browser name
+        available_devApps = sorted(available_devApps, key=lambda x: x[0].lower())
 
-        for i, (name, command) in enumerate(devApps):
+        for i, (name, command) in enumerate(available_devApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
@@ -343,13 +360,19 @@ class App(customtkinter.CTk):
     def createDocuWidgets(self, frame):
         # Define documentation application options with invalid links
         docuApps = [
-            ("", lambda: None),  # Placeholder that does nothing
-            ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2)),
+            ("", lambda: None, ["win32", "macos", "arch"]),  # Placeholder that does nothing
+            ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2), ["win32", "macos"]),
         ]
 
-        docuApps = sorted(docuApps, key=lambda x: x[0].lower())  # Sort by the first element of each tuple
+        # Filter based on the current platform
+        available_docuApps = [
+            (name, command) for name, command, platforms in docuApps if self.detectDistro() in platforms
+        ]
 
-        for i, (name, command) in enumerate(docuApps):
+        # Sort the available browsers list alphabetically by the browser name
+        available_docuApps = sorted(available_docuApps, key=lambda x: x[0].lower())
+
+        for i, (name, command) in enumerate(available_docuApps):
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             
