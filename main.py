@@ -206,14 +206,14 @@ class App(customtkinter.CTk):
 
     def createWidgets(self, frame, section_name):
         # Define the command list for the specific category
-        browsers = [("", lambda: None, ["win32", "macos", "arch"])]
+        browsers = [("", lambda: None, ["windows", "macos", "arch"])]
         for app in self.commands_data[section_name]:
             if self.detectDistro() == "macos":
                 if self.commands_data[section_name][app]['macos-brew'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
             elif self.detectDistro() == "windows":
                 if self.commands_data[section_name][app]['windows-winget'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "win32"))
+                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "windows"))
             elif self.detectDistro() == "arch":
                 if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
