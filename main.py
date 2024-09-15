@@ -360,12 +360,18 @@ class App(customtkinter.CTk):
             for app in self.commands_data[category]:
                 # Check if the keys exist before accessing them
                 if self.detectDistro() == "windows":
-                    if self.commands_data[category][app]['windows-winget'] != "":
-                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                      self.commands_data[category][app]['windows-winget'])
-                    if self.commands_data[category][app]['windows-choco'] != "":  # Add support for Chocolatey
-                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                      self.commands_data[category][app]['windows-choco'])
+                    try:
+                        if self.commands_data[category][app]['windows-winget'] != "":
+                            appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                          self.commands_data[category][app]['windows-winget'])
+                    except:
+                        pass
+                    try:
+                        if self.commands_data[category][app]['windows-choco'] != "":  # Add support for Chocolatey
+                            appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                          self.commands_data[category][app]['windows-choco'])
+                    except:
+                        pass
                 elif self.detectDistro() == "macos":
                     if self.commands_data[category][app]['macos-brew'] != "":
                         appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
