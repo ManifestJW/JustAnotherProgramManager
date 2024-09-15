@@ -175,7 +175,7 @@ class App(customtkinter.CTk):
         borderFrameDocu.grid(row=1, column=9, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
         docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg=colorBg, width=210, height=690)  # Dark background for the canvas
         docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#ffffff", "#3a3a3a"))  # Dark frame for documentation widgets
-        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=devCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
+        docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=docuCanvas.yview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)  # Dark scrollbar
         docuScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
         docuCanvas.configure(yscrollcommand=docuScrollbar.set)  # Link scrollbar to canvas
         docuCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
