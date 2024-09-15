@@ -323,19 +323,26 @@ class App(customtkinter.CTk):
         
         # Check if Winget is installed, if not, install it first
         if (not self.isWingetInstalled() and distro == "windows"):
-            winget_url = "https://aka.ms/getwinget"
-            combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
-            self.executeCommands(combined_command, title="Installing WinGet...")  # Install Winget
+            def install_winget():
+                combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
+                self.executeCommands(combined_command, title="Installing WinGet...")  # Install Winget
+            
+            threading.Thread(target=install_winget).start()
 
-        # After Winget is installed, check for GSudo installation
-        if (not self.isGsudoInstalled() and distro == "windows"):
-            gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
-            self.executeCommands(gsudo_command, title="Installing GSudo...")  # Install GSudo
+        # After Winget is installed, check for GSudo installation in a separate thread
+        if not self.isGsudoInstalled() and distro == "windows":
+            def install_gsudo():
+                gsudo_command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
+                self.executeCommands(gsudo_command, title="Installing GSudo...")  # Install GSudo
+            threading.Thread(target=install_gsudo).start()  # Start the installation in a new thread
 
-        # Finally, install Chocolatey if not already installed
-        if (not self.isChocoInstalled() and distro == "windows"):
-            choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-            self.executeCommands(choco_command, title="Installing Chocolatey...")  # Install Chocolatey
+        # Finally, install Chocolatey if not already installed in a separate thread
+        if not self.isChocoInstalled() and distro == "windows":
+            def install_chocolatey():
+                choco_command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                self.executeCommands(choco_command, title="Installing Chocolatey...")  # Install Chocolatey
+            threading.Thread(target=install_chocolatey).start()  # Start the installation in a new thread
+        
         commands = self.buildCommands(distro)  # Build the commands based on selected applications
         
         if distro == "arch":
