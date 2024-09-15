@@ -24,165 +24,179 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        # Configure window
-        self.title("Japm")
-        self.geometry(f"{1330}x{780}")
+        # Configure window properties
+        self.title("Just Another Program Manager")  # Set the window title
+        self.geometry(f"{1330}x{780}")  # Set the window size
 
-        # Configure grid layout (4x4)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure((2, 3), weight=0)
-        self.grid_rowconfigure((0, 1, 2), weight=1)
+        # Configure grid layout for the main application window
+        self.grid_columnconfigure(1, weight=1)  # Allow column 1 to expand
+        self.grid_columnconfigure((2, 3), weight=0)  # Fixed width for columns 2 and 3
+        self.grid_rowconfigure((0, 1, 2), weight=1)  # Allow rows 0, 1, and 2 to expand
 
-        # Create sidebar frame with widgets
+        # Create sidebar frame for navigation
         self.sidebarFrame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
-        self.sidebarFrame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebarFrame.grid_rowconfigure(3, weight=1)
+        self.sidebarFrame.grid(row=0, column=0, rowspan=4, sticky="nsew")  # Position sidebar frame
+        self.sidebarFrame.grid_rowconfigure(3, weight=1)  # Allow row 3 to expand
 
+        # Add logo label to the sidebar
         self.logoLabel = customtkinter.CTkLabel(self.sidebarFrame, text="Just Another\nProgram Manager", font=customtkinter.CTkFont(size=18, weight="bold"))
-        self.logoLabel.grid(row=0, column=0, padx=20, pady=(20, 10))
+        self.logoLabel.grid(row=0, column=0, padx=20, pady=(20, 10))  # Position logo label
 
-        self.browsersButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView)
-        self.browsersButton.grid(row=1, column=0, padx=20, pady=10)
+        # Create buttons for navigation
+        self.applicationsButton = customtkinter.CTkButton(self.sidebarFrame, text="Applications", command=self.appsView)
+        self.applicationsButton.grid(row=1, column=0, padx=20, pady=10)  # Position Applications button
 
         self.creditsButton = customtkinter.CTkButton(self.sidebarFrame, text="Credits", command=self.creditsView)
-        self.creditsButton.grid(row=4, column=0, padx=20, pady=10)
+        self.creditsButton.grid(row=4, column=0, padx=20, pady=10)  # Position Credits button
 
+        # Display application version in the sidebar
         self.versionLabel = customtkinter.CTkLabel(self.sidebarFrame, text=version.appVersion, anchor="w", font=("Arial", 16, "bold"))
-        self.versionLabel.grid(row=5, column=0, padx=20, pady=(10, 0))
+        self.versionLabel.grid(row=5, column=0, padx=20, pady=(10, 0))  # Position version label
 
-        self.currentGameFrame = None
+        self.currentGameFrame = None  # Placeholder for the current game frame
 
-        # Set default values
-        self.browsersButton.configure(state="disabled")
-        self.currentGameFrame = self.createAppInstaller()
-        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
+        # Set default button states and initialize the main frame
+        self.applicationsButton.configure(state="disabled")  # Disable Applications button initially
+        self.currentGameFrame = self.createAppInstaller()  # Create the app installer frame
+        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")  # Position the frame
 
     def appsView(self):
-        self.browsersButton.configure(state="disabled")
-        self.creditsButton.configure(state="enabled")
-        self.resetGameFrames()
-        self.createGameFrame("App Installers")
+        # Switch to the applications view
+        self.applicationsButton.configure(state="disabled")  # Disable Applications button
+        self.creditsButton.configure(state="enabled")  # Enable Credits button
+        self.resetGameFrames()  # Reset any existing frames
+        self.createGameFrame("App Installers")  # Create the app installers frame
 
     def creditsView(self):
-        self.browsersButton.configure(state="enabled")
-        self.creditsButton.configure(state="disabled")
-        self.resetGameFrames()
-        self.createGameFrame("Credits")
+        # Switch to the credits view
+        self.applicationsButton.configure(state="enabled")  # Enable Applications button
+        self.creditsButton.configure(state="disabled")  # Disable Credits button
+        self.resetGameFrames()  # Reset any existing frames
+        self.createGameFrame("Credits")  # Create the credits frame
 
     def resetGameFrames(self):
-        # Reset the main frame to remove any existing game-specific widgets
+        # Remove any existing game-specific widgets from the main frame
         if self.currentGameFrame:
-            self.currentGameFrame.destroy()
+            self.currentGameFrame.destroy()  # Destroy the current game frame
 
     def createGameFrame(self, appType):
-        # Create a new game frame based on the selected gameName
-        self.resetGameFrames()
+        # Create a new game frame based on the selected application type
+        self.resetGameFrames()  # Reset existing frames
 
         if appType == "App Installers":
-            self.currentGameFrame = self.createAppInstaller()
+            self.currentGameFrame = self.createAppInstaller()  # Create app installer frame
         elif appType == "Credits":
-            self.currentGameFrame = self.createCredits()
+            self.currentGameFrame = self.createCredits()  # Create credits frame
         
-        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")
+        self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")  # Position the new frame
 
     def createCredits(self):
-        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
-        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, fg_color=("#fcfcfc", "#323232"))
-        tabview.pack(padx=20, pady=20)
-        tabview.add("Credits")
-        tabview.add("About")
-        tabview.add("License")
-        tabview.set("About")
+        # Create the credits frame with tabs for different sections
+        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
+        tabview = customtkinter.CTkTabview(frame, width=2000, height=650, fg_color=("#fcfcfc", "#323232"))  # Create tab view
+        tabview.pack(padx=20, pady=20)  # Pack the tab view into the frame
+        tabview.add("Credits")  # Add Credits tab
+        tabview.add("About")  # Add About tab
+        tabview.add("License")  # Add License tab
+        tabview.set("About")  # Set default tab to About
 
+        # Add content to the License tab
         mitLicenseWidget = customtkinter.CTkLabel(tabview.tab("License"), width=80, height=20, text=credits.get_mit_license_text())
-        mitLicenseWidget.pack(padx=10, pady=10)
+        mitLicenseWidget.pack(padx=10, pady=10)  # Pack the license text
 
+        # Add content to the Credits tab
         creditsWidget = customtkinter.CTkLabel(tabview.tab("Credits"), width=80, height=20, text=credits.get_credits_text())
-        creditsWidget.pack(padx=10, pady=10)
+        creditsWidget.pack(padx=10, pady=10)  # Pack the credits text
 
+        # Add content to the About tab
         aboutWidget = customtkinter.CTkLabel(tabview.tab("About"), width=80, height=20, text=credits.get_about_text())
-        aboutWidget.pack(padx=10, pady=10)
+        aboutWidget.pack(padx=10, pady=10)  # Pack the about text
 
-        return frame
+        return frame  # Return the credits frame
 
     def createAppInstaller(self):
-        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
-        frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Add padding around the frame
+        # Create the app installer frame with various sections
+        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
+        frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Position the frame with padding
     
-        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        # Create a border frame for the browser section
+        borderFrameBrowser = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
         borderFrameBrowser.grid(row=1, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
-        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+        browserCanvas = customtkinter.CTkCanvas(borderFrameBrowser, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
+        browserFrame = customtkinter.CTkFrame(browserCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for browser widgets
         browserScrollbar = customtkinter.CTkScrollbar(borderFrameBrowser, orientation="vertical", command=browserCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         browserScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        browserCanvas.configure(yscrollcommand=browserScrollbar.set)
+        browserCanvas.configure(yscrollcommand=browserScrollbar.set)  # Link scrollbar to canvas
         browserCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")
-        self.createBrowserWidgets(browserFrame)
+        browserCanvas.create_window((0, 0), window=browserFrame, anchor="nw")  # Create window in canvas for browser frame
+        self.createBrowserWidgets(browserFrame)  # Create browser widgets in the frame
     
-        borderFrame = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
-        borderFrame.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        chatCanvas = customtkinter.CTkCanvas(borderFrame, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
-        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
-        chatScrollbar = customtkinter.CTkScrollbar(borderFrame, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
+        # Create a border frame for the chat section
+        borderFrameChat = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
+        borderFrameChat.grid(row=1, column=3, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
+        chatCanvas = customtkinter.CTkCanvas(borderFrameChat, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
+        chatFrame = customtkinter.CTkFrame(chatCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for chat widgets
+        chatScrollbar = customtkinter.CTkScrollbar(borderFrameChat, orientation="vertical", command=chatCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         chatScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        chatCanvas.configure(yscrollcommand=chatScrollbar.set)
+        chatCanvas.configure(yscrollcommand=chatScrollbar.set)  # Link scrollbar to canvas
         chatCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")
-        self.createChatWidgets(chatFrame)
+        chatCanvas.create_window((0, 0), window=chatFrame, anchor="nw")  # Create window in canvas for chat frame
+        self.createChatWidgets(chatFrame)  # Create chat widgets in the frame
 
-        borderFrameDev = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        # Create a border frame for the development section
+        borderFrameDev = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
         borderFrameDev.grid(row=1, column=6, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
-        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+        devCanvas = customtkinter.CTkCanvas(borderFrameDev, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
+        devFrame = customtkinter.CTkFrame(devCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for development widgets
         devScrollbar = customtkinter.CTkScrollbar(borderFrameDev, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         devScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        devCanvas.configure(yscrollcommand=devScrollbar.set)
+        devCanvas.configure(yscrollcommand=devScrollbar.set)  # Link scrollbar to canvas
         devCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        devCanvas.create_window((0, 0), window=devFrame, anchor="nw")
-        self.createDevWidgets(devFrame)
+        devCanvas.create_window((0, 0), window=devFrame, anchor="nw")  # Create window in canvas for development frame
+        self.createDevWidgets(devFrame)  # Create development widgets in the frame
 
-        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=600)  # Aqua border color
+        # Create a border frame for the documentation section
+        borderFrameDocu = customtkinter.CTkFrame(frame, fg_color="#00FFFF", border_width=2, width=240, height=690)  # Aqua border color
         borderFrameDocu.grid(row=1, column=9, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position the border frame
-        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg="#3a3a3a", width=210, height=600)  # Dark background for the canvas
-        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame
+        docuCanvas = customtkinter.CTkCanvas(borderFrameDocu, bg="#3a3a3a", width=210, height=690)  # Dark background for the canvas
+        docuFrame = customtkinter.CTkFrame(docuCanvas, fg_color=("#3a3a3a", "#3a3a3a"))  # Dark frame for documentation widgets
         docuScrollbar = customtkinter.CTkScrollbar(borderFrameDocu, orientation="vertical", command=devCanvas.yview, fg_color="#3a3a3a")  # Dark scrollbar
         docuScrollbar.grid(row=0, column=1, padx=(0, 5), pady=5, sticky="ns")  # Position scrollbar next to the canvas
-        docuCanvas.configure(yscrollcommand=docuScrollbar.set)
+        docuCanvas.configure(yscrollcommand=docuScrollbar.set)  # Link scrollbar to canvas
         docuCanvas.grid(row=0, column=0, padx=(5, 0), pady=(5, 5), sticky="nsew")  # Position canvas in the border frame
-        docuCanvas.create_window((0, 0), window=docuFrame, anchor="nw")
-        self.createDocuWidgets(docuFrame)
+        docuCanvas.create_window((0, 0), window=docuFrame, anchor="nw")  # Create window in canvas for documentation frame
+        self.createDocuWidgets(docuFrame)  # Create documentation widgets in the frame
     
-        # Update the scroll region of the canvas
+        # Update the scroll region of the canvas when the frame is resized
         def update_scroll_region(event):
-            browserCanvas.configure(scrollregion=browserCanvas.bbox("all"))
-            chatCanvas.configure(scrollregion=chatCanvas.bbox("all"))
+            browserCanvas.configure(scrollregion=browserCanvas.bbox("all"))  # Update scroll region for browser canvas
+            chatCanvas.configure(scrollregion=chatCanvas.bbox("all"))  # Update scroll region for chat canvas
     
-        browserFrame.bind("<Configure>", update_scroll_region)
-        chatFrame.bind("<Configure>", update_scroll_region)
+        browserFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for browser frame
+        chatFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
     
-        # Category Labels with right padding
+        # Create category labels for each section with right padding
         self.browserLabel = customtkinter.CTkLabel(browserFrame, text="Internet Browsers", font=("Arial", 16, "bold"))
-        self.browserLabel.place(x=5, y=5)  # Use place to position the label
+        self.browserLabel.place(x=5, y=5)  # Position browser label
     
         self.chatLabel = customtkinter.CTkLabel(chatFrame, text="Communication", font=("Arial", 16, "bold"))
-        self.chatLabel.place(x=5, y=5)  # Use place to position the label
+        self.chatLabel.place(x=5, y=5)  # Position chat label
     
         self.devLabel = customtkinter.CTkLabel(devFrame, text="Development", font=("Arial", 16, "bold"))
-        self.devLabel.place(x=5, y=5)  # Use place to position the label
+        self.devLabel.place(x=5, y=5)  # Position development label
 
         self.docuLabel = customtkinter.CTkLabel(docuFrame, text="Documents", font=("Arial", 16, "bold"))
-        self.docuLabel.place(x=5, y=5)  # Use place to position the label
+        self.docuLabel.place(x=5, y=5)  # Position documentation label
 
-        # Move the parseButton to be above the frames
+        # Create the Install Selected button above the frames
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected")
-        self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")
+        self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
     
-        # Add the Update All Apps button next to Install Selected
+        # Create the Update All Apps button next to Install Selected
         self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150)  # Set a specific width for the button
-        self.updateButton.place(x=165, y=10)  # Place next to the Install Selected button
+        self.updateButton.place(x=165, y=10)  # Position next to the Install Selected button
 
-        return frame
+        return frame  # Return the app installer frame
 
     def createBrowserWidgets(self, frame):
         # Define browser options with their corresponding open functions
@@ -203,7 +217,6 @@ class App(customtkinter.CTk):
             ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2)),
             ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2)),
             ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2)),
-            ("Zen", lambda: webbrowser.open('https://zen-browser.app/', new=2)),
         ]
 
         for i, (name, command) in enumerate(browsers):
@@ -251,7 +264,7 @@ class App(customtkinter.CTk):
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDevWidgets(self, frame):
-        # Define chat application options with invalid links
+        # Define development application options with invalid links
         devApps = [
             ("", lambda: None),  # Placeholder that does nothing
             ("Git", lambda: webbrowser.open('https://git-scm.com', new=2)),
@@ -268,7 +281,7 @@ class App(customtkinter.CTk):
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDocuWidgets(self, frame):
-        # Define chat application options with invalid links
+        # Define documentation application options with invalid links
         docuApps = [
             ("", lambda: None),  # Placeholder that does nothing
             ("Adobe Reader DC", lambda: webbrowser.open('https://www.adobe.com/acrobat/pdf-reader.html', new=2)),
@@ -287,8 +300,8 @@ class App(customtkinter.CTk):
     def parseDownloads(self):
         # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
-        distro = self.detectDistro()
-        commands = self.buildCommands(distro)
+        distro = self.detectDistro()  # Detect the operating system distribution
+        commands = self.buildCommands(distro)  # Build the commands based on selected applications
 
         if commands:
             # Create a new window for terminal output
@@ -396,9 +409,8 @@ class App(customtkinter.CTk):
         appendCommand(self.orionToggle, "", "orion ", "")
         appendCommand(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
         appendCommand(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
-        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin ")
-        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi ")
-        appendCommand(self.zenToggle, "Zen-Team.Zen-Browser ", "zen-browser ", "zen-browser-bin ")
+        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
+        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
         appendCommand(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
         appendCommand(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
         appendCommand(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
