@@ -211,7 +211,7 @@ class App(customtkinter.CTk):
             if self.detectDistro() == "macos":
                 if self.commands_data[section_name][app]['macos-brew'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
-            elif self.detectDistro() == "win32":
+            elif self.detectDistro() == "windows":
                 if self.commands_data[section_name][app]['windows-winget'] != "":
                     browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "win32"))
             elif self.detectDistro() == "arch":
@@ -355,7 +355,7 @@ class App(customtkinter.CTk):
         for category in categories:
             for app in self.commands_data[category]:
                 # Check if the keys exist before accessing them
-                if self.detectDistro() == "win32":
+                if self.detectDistro() == "windows":
                     if self.commands_data[category][app]['windows-winget'] != "":
                         appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
                                       self.commands_data[category][app]['windows-winget'])
