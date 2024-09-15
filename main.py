@@ -189,11 +189,11 @@ class App(customtkinter.CTk):
         self.docuLabel.place(x=5, y=5)  # Position documentation label
 
         # Create the Install Selected button above the frames
-        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected")
+        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color="#00FFFF")  # Aqua color
         self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
     
         # Create the Update All Apps button next to Install Selected
-        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150)  # Set a specific width for the button
+        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color="#00FFFF")  # Aqua color
         self.updateButton.place(x=165, y=10)  # Position next to the Install Selected button
 
         return frame  # Return the app installer frame
@@ -217,6 +217,7 @@ class App(customtkinter.CTk):
             ("Tor", lambda: webbrowser.open('https://www.torproject.org/download', new=2)),
             ("Ungoogled Chromium", lambda: webbrowser.open('https://ungoogled-software.github.io/ungoogled-chromium-binaries', new=2)),
             ("Vivaldi", lambda: webbrowser.open('https://vivaldi.com', new=2)),
+            ("Zen", lambda: webbrowser.open('https://zen-browser.app', new=2)),
         ]
 
         for i, (name, command) in enumerate(browsers):
@@ -396,6 +397,7 @@ class App(customtkinter.CTk):
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
+        # Internet Browsers
         appendCommand(self.arcToggle, "TheBrowserCompany.Arc ", "arc ", "")
         appendCommand(self.braveToggle, "Brave.Brave ", "brave-browser ", "brave-browser ")
         appendCommand(self.chromeToggle, "Google.Chrome ", "google-chrome ", "google-chrome ")
@@ -409,8 +411,11 @@ class App(customtkinter.CTk):
         appendCommand(self.orionToggle, "", "orion ", "")
         appendCommand(self.thoriumToggle, "Alex313031.Thorium.AVX2 ", "alex313031-thorium ", "thorium-browser-bin ")
         appendCommand(self.torToggle, "TorProject.TorBrowser ", "tor-browser ", "tor-browser-bin ")
-        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin")
-        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi")
+        appendCommand(self.ungoogledchromiumToggle, "eloston.ungoogled-chromium ", "eloston-chromium ", "ungoogled-chromium-bin ")
+        appendCommand(self.vivaldiToggle, "VivaldiTechnologies.Vivaldi ", "vivaldi ", "vivaldi ")
+        appendCommand(self.zenToggle, "Zen-Team.Zen-Browser ", "zen-browser ", "zen-browser-bin ")
+
+        # Communications
         appendCommand(self.discordToggle, "Discord.Discord ", "discord ", "discord ")
         appendCommand(self.ferdiumToggle, "Ferdium.Ferdium ", "ferdium ", "ferdium-bin ")
         appendCommand(self.guildedToggle, "Guilded.Guilded ", "guilded ", "guilded ")
@@ -429,7 +434,11 @@ class App(customtkinter.CTk):
         appendCommand(self.teamsToggle, "Microsoft.Teams ", "microsoft-teams ", "teams ")
         appendCommand(self.telegramToggle, "Telegram.TelegramDesktop ", "telegram ", "telegram-desktop ")
         appendCommand(self.thunderbirdToggle, "Mozilla..ThThunderbird ", "thunderbird ", "thunderbird ")
+
+        # Documents
         appendCommand(self.adobereaderdcToggle, "Adobe.Acrobat.Reader.64-bit ", "adobe-acrobat-reader ", "")
+
+        # Development
         appendCommand(self.gitToggle, "Git.Git ", "git ", "git ")
 
         return commands
