@@ -563,11 +563,11 @@ class App(customtkinter.CTk):
 
     def buildCommands(self, distro):
         commands = ""
-        def appendCommand(toggle, commandWin, commandMac, commandArch):
+        def appendCommand(toggle, command):
             nonlocal commands
             if toggle.get() == 1:
                 try:
-                    commands += commandWin if distro == "windows" else commandMac if distro == "macos" else commandArch if distro == "arch" else ""
+                    commands += command
                 except:
                     pass # is not on this OS
         # Example commands for brew and winget
@@ -578,34 +578,25 @@ class App(customtkinter.CTk):
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
-        for browser in self.commands_data['browsers']:
-            # Check if the keys exist before accessing them
-            if 'windows-winget' in self.commands_data['browsers'][browser]:
-                appendCommand(getattr(self, f"{browser.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                              self.commands_data['browsers'][browser]['windows-winget'],
-                              self.commands_data['browsers'][browser]['macos-brew'],
-                              self.commands_data['browsers'][browser]['archlinux-pacman-aur'])
+        categories = self.commands_data.keys()  # Get the first keys from the JSON
 
-        for chat_app in self.commands_data['communications']:
-            if 'windows-winget' in self.commands_data['communications'][chat_app]:
-                appendCommand(getattr(self, f"{chat_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                              self.commands_data['communications'][chat_app]['windows-winget'],
-                              self.commands_data['communications'][chat_app]['macos-brew'],
-                              self.commands_data['communications'][chat_app]['archlinux-pacman-aur'])
-
-        for dev_app in self.commands_data['development']:
-            if 'windows-winget' in self.commands_data['development'][dev_app]:
-                appendCommand(getattr(self, f"{dev_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                              self.commands_data['development'][dev_app]['windows-winget'],
-                              self.commands_data['development'][dev_app]['macos-brew'],
-                              self.commands_data['development'][dev_app]['archlinux-pacman-aur'])
-
-        for docu_app in self.commands_data['documents']:
-            if 'windows-winget' in self.commands_data['documents'][docu_app]:
-                appendCommand(getattr(self, f"{docu_app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                              self.commands_data['documents'][docu_app]['windows-winget'],
-                              self.commands_data['documents'][docu_app]['macos-brew'],
-                              self.commands_data['documents'][docu_app]['archlinux-pacman-aur'])
+        for category in categories:
+            for app in self.commands_data[category]:
+                # Check if the keys exist before accessing them
+                if self.detectDistro() == "win32":
+                    if self.commands_data[category][app]['windows-winget'] != "":
+                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                      self.commands_data[category][app]['windows-winget'])
+                elif self.detectDistro() == "macos":
+                    if self.commands_data[category][app]['macos-brew'] != "":
+                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                      self.commands_data[category][app]['macos-brew'])
+                elif self.detectDistro() == "arch":
+                    if self.commands_data[category][app]['archlinux-pacman-aur'] != "":
+                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                      self.commands_data[category][app]['archlinux-pacman-aur'])
+                else:
+                    pass
             
         return commands
 
