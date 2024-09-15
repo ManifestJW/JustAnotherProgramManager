@@ -282,7 +282,7 @@ class App(customtkinter.CTk):
 
         # Run the command in a separate thread
         def run_command():
-            if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy"]):  # Check if it's a PowerShell command
+            if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy", "Invoke-RestMethod", "Invoke-Expression", "Out-Null"]):  # Check if it's a PowerShell command
                 process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
             else:
                 process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
@@ -324,7 +324,7 @@ class App(customtkinter.CTk):
         
         if not self.isWingetInstalled() and distro == "windows":
             winget_url = "https://aka.ms/getwinget"
-            combined_command = f"Invoke-WebRequest -Uri '{winget_url}' -OutFile 'winget.appx'; Add-AppxPackage -Path 'winget.appx'"
+            combined_command = f"Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression | Out-Null"
             self.executeCommands(combined_command, title="Installing WinGet...", autoClose=True)
 
         if not self.isChocoInstalled() and distro == "windows":
