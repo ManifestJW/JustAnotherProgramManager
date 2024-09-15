@@ -345,6 +345,13 @@ class App(customtkinter.CTk):
             return True
         except:
             return False
+
+    def isGsudoInstalled(self):  # Add this method to check for GSudo installation
+        try:
+            subprocess.run(["gsudo", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return True
+        except:
+            return False
         
     def isChocoInstalled(self):
         try:
