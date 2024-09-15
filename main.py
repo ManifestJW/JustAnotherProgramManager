@@ -40,6 +40,9 @@ class App(customtkinter.CTk):
         else:
             colorBg = "#ffffff"
 
+        global toggles
+        toggles = []
+        
         # Configure window properties
         self.title("Just Another Program Manager")  # Set the window title
         self.geometry(f"{1330}x{780}")  # Set the window size
@@ -75,6 +78,13 @@ class App(customtkinter.CTk):
         self.applicationsButton.configure(state="disabled")  # Disable Applications button initially
         self.currentGameFrame = self.createAppInstaller()  # Create the app installer frame
         self.currentGameFrame.grid(row=0, column=1, padx=(0, 0), pady=(0, 0), rowspan=3, sticky="nsew")  # Position the frame
+
+    # Function to check if any checkbox is checked
+    def update_install_button_state(self, btn):
+       # Check if any toggle is checked
+       any_checked = any(toggle.get() for toggle in toggles)
+       btn.configure(state=tk.NORMAL if any_checked else tk.DISABLED)
+
 
     def appsView(self):
         # Switch to the applications view
@@ -217,12 +227,15 @@ class App(customtkinter.CTk):
         # Create the Install Selected button above the frames
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
         self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
-    
+        
+        self.update_install_button_state(self.parseButton)  # Call the method to initialize button state
+
         # Create the Update All Apps button next to Install Selected
         self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color=sysColor, hover_color=sysColorAlt)
         self.updateButton.place(x=165, y=10)  # Position next to the Install Selected button
 
         return frame  # Return the app installer frame
+
 
     def createBrowserWidgets(self, frame):
         # Define browser options with their corresponding open functions
@@ -261,6 +274,11 @@ class App(customtkinter.CTk):
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
 
+            
+            
+            # Add the toggle to the list
+            toggles.append(toggle)
+            toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
@@ -275,6 +293,12 @@ class App(customtkinter.CTk):
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
                 toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
     
+            
+
+                # Add the toggle to the list
+                toggles.append(toggle)
+                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
                 button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
@@ -320,6 +344,12 @@ class App(customtkinter.CTk):
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+
+            # Add the toggle to the list
+            toggles.append(toggle)
+            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
+ 
             
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
@@ -334,6 +364,12 @@ class App(customtkinter.CTk):
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
                 toggle.grid(row=i + len(available_chatApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+                
+
+                # Add the toggle to the list
+                toggles.append(toggle)
+                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
 
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
@@ -389,6 +425,12 @@ class App(customtkinter.CTk):
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+            
+            
+            # Add the toggle to the list
+            toggles.append(toggle)
+            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
 
             # Create the button for the browser
             button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
@@ -403,7 +445,13 @@ class App(customtkinter.CTk):
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
                 toggle.grid(row=i + len(available_devApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
+                
+
+                # Add the toggle to the list
+                toggles.append(toggle)
+                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
+
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
                 button.grid(row=i + len(available_devApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
@@ -430,6 +478,11 @@ class App(customtkinter.CTk):
             # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+
+            # Add the toggle to the list
+            toggles.append(toggle)
+            toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
             
             # Dynamically set toggle attribute based on the original browsers list
             for original_name, _, platforms in docuApps:
@@ -449,7 +502,13 @@ class App(customtkinter.CTk):
                 # Create a dummy toggle checkbox for the unavailable chat app
                 toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
                 toggle.grid(row=i + len(available_docuApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-    
+                
+
+                # Add the toggle to the list
+                toggles.append(toggle)
+                toggle.configure(command=self.update_install_button_state)  # Bind the toggle to the update function
+
+
                 # Create a dummy button for the unavailable chat app
                 button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
                 button.grid(row=i + len(available_docuApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
