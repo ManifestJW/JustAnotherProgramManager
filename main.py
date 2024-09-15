@@ -17,6 +17,7 @@ import webbrowser
 import platform
 import credits
 import darkdetect
+import mousescroll
 from CTkToolTip import *
 
 
@@ -186,10 +187,19 @@ class App(customtkinter.CTk):
         def update_scroll_region(event):
             browserCanvas.configure(scrollregion=browserCanvas.bbox("all"))  # Update scroll region for browser canvas
             chatCanvas.configure(scrollregion=chatCanvas.bbox("all"))  # Update scroll region for chat canvas
-    
+            devCanvas.configure(scrollregion=devCanvas.bbox("all"))  # Update scroll region for chat canvas
+            docuCanvas.configure(scrollregion=docuCanvas.bbox("all"))  # Update scroll region for chat canvas
+
         browserFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for browser frame
         chatFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
-    
+        devFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
+        docuFrame.bind("<Configure>", update_scroll_region)  # Bind resize event for chat frame
+
+        mousescroll.bind_mouse_wheel(browserCanvas)
+        mousescroll.bind_mouse_wheel(chatCanvas)
+        mousescroll.bind_mouse_wheel(devCanvas)
+        mousescroll.bind_mouse_wheel(docuCanvas)
+
         # Create category labels for each section with right padding
         self.browserLabel = customtkinter.CTkLabel(browserFrame, text="Internet Browsers", font=("Arial", 16, "bold"))
         self.browserLabel.place(x=5, y=5)  # Position browser label
