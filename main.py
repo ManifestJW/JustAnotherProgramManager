@@ -18,6 +18,7 @@ import platform
 import credits
 import darkdetect
 import mousescroll
+import CTkMessagebox
 from CTkToolTip import *
 
 
@@ -254,14 +255,31 @@ class App(customtkinter.CTk):
         available_browsers = sorted(available_browsers, key=lambda x: x[0].lower())
 
         for i, (name, command) in enumerate(available_browsers):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
-            
+            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+
+            # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-            
-            goodName = name.replace(" ", "").lower()
+
+            # Create the button for the browser
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
+        for i, (name, command, _) in enumerate(browsers):
+            if name not in [app[0] for app in available_browsers]:  # Check if the app is not in available_chatApps
+                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+    
+                # Create a dummy toggle checkbox for the unavailable chat app
+                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
+                toggle.grid(row=i + len(available_browsers) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+                # Create a dummy button for the unavailable chat app
+                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
+                button.grid(row=i + len(available_browsers) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
 
     def createChatWidgets(self, frame):
         # Define chat application options with invalid links
@@ -297,14 +315,30 @@ class App(customtkinter.CTk):
         available_chatApps = sorted(available_chatApps, key=lambda x: x[0].lower())
 
         for i, (name, command) in enumerate(available_chatApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
             
+            # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
-            goodName = name.replace(" ", "").lower()
+            # Create the button for the browser
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
+        for i, (name, command, _) in enumerate(chatApps):
+            if name not in [app[0] for app in available_chatApps]:  # Check if the app is not in available_chatApps
+                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+
+                # Create a dummy toggle checkbox for the unavailable chat app
+                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
+                toggle.grid(row=i + len(available_chatApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+
+                # Create a dummy button for the unavailable chat app
+                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
+                button.grid(row=i + len(available_chatApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDevWidgets(self, frame):
         # Define development application options with invalid links
@@ -350,14 +384,30 @@ class App(customtkinter.CTk):
         available_devApps = sorted(available_devApps, key=lambda x: x[0].lower())
 
         for i, (name, command) in enumerate(available_devApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
             
+            # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
-            
-            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+
+            # Create the button for the browser
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
+        for i, (name, command, _) in enumerate(devApps):
+            if name not in [app[0] for app in available_devApps]:  # Check if the app is not in available_chatApps
+                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+    
+                # Create a dummy toggle checkbox for the unavailable chat app
+                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
+                toggle.grid(row=i + len(available_devApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+                # Create a dummy button for the unavailable chat app
+                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
+                button.grid(row=i + len(available_devApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
     def createDocuWidgets(self, frame):
         # Define documentation application options with invalid links
@@ -375,14 +425,36 @@ class App(customtkinter.CTk):
         available_docuApps = sorted(available_docuApps, key=lambda x: x[0].lower())
 
         for i, (name, command) in enumerate(available_docuApps):
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
-            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+            goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
             
+            # Create the toggle checkbox for the browser
             toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt)
             toggle.grid(row=i + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
             
-            goodName = name.replace(" ", "").lower()
+            # Dynamically set toggle attribute based on the original browsers list
+            for original_name, _, platforms in docuApps:
+                if original_name == name:  # Check if the name matches
+                    setattr(self, f"{goodName}Toggle", toggle)  # Set the toggle attribute
+            
+            # Create the button for the browser
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
+            button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
+        # Create dummy toggles and buttons for chat applications in chatApps but not in available_chatApps
+        for i, (name, command, _) in enumerate(docuApps):
+            if name not in [app[0] for app in available_docuApps]:  # Check if the app is not in available_chatApps
+                goodName = name.replace(" ", "").replace(".", "").replace("+", "plus").lower()
+    
+                # Create a dummy toggle checkbox for the unavailable chat app
+                toggle = customtkinter.CTkCheckBox(frame, text=name, checkbox_width=12, checkbox_height=12, fg_color=sysColor, hover_color=sysColorAlt, state="disabled")
+                toggle.grid(row=i + len(available_docuApps) + 1, column=1, sticky="w", pady=(5, 0), padx=(0, 0))  # Align with the button and same padding
+    
+                # Create a dummy button for the unavailable chat app
+                button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6, state="disabled")
+                button.grid(row=i + len(available_docuApps) + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
+                setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
+
 
     def parseDownloads(self):       
        # Disable the button before executing commands
@@ -475,8 +547,10 @@ class App(customtkinter.CTk):
         def appendCommand(toggle, commandWin, commandMac, commandArch):
             nonlocal commands
             if toggle.get() == 1:
-                commands += commandWin if distro == "windows" else commandMac if distro == "macos" else commandArch if distro == "arch" else ""
-            
+                try:
+                    commands += commandWin if distro == "windows" else commandMac if distro == "macos" else commandArch if distro == "arch" else ""
+                except:
+                    pass # is not on this OS
         # Example commands for brew and winget
         if distro == "macos":
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
@@ -536,7 +610,7 @@ class App(customtkinter.CTk):
         appendCommand(self.gitToggle, "Git.Git ", "git ", "git ")
         appendCommand(self.githubdesktopToggle, "GitHub.GitHubDesktop ", "github ", "github-desktop-bin ")
         appendCommand(self.golangToggle, "GoLang.Go ", "go ", "go ")
-        appendCommand(self.intellijideaToggle, "JetBrains.IntelliJIDEA.Community ", "intellij-idea ", "intellij-idea-community-edition ")
+        appendCommand(self.intellijideacommunityToggle, "JetBrains.IntelliJIDEA.Community ", "intellij-idea ", "intellij-idea-community-edition ")
         appendCommand(self.javatemurin8Toggle, "EclipseAdoptium.Temurin.8.JDK ", "temurin@8 ", "jdk8-temurin ")
         appendCommand(self.javatemurin11Toggle, "EclipseAdoptium.Temurin.11.JDK ", "temurin@11 ", "jdk11-temurin ")
         appendCommand(self.javatemurin17Toggle, "EclipseAdoptium.Temurin.17.JDK ", "temurin@17 ", "jdk17-temurin ")
@@ -545,7 +619,7 @@ class App(customtkinter.CTk):
         appendCommand(self.nodejs20Toggle, "OpenJS.NodeJS.LTS ", "node@20 ", "nodejs-lts-iron ")
         appendCommand(self.nodejs22Toggle, "OpenJS.NodeJS ", "node ", "nodejs ")
         appendCommand(self.notepadplusplusToggle, "Notepad++.Notepad++ ", "", "")
-        appendCommand(self.pycharmToggle, "JetBrains.PyCharm.Community ", "pycharm-ce ", "pycharm-community-edition ")
+        appendCommand(self.pycharmcommunityToggle, "JetBrains.PyCharm.Community ", "pycharm-ce ", "pycharm-community-edition ")
         appendCommand(self.python27Toggle, "Python.Python.2 ", "", "python2 ")
         appendCommand(self.python312Toggle, "Python.Python.3.12 ", "python ", "python ")
         appendCommand(self.pulsarToggle, "Pulsar-Edit.Pulsar ", "pulsar ", "pulsar-bin ")
@@ -555,83 +629,86 @@ class App(customtkinter.CTk):
         appendCommand(self.visualstudiocodeToggle, "Microsoft.VisualStudioCode ", "visualstudiocode ", "visual-studio-code-bin ")
         appendCommand(self.visualstudiocommunityToggle, "Microsoft.VisualStudio.2022.Community ", "", "")
         appendCommand(self.vscodiumToggle, "VSCodium.VSCodium ", "vscodium ", "vscodium-bin ")
-        appendCommand(self.fleetToggle, "JetBrains.FleetLauncher.Preview ", "fleet ", " jetbrains-fleet ")
+        appendCommand(self.fleetpublicpreviewToggle, "JetBrains.FleetLauncher.Preview ", "fleet ", " jetbrains-fleet ")
         appendCommand(self.rubyToggle, "RubyInstallerTeam.RubyWithDevKit.3.1 ", "ruby ", "ruby ")
 
         return commands
 
     def updateAllApps(self):
-        # Disable the button before executing commands
-        self.updateButton.configure(state=tk.DISABLED)
+        msg = CTkMessagebox.CTkMessagebox(title="Warning Message!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
+                  icon="warning", option_1="Cancel", option_2="OK")
+        if msg.get()=="OK":
+            # Disable the button before executing commands
+            self.updateButton.configure(state=tk.DISABLED)
 
-        # Create a new window for terminal output
-        terminalWindow = tk.Toplevel(self)
-        terminalWindow.title("Terminal Output")
-        terminalWindow.geometry("600x400")
+            # Create a new window for terminal output
+            terminalWindow = tk.Toplevel(self)
+            terminalWindow.title("Terminal Output")
+            terminalWindow.geometry("600x400")
 
-        terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
-        terminalOutput.pack(expand=True, fill='both')
+            terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD)
+            terminalOutput.pack(expand=True, fill='both')
 
-        # Command to run
-        if platform.system().lower() == "darwin":
-            command = "brew upgrade"
-        elif platform.system().lower() == "windows":
-            command = "winget upgrade --all"
-        else:
-            command = "yay -Syyuu"
+            # Command to run
+            if platform.system().lower() == "darwin":
+                command = "brew upgrade"
+            elif platform.system().lower() == "windows":
+                command = "winget upgrade --all"
+            else:
+                command = "yay -Syyuu"
 
-        # Run the command in a separate thread
-        def run_command():
-            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+            # Run the command in a separate thread
+            def run_command():
+                process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
 
-            # Function to read the output asynchronously
-            def read_output(file, queue):
-                while True:
-                    line = file.readline()
-                    if not line:
-                        break
-                    queue.put(line)
+                # Function to read the output asynchronously
+                def read_output(file, queue):
+                    while True:
+                        line = file.readline()
+                        if not line:
+                            break
+                        queue.put(line)
 
-            # Set up queues
-            stdoutQueue = queue.Queue()
-            stderrQueue = queue.Queue()
+                # Set up queues
+                stdoutQueue = queue.Queue()
+                stderrQueue = queue.Queue()
 
-            # Create threads to read stdout and stderr
-            stdoutHandler = threading.Thread(target=read_output, args=(process.stdout, stdoutQueue))
-            stderrHandler = threading.Thread(target=read_output, args=(process.stderr, stderrQueue))
+                # Create threads to read stdout and stderr
+                stdoutHandler = threading.Thread(target=read_output, args=(process.stdout, stdoutQueue))
+                stderrHandler = threading.Thread(target=read_output, args=(process.stderr, stderrQueue))
 
-            # Start the threads
-            stdoutHandler.start()
-            stderrHandler.start()
+                # Start the threads
+                stdoutHandler.start()
+                stderrHandler.start()
 
-            # Check for output
-            def check_output():
-                while not stdoutQueue.empty():
-                    terminalOutput.configure(state='normal')
-                    terminalOutput.insert(tk.END, stdoutQueue.get())
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
+                # Check for output
+                def check_output():
+                    while not stdoutQueue.empty():
+                        terminalOutput.configure(state='normal')
+                        terminalOutput.insert(tk.END, stdoutQueue.get())
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
 
-                while not stderrQueue.empty():
-                    terminalOutput.configure(state='normal')
-                    terminalOutput.insert(tk.END, stderrQueue.get())
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
+                    while not stderrQueue.empty():
+                        terminalOutput.configure(state='normal')
+                        terminalOutput.insert(tk.END, stderrQueue.get())
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
 
-                if process.poll() is None:
-                    terminalOutput.after(100, check_output)  # Check again after a short delay
-                else:
-                    stdoutHandler.join()
-                    stderrHandler.join()
-                    
-                    terminalWindow.destroy()  # Close the terminal window
-                    self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
+                    if process.poll() is None:
+                        terminalOutput.after(100, check_output)  # Check again after a short delay
+                    else:
+                        stdoutHandler.join()
+                        stderrHandler.join()
 
-            # Start checking for output
-            check_output()
+                        terminalWindow.destroy()  # Close the terminal window
+                        self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
-        # Start the command in a separate thread
-        threading.Thread(target=run_command).start()
+                # Start checking for output
+                check_output()
+
+            # Start the command in a separate thread
+            threading.Thread(target=run_command).start()
 
 if __name__ == "__main__":
     app = App()
