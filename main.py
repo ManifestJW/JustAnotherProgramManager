@@ -226,8 +226,8 @@ class App(customtkinter.CTk):
         
         # Bind resize events for each section frame
         sectionFrame.bind("<Configure>", update_scroll_region)
-    
-        mousescroll.bind_mouse_wheel(sectionCanvas)
+        if row == len(self.commands_data.keys()) - 1:  # Check if it's the last section
+            mousescroll.bind_mouse_wheel(sectionCanvas)
 
         for key in self.commands_data.keys():  # Loop through each key
             self.createWidgets(sectionFrame, section_name)
