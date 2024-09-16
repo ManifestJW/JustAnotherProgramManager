@@ -1,4 +1,4 @@
-# ============================================
+````````````````````````````# ============================================
 # JAPM (Just Another Program Manager)
 # Author: Nayla Hanegan (naylahanegan@gmail.com)
 # Date: 9/14/2024
@@ -8,7 +8,7 @@
 import tkinter as tk
 from tkinter import scrolledtext
 import subprocess
-import queue
+import tempfile
 import colorlib
 import threading
 import customtkinter
@@ -19,7 +19,6 @@ import credits
 import time
 import darkdetect
 import mousescroll
-import os
 import CTkMessagebox
 import json
 import resourceFetch
@@ -362,15 +361,24 @@ class App(customtkinter.CTk):
 
         # Function to install Winget
         def install_winget():
+            script_content = """
+            Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression
+            """
+
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
+                temp_script.write(script_content.encode('utf-8'))
+                script_path = temp_script.name
+
+            # Get the path to gsudo
             localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-            command = f"\"{localGSudo}\" Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
+            command = f"\"{localGSudo}\" powershell -ExecutionPolicy Bypass -File \"{script_path}\""
             install_package(command, "Installing WinGet...", noNag=True)
 
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
-                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-                command = f"\"{localGSudo}\" Set-ExecutionPolicy Bypass -Scope Process -Force; \"{localGSudo}\" iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')````````````````````````````
+                command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;{localGSudo} iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
@@ -380,7 +388,7 @@ class App(customtkinter.CTk):
             threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_chocolatey)).start()
 
         # Start the installation of Chocolatey after GSudo is installed
-        if not self.isChocoInstalled() and distro == "windows":
+        if not self.isChocoInstalled() and distro == "windows" and self.isWingetInstalled():
             threading.Thread(target=install_chocolatey).start()
         
         distro = self.detectDistro()  # Detect the distribution once
@@ -389,7 +397,7 @@ class App(customtkinter.CTk):
         buildCommandsString = self.buildCommands(distro)  # Build the commands based on selected applications
 
         if distro == "windows":
-            if (self.isWingetInstalled() and self.isChocoInstalled()):
+            if (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
                 # Execute commands once all conditions are satisfied
                 self.executeCommands(buildCommandsString, title="Download Output")
 
@@ -411,6 +419,13 @@ class App(customtkinter.CTk):
     def isWingetInstalled(self):
         try:
             subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            return True
+        except:
+            return False
+
+    def isGsudoInstalled(self):  # Add this method to check for GSudo installation
+        try:
+            subprocess.run(["gsudo", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             return True
         except:
             return False
