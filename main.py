@@ -377,8 +377,6 @@ class App(customtkinter.CTk):
             threading.Thread(target=install_winget).start()  # Start Winget installation
             # Wait for Winget installation to complete before checking for GSudo
             threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_chocolatey)).start()
-        elif not self.isChocoInstalled():  # Check if Chocolatey is not installed
-            threading.Thread(target=install_chocolatey).start()  # Start Chocolatey installation
 
         # Start the installation of Chocolatey after GSudo is installed
         if not self.isChocoInstalled() and distro == "windows":
