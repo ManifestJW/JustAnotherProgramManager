@@ -321,26 +321,22 @@ class App(customtkinter.CTk):
 
         def read_output(process, terminalOutput):
             while True:
-                # Use select to check if there's data to read
-                rlist, _, _ = select.select([process.stdout, process.stderr], [], [], 0.1)
+                stdout_line = process.stdout.readline()
+                stderr_line = process.stderr.readline()
 
-                if process.stdout in rlist:
-                    stdout_line = process.stdout.readline()
-                    if stdout_line:
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stdout_line)
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
+                if stdout_line:
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, stdout_line)
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
 
-                if process.stderr in rlist:
-                    stderr_line = process.stderr.readline()
-                    if stderr_line:
-                        terminalOutput.configure(state='normal')
-                        terminalOutput.insert(tk.END, stderr_line)
-                        terminalOutput.yview(tk.END)  # Scroll to the bottom
-                        terminalOutput.configure(state='disabled')
+                if stderr_line:
+                    terminalOutput.configure(state='normal')
+                    terminalOutput.insert(tk.END, stderr_line)
+                    terminalOutput.yview(tk.END)  # Scroll to the bottom
+                    terminalOutput.configure(state='disabled')
 
-                if process.poll() is not None and not rlist:
+                if stdout_line == '' and stderr_line == '' and process.poll() is not None:
                     break
 
         def start_reading_output(process, terminalOutput):
@@ -355,7 +351,6 @@ class App(customtkinter.CTk):
             else:
                 process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-            # Run the terminal output update in a separate thread
             start_reading_output(process, terminalOutput)
             process.wait()  # Wait for the process to complete
 
@@ -364,7 +359,7 @@ class App(customtkinter.CTk):
 
             if "Ensuring chocolatey.nupkg is in the lib folder" in output:
                 if not noNag:
-                    msg = CTkMessagebox.CTkMessagebox(
+                    msg = customtkinter.CTkMessagebox(
                         title="Success!",
                         message="Choco and Winget Installed\nPlease restart the app to use them.",
                         icon="check",
@@ -380,7 +375,7 @@ class App(customtkinter.CTk):
                         sys.exit()
             else:
                 if not noNag:
-                    CTkMessagebox.CTkMessagebox(
+                    customtkinter.CTkMessagebox(
                         title="Success!",
                         message="Success.",
                         icon="check",
@@ -389,7 +384,6 @@ class App(customtkinter.CTk):
 
             terminalWindow.destroy()
 
-        # Start the command execution
         # Run the command execution in a separate thread
         command_thread = threading.Thread(target=run_command)
         command_thread.daemon = True
