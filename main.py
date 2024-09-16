@@ -362,15 +362,15 @@ class App(customtkinter.CTk):
 
         # Function to install Winget
         def install_winget():
-            localGSudo = os.path.abspath(resourceFetch.fetchResource('dependencies/win32/gsudo.exe'))
+            localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
             command = f"\"{localGSudo}\" Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
             install_package(command, "Installing WinGet...", noNag=True)
 
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
-                localGSudo = os.path.abspath(resourceFetch.fetchResource('dependencies/win32/gsudo.exe'))
-                command = f"\"{localGSudo}\" Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;{localGSudo} iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
+                command = f"\"{localGSudo}\" powershell -Command \"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))\""
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
