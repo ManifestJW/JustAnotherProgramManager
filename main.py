@@ -14,6 +14,7 @@ import threading
 import customtkinter
 import version
 import webbrowser
+import sys
 import platform
 import credits
 import time
@@ -21,8 +22,12 @@ import darkdetect
 import mousescroll
 import CTkMessagebox
 import json
+import os
 import resourceFetch
 from CTkToolTip import *
+
+if platform.system().lower() == "windows":
+    import psutil
 
 if platform.system().lower() == "linux":
     customtkinter.set_appearance_mode("Dark")
@@ -342,6 +347,15 @@ class App(customtkinter.CTk):
                         terminalWindow.destroy()
                 else:
                     terminalWindow.destroy()
+                if "choco-install.ps1" and self.detectDistro() == "windows":
+                    msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Choco and Winget Installed\nPlease restart the app to use them.", icon="check", option_1="OK")
+                    pid = os.getpid()
+                    p = psutil.Process(pid)
+                    p.terminate()
+                    p.wait()
+                    script_path = os.path.abspath(sys.argv[0])
+                    subprocess.Popen([sys.executable, script_path])
+                    sys.exit()
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
@@ -386,7 +400,9 @@ class App(customtkinter.CTk):
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
                     temp_script.write(script_content.encode('utf-8'))
                     script_path = temp_script.name
-            
+                    os.rename(script_path, os.path.join(os.path.dirname(script_path), 'choco-install.ps1'))
+                    script_path = os.path.join(os.path.dirname(script_path), 'choco-install.ps1')
+
                 # Get the path to gsudo
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
             
@@ -432,13 +448,6 @@ class App(customtkinter.CTk):
     def isWingetInstalled(self):
         try:
             subprocess.run(["winget", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            return True
-        except:
-            return False
-
-    def isGsudoInstalled(self):  # Add this method to check for GSudo installation
-        try:
-            subprocess.run(["gsudo", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             return True
         except:
             return False
@@ -492,7 +501,8 @@ class App(customtkinter.CTk):
             commands += "brew install --display-times "  # Initial command for Homebrew on macOS
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "
-            commands2 += "sudo choco install -y "
+            localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
+            commands2 += "{localGSudo} choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 

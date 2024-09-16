@@ -5,4 +5,5 @@ Pillow
 CTKToolTip
 darkdetect
 get-system-color; sys_platform == 'win32'
+psutil; sys_platform == 'win32'
 CTkMessagebox
