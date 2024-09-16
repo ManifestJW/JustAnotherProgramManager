@@ -208,6 +208,9 @@ class App(customtkinter.CTk):
     def createWidgets(self, frame, section_name):
         # Define the command list for the specific category
         browsers = [("", lambda: None, ["windows", "macos", "arch"])]
+        
+
+        
         for app in self.commands_data[section_name]:
             if self.detectDistro() == "macos":
                 if self.commands_data[section_name][app]['macos-brew'] != "":
@@ -247,7 +250,7 @@ class App(customtkinter.CTk):
             toggle.configure(command=lambda: self.update_install_button_state(self.parseButton))  # Bind the toggle to the update function
 
             # Create the button for the application
-            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=command, fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
+            button = customtkinter.CTkButton(frame, text=f"[?]", font=("Arial", 11, "bold"), text_color=sysColor, command=lambda name=name: webbrowser.open(self.commands_data[section_name][name]['url'], new=2), fg_color=("#ffffff", "#3a3a3a"), hover_color=("#ffffff", "#3a3a3a"), width=6)
             button.grid(row=i + 1, column=0, sticky="w", pady=(5, 0), padx=(0, 0))  # 5 pixels padding above and below
             setattr(self, f"{goodName}Toggle", toggle)  # Dynamically set toggle attribute
 
@@ -319,6 +322,7 @@ class App(customtkinter.CTk):
         threading.Thread(target=run_command).start()
 
     def parseDownloads(self):       
+        # Disable the button before executing commands
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
 
@@ -328,7 +332,8 @@ class App(customtkinter.CTk):
 
         # Function to install Winget
         def install_winget():
-            command = "Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
+            localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
+            command = f"{localGSudo} Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
             install_package(command, "Installing WinGet...", noNag=True)
 
         # Function to install GSudo
@@ -340,13 +345,13 @@ class App(customtkinter.CTk):
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
-                command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
+                command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
         if not self.isWingetInstalled() and distro == "windows":
             threading.Thread(target=install_winget).start()  # Start Winget installation
-
             # Wait for Winget installation to complete before checking for GSudo
             threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_gsudo)).start()
         elif self.isWingetInstalled() and not self.isGsudoInstalled():  # Check if GSudo is not installed
@@ -362,29 +367,24 @@ class App(customtkinter.CTk):
         if not self.isGsudoInstalled() and distro == "windows":
             threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, check_and_install_chocolatey)).start()
         
-        # Check if all conditions are satisfied before executing commands
+        distro = self.detectDistro()  # Detect the distribution once
+
+        global buildCommandsString
+        buildCommandsString = self.buildCommands(distro)  # Build the commands based on selected applications
+
         if distro == "windows":
-            if not (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
-                time.sleep(1)
-                
-            else:
-                distro = self.detectDistro()
-                commands = self.buildCommands(distro)  # Build the commands based on selected applications
-
-                if distro == "arch":
-                    commands = f"pkexec {commands}"
-
+            if (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
                 # Execute commands once all conditions are satisfied
-                self.executeCommands(commands, title="Download Output")
-        else:
-            distro = self.detectDistro()
-            commands = self.buildCommands(distro)  # Build the commands based on selected applications
-    
-            if distro == "arch":
-                commands = f"pkexec {commands}"
-    
-            # Execute commands once all conditions are satisfied
-            self.executeCommands(commands, title="Download Output")  
+                self.executeCommands(buildCommandsString, title="Download Output")
+
+            time.sleep(1)  # Wait if conditions are not met
+
+        if distro == "arch":
+            buildCommandsString = f"pkexec {buildCommandsString}"
+
+        # Execute commands for non-Windows distributions
+        if distro != "windows":
+            self.executeCommands(buildCommandsString, title="Download Output")
 
     def wait_for_installation(self, check_function, install_function):
         # Wait until the check_function returns True, then run install_function
@@ -487,8 +487,10 @@ class App(customtkinter.CTk):
                                       self.commands_data[category][app]['archlinux-pacman-aur'])
                 else:
                     pass
-            
-        return commands + " & " + commands2
+        if self.detectDistro == "windows":
+            return commands + " & " + commands2
+        else:
+            return commands
 
     def updateAllApps(self):
         msg = CTkMessagebox.CTkMessagebox(title="Alert!", message="Are you sure you want to update every app!\nThis includes apps not listed here.",
