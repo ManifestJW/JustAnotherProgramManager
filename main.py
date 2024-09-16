@@ -341,7 +341,9 @@ class App(customtkinter.CTk):
         def run_command():
             # Prepend PowerShell command if needed
             if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy", "Invoke-RestMethod", "Invoke-Expression", "Out-Null"]):  # Check if it's a PowerShell command
-                commands = f"powershell -ExecutionPolicy Bypass -Command \"{commands}\""
+                process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            else:
+                process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
             process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
