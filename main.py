@@ -319,39 +319,34 @@ class App(customtkinter.CTk):
         terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, bg="#2e2e2e", fg="#ffffff")  # Set dark background and light text
         terminalOutput.pack(expand=True, fill='both')
 
-        def read_output(process, terminalOutput):
-            while True:
-                stdout_line = process.stdout.readline()
-                stderr_line = process.stderr.readline()
+        def update_terminal_output(process, terminalOutput):
+            output = ""
 
-                if stdout_line:
-                    terminalOutput.configure(state='normal')
-                    terminalOutput.insert(tk.END, stdout_line)
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
+            # Read from stdout
+            for line in iter(process.stdout.readline, ''):
+                terminalOutput.configure(state='normal')
+                terminalOutput.insert(tk.END, line)
+                terminalOutput.yview(tk.END)  # Scroll to the bottom
+                terminalOutput.configure(state='disabled')
+                output += line
 
-                if stderr_line:
-                    terminalOutput.configure(state='normal')
-                    terminalOutput.insert(tk.END, stderr_line)
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
-
-                if stdout_line == '' and stderr_line == '' and process.poll() is not None:
-                    break
-
-        def start_reading_output(process, terminalOutput):
-            thread = threading.Thread(target=read_output, args=(process, terminalOutput))
-            thread.daemon = True
-            thread.start()
+            # Read from stderr
+            for line in iter(process.stderr.readline, ''):
+                terminalOutput.configure(state='normal')
+                terminalOutput.insert(tk.END, line)
+                terminalOutput.yview(tk.END)  # Scroll to the bottom
+                terminalOutput.configure(state='disabled')
+                output += line
 
         def run_command():
-            # Check if the command contains PowerShell-specific commands
+            # Prepend PowerShell command if needed
             if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy", "Invoke-RestMethod", "Invoke-Expression", "Out-Null"]):  # Check if it's a PowerShell command
-                process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            else:
-                process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                commands = f"powershell -ExecutionPolicy Bypass -Command \"{commands}\""
 
-            start_reading_output(process, terminalOutput)
+            process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+            # Run the terminal output update in a separate thread
+            threading.Thread(target=update_terminal_output, args=(process, terminalOutput), daemon=True).start()
             process.wait()  # Wait for the process to complete
 
             # Handle completion based on output
