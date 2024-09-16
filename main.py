@@ -326,28 +326,48 @@ class App(customtkinter.CTk):
                 process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
             # Unified function to read output and update terminal
             def update_terminal_output():
+                output = ""
                 for line in iter(process.stdout.readline, ''):
                     terminalOutput.configure(state='normal', font=(10))
                     terminalOutput.insert(tk.END, line)
                     terminalOutput.yview(tk.END)  # Scroll to the bottom
                     terminalOutput.configure(state='disabled')
+                    output += line
 
                 for line in iter(process.stderr.readline, ''):
                     terminalOutput.configure(state='normal')
                     terminalOutput.insert(tk.END, line)
                     terminalOutput.yview(tk.END)  # Scroll to the bottom
                     terminalOutput.configure(state='disabled')
+                    output += line
 
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
-                if noNag == False:
-                    msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.", icon="check", option_1="OK")
-                    if msg.get() == "OK":
-                        terminalWindow.destroy()
+                if "chocolatey.nupkg" in output:
+                    if not noNag:
+                        msg = CTkMessagebox.CTkMessagebox(
+                            title="Success!",
+                            message="Choco and Winget Installed\nPlease restart the app to use them.",
+                            icon="check",
+                            option_1="OK"
+                        )
+                        if msg.get() == "OK":
+                            pid = os.getpid()
+                            p = psutil.Process(pid)
+                            p.terminate()
+                            p.wait()
+                            script_path = os.path.abspath(sys.argv[0])
+                            subprocess.Popen([sys.executable, script_path])
+                            sys.exit()
                 else:
-                    terminalWindow.destroy()
-                self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
+                    if not noNag:
+                        msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Success.", icon="check", option_1="OK")
+                        if msg.get() == "OK":
+                            terminalWindow.destroy()
+                    else:
+                        terminalWindow.destroy()
+                        self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
             threading.Thread(target=update_terminal_output).start()
@@ -497,7 +517,7 @@ class App(customtkinter.CTk):
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "
             localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-            commands2 += f"{localGSudo} choco install -y "
+            commands2 += "{localGSudo} choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
