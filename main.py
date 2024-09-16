@@ -1,4 +1,4 @@
-````````````````````````````# ============================================
+# ============================================
 # JAPM (Just Another Program Manager)
 # Author: Nayla Hanegan (naylahanegan@gmail.com)
 # Date: 9/14/2024
@@ -377,7 +377,7 @@ class App(customtkinter.CTk):
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
-                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')````````````````````````````
+                localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
                 command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;{localGSudo} iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
