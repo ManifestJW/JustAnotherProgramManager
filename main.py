@@ -19,6 +19,7 @@ import credits
 import time
 import darkdetect
 import mousescroll
+import os
 import CTkMessagebox
 import json
 import resourceFetch
