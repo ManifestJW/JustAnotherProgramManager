@@ -396,5 +396,19 @@
             "archlinux-pacman-aur": "ruby ",
             "url": "https://www.ruby-lang.org/en/"
         }
+    },
+    "games": {
+        "Minecraft Java Edition": {
+            "windows-winget": "Mojang.MinecraftLauncher ",
+            "macos-brew": "minecraft ",
+            "archlinux-pacman-aur": "minecraft-launcher ",
+            "url": "https://minecraft.net"
+        },
+        "CurseForge": {
+            "windows-winget": "Overwolf.CurseForge ",
+            "macos-brew": "curseforge ",
+            "archlinux-pacman-aur": "curseforge ",
+            "url": "https://www.curseforge.com/"
+        }
     }
 }
