@@ -319,9 +319,6 @@ class App(customtkinter.CTk):
         threading.Thread(target=run_command).start()
 
     def parseDownloads(self):       
-        # Disable the button before executing commands
-        chocoFirstInst = False  # Define as True if Chocolatey just finished installing
-
         self.parseButton.configure(state=tk.DISABLED)
         distro = self.detectDistro()  # Detect the operating system distribution
 
@@ -345,7 +342,6 @@ class App(customtkinter.CTk):
             if not self.isChocoInstalled() and distro == "windows":
                 command = f"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
-                chocoFirstInst = True
 
         # Install Winget if not already installed
         if not self.isWingetInstalled() and distro == "windows":
@@ -369,16 +365,6 @@ class App(customtkinter.CTk):
         # Check if all conditions are satisfied before executing commands
         if distro == "windows":
             if not (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
-                if chocoFirstInst == True:
-                    distro = self.detectDistro()
-                    commands = self.buildCommands(distro)  # Build the commands based on selected applications
-
-                    if distro == "arch":
-                        commands = f"pkexec {commands}"
-
-                    # Execute commands once all conditions are satisfied
-                    self.executeCommands(commands, title="Download Output")
-                    return
                 time.sleep(1)
                 
             else:
