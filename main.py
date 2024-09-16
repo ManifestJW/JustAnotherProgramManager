@@ -400,8 +400,8 @@ class App(customtkinter.CTk):
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
                     temp_script.write(script_content.encode('utf-8'))
                     script_path = temp_script.name
-                    os.rename(script_path, os.path.join(os.path.dirname(script_path), 'choco-install.ps1'))
-                    script_path = os.path.join(os.path.dirname(script_path), 'choco-install.ps1')
+                os.rename(script_path, os.path.join(os.path.dirname(script_path), 'choco-install.ps1'))
+                script_path = os.path.join(os.path.dirname(script_path), 'choco-install.ps1')
 
                 # Get the path to gsudo
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
