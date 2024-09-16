@@ -344,7 +344,7 @@ class App(customtkinter.CTk):
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
-                if "chocolatey.nupkg" in output:
+                if "Ensuring chocolatey.nupkg is in the lib folder" in output:
                     if not noNag:
                         msg = CTkMessagebox.CTkMessagebox(
                             title="Success!",
