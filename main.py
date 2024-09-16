@@ -426,7 +426,7 @@ class App(customtkinter.CTk):
         buildCommandsString = self.buildCommands(distro)  # Build the commands based on selected applications
 
         if distro == "windows":
-            if (self.isWingetInstalled() and self.isGsudoInstalled() and self.isChocoInstalled()):
+            if (self.isWingetInstalled() and self.isChocoInstalled()):
                 # Execute commands once all conditions are satisfied
                 self.executeCommands(buildCommandsString, title="Download Output")
 
