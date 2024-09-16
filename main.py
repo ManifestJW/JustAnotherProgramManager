@@ -309,41 +309,47 @@ class App(customtkinter.CTk):
     def executeCommands(self, commands, title="Terminal Output", noNag=False):
         if not commands:
             return  # Exit if there are no commands to execute
-
+    
         # Create a new window for terminal output
         terminalWindow = customtkinter.CTkToplevel(self)
         terminalWindow.title(title)
         terminalWindow.geometry("600x400")
-
+    
         terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, bg=colorBg, fg="#ffffff")  # Set dark background and light text
         terminalOutput.pack(expand=True, fill='both')
-
-        # Run the command in a separate thread
+    
         def run_command():
             if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy", "Invoke-RestMethod", "Invoke-Expression", "Out-Null"]):  # Check if it's a PowerShell command
                 process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
             else:
                 process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
-            # Unified function to read output and update terminal
+    
             def update_terminal_output():
                 output = ""
-                for line in iter(process.stdout.readline, ''):
-                    terminalOutput.configure(state='normal', font=(10))
-                    terminalOutput.insert(tk.END, line)
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
-                    output += line
-
-                for line in iter(process.stderr.readline, ''):
-                    terminalOutput.configure(state='normal')
-                    terminalOutput.insert(tk.END, line)
-                    terminalOutput.yview(tk.END)  # Scroll to the bottom
-                    terminalOutput.configure(state='disabled')
-                    output += line
-
+                # Read stdout and stderr in a non-blocking manner
+                while True:
+                    stdout_line = process.stdout.readline()
+                    stderr_line = process.stderr.readline()
+                    if not stdout_line and not stderr_line and process.poll() is not None:
+                        break
+                    if stdout_line:
+                        terminalOutput.configure(state='normal', font=(10))
+                        terminalOutput.insert(tk.END, stdout_line)
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
+                        output += stdout_line
+                    if stderr_line:
+                        terminalOutput.configure(state='normal')
+                        terminalOutput.insert(tk.END, stderr_line)
+                        terminalOutput.yview(tk.END)  # Scroll to the bottom
+                        terminalOutput.configure(state='disabled')
+                        output += stderr_line
+    
                 process.stdout.close()
                 process.stderr.close()
                 process.wait()  # Wait for the process to finish
+    
+                # Handle completion based on output
                 if "Ensuring chocolatey.nupkg is in the lib folder" in output:
                     if not noNag:
                         msg = CTkMessagebox.CTkMessagebox(
@@ -368,12 +374,15 @@ class App(customtkinter.CTk):
                     else:
                         terminalWindow.destroy()
                         self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
-
-            # Start the terminal output update in a separate thread
-            threading.Thread(target=update_terminal_output).start()
-
-        # Start the command in a separate thread
-        threading.Thread(target=run_command).start()
+    
+            # Start the terminal output update
+            update_thread = threading.Thread(target=update_terminal_output)
+            update_thread.start()
+            update_thread.join()  # Wait for the terminal output update to finish
+    
+        # Start the command execution in a separate thread
+        command_thread = threading.Thread(target=run_command)
+        command_thread.start()
 
     def parseDownloads(self):       
         # Disable the button before executing commands
