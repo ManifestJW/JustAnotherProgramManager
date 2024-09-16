@@ -153,41 +153,52 @@ class App(customtkinter.CTk):
         return frame  # Return the credits frame
 
     def createAppInstaller(self):
-        # Create the app installer frame with various sections
-        frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
-        frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Position the frame with padding
-
-        # Create a canvas for horizontal scrolling
-        canvas = customtkinter.CTkCanvas(frame, bg=colorBg)
-        scrollbar = customtkinter.CTkScrollbar(frame, orientation="horizontal", command=canvas.xview)
-        scrollbar.grid(row=1, column=0, sticky="ew")  # Position the scrollbar
-
-        canvas.grid(row=0, column=0, sticky="nsew")  # Position the canvas
-        canvas.configure(xscrollcommand=scrollbar.set)
-
-        # Create a frame inside the canvas to hold the category buttons
+        # Configure the main window to allow stretching
+        self.grid_rowconfigure(0, weight=1)  # Allow row 0 (outer_frame) to stretch vertically
+        self.grid_columnconfigure(1, weight=1)  # Allow column 1 (outer_frame) to stretch horizontally
+    
+        # Create the outer frame that will contain the canvas
+        outer_frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))
+        outer_frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Stretch in both directions
+    
+        # Configure outer_frame to allow stretching of its content
+        outer_frame.grid_rowconfigure(0, weight=1)
+        outer_frame.grid_columnconfigure(0, weight=1)
+    
+        # Create a canvas inside the outer frame for horizontal scrolling
+        canvas = tk.Canvas(outer_frame, bg=colorBg, highlightthickness=0)
+        canvas.grid(row=0, column=0, pady=(45, 0), sticky="nsew")  # Stretch in both directions
+    
+        # Create a horizontal scrollbar for the canvas
+        h_scrollbar = customtkinter.CTkScrollbar(outer_frame, orientation="horizontal", command=canvas.xview, fg_color=("#ffffff", "#3a3a3a"), button_hover_color=sysColorAlt, button_color=sysColor)
+        h_scrollbar.grid(row=1, column=0, sticky="ew")  # Attach to the bottom of the canvas
+    
+        # Configure canvas scrolling
+        canvas.configure(xscrollcommand=h_scrollbar.set)
+    
+        # Create an inner frame inside the canvas
         inner_frame = customtkinter.CTkFrame(canvas, fg_color=("#fcfcfc", "#2e2e2e"))
-        canvas.create_window((0, 0), window=inner_frame, anchor='nw')
-
-        for index, key in enumerate(self.commands_data.keys()):  # Loop through each key with an index
-            self.createSection(inner_frame, key, 1, index)  # Increment column index by 1 for each section
-
-        # Update the scroll region of the canvas when the inner frame is resized
-        def update_scroll_region(event):
-            canvas.configure(scrollregion=canvas.bbox("all"))  # Update scroll region for the canvas
-
-        inner_frame.bind("<Configure>", update_scroll_region)
-
-        # Create the Install Selected button above the frames
-        self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
-        self.parseButton.grid(row=0, column=0, padx=(5, 5), pady=(10, 5), sticky="w")  # Position Install Selected button
-        self.update_install_button_state(self.parseButton)  # Call the method to initialize button state
-
+        
+        # Place the inner frame in the canvas
+        canvas.create_window((0, 0), window=inner_frame, anchor="nw")
+    
+        # Dynamically add sections to the inner frame
+        for index, key in enumerate(self.commands_data.keys()):
+            self.createSection(inner_frame, key, 1, index)
+    
+        # Ensure the inner frame resizes correctly
+        inner_frame.update_idletasks()
+        canvas.config(scrollregion=canvas.bbox("all"))  # Update scrollable region to encompass the inner frame
+    
+        # Create the Install Selected button inside the outer frame
+        self.parseButton = customtkinter.CTkButton(master=outer_frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
+        self.parseButton.place(x=5, y=10)
+    
         # Create the Update All Apps button next to Install Selected
-        self.updateButton = customtkinter.CTkButton(master=frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color=sysColor, hover_color=sysColorAlt)
-        self.updateButton.place(x=165, y=10)  # Position next to the Install Selected button
-
-        return frame  # Return the app installer frame
+        self.updateButton = customtkinter.CTkButton(master=outer_frame, command=self.updateAllApps, text="Update ALL Apps", width=150, fg_color=sysColor, hover_color=sysColorAlt)
+        self.updateButton.place(x=165, y=10)
+    
+        return outer_frame
 
     def createSection(self, frame, section_name, row, column):
         # Create a border frame for the section
