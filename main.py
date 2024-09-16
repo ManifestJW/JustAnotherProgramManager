@@ -347,15 +347,17 @@ class App(customtkinter.CTk):
                         terminalWindow.destroy()
                 else:
                     terminalWindow.destroy()
+
                 if "choco-install.ps1" and self.detectDistro() == "windows":
                     msg = CTkMessagebox.CTkMessagebox(title="Success!", message="Choco and Winget Installed\nPlease restart the app to use them.", icon="check", option_1="OK")
-                    pid = os.getpid()
-                    p = psutil.Process(pid)
-                    p.terminate()
-                    p.wait()
-                    script_path = os.path.abspath(sys.argv[0])
-                    subprocess.Popen([sys.executable, script_path])
-                    sys.exit()
+                    if msg.get() == "OK":
+                        pid = os.getpid()
+                        p = psutil.Process(pid)
+                        p.terminate()
+                        p.wait()
+                        script_path = os.path.abspath(sys.argv[0])
+                        subprocess.Popen([sys.executable, script_path])
+                        sys.exit()
                 self.updateButton.configure(state=tk.NORMAL)  # Re-enable the button after command execution
 
             # Start the terminal output update in a separate thread
