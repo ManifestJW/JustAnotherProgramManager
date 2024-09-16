@@ -378,11 +378,13 @@ class App(customtkinter.CTk):
             script_content = """
             Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression
             """
-
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
-                temp_script.write(script_content.encode('utf-8'))
-                script_path = temp_script.name
-
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
+                    temp_script.write(script_content.encode('utf-8'))
+                    script_path = temp_script.name
+            except:
+                pass
+            
             # Get the path to gsudo
             localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
             command = f"\"{localGSudo}\" powershell -ExecutionPolicy Bypass -File \"{script_path}\""
@@ -396,13 +398,15 @@ class App(customtkinter.CTk):
                 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
                 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
                 """
-            
-                with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
-                    temp_script.write(script_content.encode('utf-8'))
-                    script_path = temp_script.name
-                os.rename(script_path, os.path.join(os.path.dirname(script_path), 'choco-install.ps1'))
-                script_path = os.path.join(os.path.dirname(script_path), 'choco-install.ps1')
-
+                try:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
+                        temp_script.write(script_content.encode('utf-8'))
+                        script_path = temp_script.name
+                    os.rename(script_path, os.path.join(os.path.dirname(script_path), 'choco-install.ps1'))
+                    script_path = os.path.join(os.path.dirname(script_path), 'choco-install.ps1')
+                except:
+                    pass
+                
                 # Get the path to gsudo
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
             
