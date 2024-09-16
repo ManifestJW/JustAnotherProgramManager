@@ -356,7 +356,7 @@ class App(customtkinter.CTk):
 
             if "Ensuring chocolatey.nupkg is in the lib folder" in output:
                 if not noNag:
-                    msg = customtkinter.CTkMessagebox(
+                    msg = CTkMessagebox.CTkMessagebox(
                         title="Success!",
                         message="Choco and Winget Installed\nPlease restart the app to use them.",
                         icon="check",
@@ -372,7 +372,7 @@ class App(customtkinter.CTk):
                         sys.exit()
             else:
                 if not noNag:
-                    customtkinter.CTkMessagebox(
+                    CTkMessagebox.CTkMessagebox(
                         title="Success!",
                         message="Success.",
                         icon="check",
