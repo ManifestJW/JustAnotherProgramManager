@@ -374,11 +374,24 @@ class App(customtkinter.CTk):
             command = f"\"{localGSudo}\" powershell -ExecutionPolicy Bypass -File \"{script_path}\""
             install_package(command, "Installing WinGet...", noNag=True)
 
-        # Function to install Chocolatey
+
         def install_chocolatey():
-            if not self.isChocoInstalled() and distro == "windows":
+                # Create a temporary PowerShell script file
+                script_content = """
+                Set-ExecutionPolicy Bypass -Scope Process -Force
+                [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+                iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+                """
+            
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".ps1") as temp_script:
+                    temp_script.write(script_content.encode('utf-8'))
+                    script_path = temp_script.name
+            
+                # Get the path to gsudo
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-                command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;{localGSudo} iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+            
+                # Construct the command to run the PowerShell script with gsudo
+                command = f"\"{localGSudo}\" powershell -ExecutionPolicy Bypass -File \"{script_path}\""
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
