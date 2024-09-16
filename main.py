@@ -310,20 +310,20 @@ class App(customtkinter.CTk):
     def executeCommands(self, commands, title="Terminal Output", noNag=False):
         if not commands:
             return  # Exit if there are no commands to execute
-    
+
         # Create a new window for terminal output
         terminalWindow = customtkinter.CTkToplevel(self)
         terminalWindow.title(title)
         terminalWindow.geometry("600x400")
-    
+
         terminalOutput = scrolledtext.ScrolledText(terminalWindow, wrap=tk.WORD, bg="#2e2e2e", fg="#ffffff")  # Set dark background and light text
         terminalOutput.pack(expand=True, fill='both')
-    
+
         def read_output(process, terminalOutput):
             while True:
                 # Use select to check if there's data to read
                 rlist, _, _ = select.select([process.stdout, process.stderr], [], [], 0.1)
-                
+
                 if process.stdout in rlist:
                     stdout_line = process.stdout.readline()
                     if stdout_line:
@@ -331,7 +331,7 @@ class App(customtkinter.CTk):
                         terminalOutput.insert(tk.END, stdout_line)
                         terminalOutput.yview(tk.END)  # Scroll to the bottom
                         terminalOutput.configure(state='disabled')
-                
+
                 if process.stderr in rlist:
                     stderr_line = process.stderr.readline()
                     if stderr_line:
@@ -339,32 +339,32 @@ class App(customtkinter.CTk):
                         terminalOutput.insert(tk.END, stderr_line)
                         terminalOutput.yview(tk.END)  # Scroll to the bottom
                         terminalOutput.configure(state='disabled')
-                
+
                 if process.poll() is not None and not rlist:
                     break
-                
+
         def start_reading_output(process, terminalOutput):
             thread = threading.Thread(target=read_output, args=(process, terminalOutput))
             thread.daemon = True
             thread.start()
-    
+
         def run_command():
             # Check if the command contains PowerShell-specific commands
             if any(cmd in commands for cmd in ["Invoke-WebRequest", "Add-AppxPackage", "Set-ExecutionPolicy", "Invoke-RestMethod", "Invoke-Expression", "Out-Null"]):  # Check if it's a PowerShell command
                 process = subprocess.Popen(f"powershell -Command \"{commands}\"", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             else:
                 process = subprocess.Popen(commands, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    
+
             # Run the terminal output update in a separate thread
             start_reading_output(process, terminalOutput)
             process.wait()  # Wait for the process to complete
-    
+
             # Handle completion based on output
             output = terminalOutput.get("1.0", tk.END)  # Get all output from the ScrolledText widget
-    
+
             if "Ensuring chocolatey.nupkg is in the lib folder" in output:
                 if not noNag:
-                    msg = customtkinter.CTkMessagebox(
+                    msg = CTkMessagebox.CTkMessagebox(
                         title="Success!",
                         message="Choco and Winget Installed\nPlease restart the app to use them.",
                         icon="check",
@@ -380,17 +380,20 @@ class App(customtkinter.CTk):
                         sys.exit()
             else:
                 if not noNag:
-                    customtkinter.CTkMessagebox(
+                    CTkMessagebox.CTkMessagebox(
                         title="Success!",
                         message="Success.",
                         icon="check",
                         option_1="OK"
                     ).get()
-    
+
             terminalWindow.destroy()
-    
+
         # Start the command execution
-        run_command()
+        # Run the command execution in a separate thread
+        command_thread = threading.Thread(target=run_command)
+        command_thread.daemon = True
+        command_thread.start()
 
     def parseDownloads(self):       
         # Disable the button before executing commands
