@@ -404,6 +404,11 @@
             "archlinux-pacman-aur": "minecraft-launcher ",
             "url": "https://minecraft.net"
         },
+        "Minecraft Bedrock Edition": {
+            "windows-winget": "9NBLGGH2JHXJ",
+            "archlinux-pacman-aur": "mcpelauncher-linux",
+            "url": "https://minecraft.net"
+        },
         "CurseForge": {
             "windows-winget": "Overwolf.CurseForge ",
             "macos-brew": "curseforge ",
