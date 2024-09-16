@@ -398,7 +398,7 @@
         }
     },
     "games": {
-        "Minecraft": {
+        "Minecraft Java Edition": {
             "windows-winget": "Mojang.MinecraftLauncher ",
             "macos-brew": "minecraft ",
             "archlinux-pacman-aur": "minecraft-launcher ",
