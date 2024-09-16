@@ -156,9 +156,27 @@ class App(customtkinter.CTk):
         # Create the app installer frame with various sections
         frame = customtkinter.CTkFrame(self, fg_color=("#fcfcfc", "#2e2e2e"))  # Create frame with light and dark mode colors
         frame.grid(row=0, column=1, padx=(5, 5), pady=(5, 5), sticky="nsew")  # Position the frame with padding
-        
+
+        # Create a canvas for horizontal scrolling
+        canvas = customtkinter.CTkCanvas(frame, bg=colorBg)
+        scrollbar = customtkinter.CTkScrollbar(frame, orientation="horizontal", command=canvas.xview)
+        scrollbar.grid(row=1, column=0, sticky="ew")  # Position the scrollbar
+
+        canvas.grid(row=0, column=0, sticky="nsew")  # Position the canvas
+        canvas.configure(xscrollcommand=scrollbar.set)
+
+        # Create a frame inside the canvas to hold the category buttons
+        inner_frame = customtkinter.CTkFrame(canvas, fg_color=("#fcfcfc", "#2e2e2e"))
+        canvas.create_window((0, 0), window=inner_frame, anchor='nw')
+
         for index, key in enumerate(self.commands_data.keys()):  # Loop through each key with an index
-            self.createSection(frame, key, 1, index)  # Increment column index by 1 for each section
+            self.createSection(inner_frame, key, 1, index)  # Increment column index by 1 for each section
+
+        # Update the scroll region of the canvas when the inner frame is resized
+        def update_scroll_region(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))  # Update scroll region for the canvas
+
+        inner_frame.bind("<Configure>", update_scroll_region)
 
         # Create the Install Selected button above the frames
         self.parseButton = customtkinter.CTkButton(master=frame, command=self.parseDownloads, text="Install Selected", fg_color=sysColor, hover_color=sysColorAlt)
