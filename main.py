@@ -365,36 +365,24 @@ class App(customtkinter.CTk):
             command = f"{localGSudo} Invoke-RestMethod https://raw.githubusercontent.com/asheroto/winget-installer/master/winget-install.ps1 | Invoke-Expression"
             install_package(command, "Installing WinGet...", noNag=True)
 
-        # Function to install GSudo
-        def install_gsudo():
-            if not self.isGsudoInstalled() and distro == "windows":
-                command = "winget install --accept-package-agreements --accept-source-agreements gerardog.gsudo"
-                install_package(command, "Installing GSudo...", noNag=True)
-
         # Function to install Chocolatey
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-                command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
+                command = f"{localGSudo} Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;{localGSudo} iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
         if not self.isWingetInstalled() and distro == "windows":
             threading.Thread(target=install_winget).start()  # Start Winget installation
             # Wait for Winget installation to complete before checking for GSudo
-            threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_gsudo)).start()
-        elif self.isWingetInstalled() and not self.isGsudoInstalled():  # Check if GSudo is not installed
-            threading.Thread(target=install_gsudo).start()  # Start GSudo installation
+            threading.Thread(target=lambda: self.wait_for_installation(self.isWingetInstalled, install_chocolatey)).start()
         elif not self.isChocoInstalled():  # Check if Chocolatey is not installed
             threading.Thread(target=install_chocolatey).start()  # Start Chocolatey installation
 
         # Start the installation of Chocolatey after GSudo is installed
-        def check_and_install_chocolatey():
-            if self.isGsudoInstalled() and not self.isChocoInstalled() and distro == "windows":
-                threading.Thread(target=install_chocolatey).start()
-
-        if not self.isGsudoInstalled() and distro == "windows":
-            threading.Thread(target=lambda: self.wait_for_installation(self.isGsudoInstalled, check_and_install_chocolatey)).start()
+        if not self.isChocoInstalled() and distro == "windows":
+            threading.Thread(target=install_chocolatey).start()
         
         distro = self.detectDistro()  # Detect the distribution once
 
