@@ -372,7 +372,7 @@ class App(customtkinter.CTk):
                         sys.exit()
             else:
                 if not noNag:
-                    customtkinter.CTkMessagebox(
+                    CTkMessagebox.CTkMessagebox(
                         title="Success!",
                         message="Success.",
                         icon="check",
