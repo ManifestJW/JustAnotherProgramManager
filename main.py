@@ -370,7 +370,7 @@ class App(customtkinter.CTk):
         def install_chocolatey():
             if not self.isChocoInstalled() and distro == "windows":
                 localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-                command = f"\"{localGSudo}\" powershell -Command \"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))\""
+                command = f"\"{localGSudo}\" Set-ExecutionPolicy Bypass -Scope Process -Force; \"{localGSudo}\" iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
                 install_package(command, "Installing Chocolatey...", noNag=True)
 
         # Install Winget if not already installed
