@@ -399,13 +399,13 @@
     },
     "games": {
         "Minecraft: Java Edition": {
-            "windows-winget": "Mojang.MinecraftLauncher ",
+            "windows-winget": "Mojang.MinecraftLauncher",
             "macos-brew": "minecraft ",
             "archlinux-pacman-aur": "minecraft-launcher ",
             "url": "https://minecraft.net"
         },
         "Minecraft: Bedrock Edition": {
-            "windows-winget": "9NBLGGH2JHXJ ",
+            "macos-brew": "",
             "archlinux-pacman-aur": "mcpelauncher-linux",
             "url": "https://minecraft.net"
         },
