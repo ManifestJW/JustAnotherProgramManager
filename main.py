@@ -248,8 +248,11 @@ class App(customtkinter.CTk):
         
         for app in self.commands_data[section_name]:
             if self.detectDistro() == "macos":
-                if self.commands_data[section_name][app]['macos-brew'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
+                try:
+                    if self.commands_data[section_name][app]['macos-brew'] != "":
+                        browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "macos"))
+                except:
+                    pass
             elif self.detectDistro() == "windows":
                 try:
                     if self.commands_data[section_name][app]['windows-winget'] != "":
@@ -262,9 +265,11 @@ class App(customtkinter.CTk):
                 except:
                     pass
             elif self.detectDistro() == "arch":
-                if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
-                    browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
-
+                try:
+                    if self.commands_data[section_name][app]['archlinux-pacman-aur'] != "":
+                        browsers.append((app, lambda: webbrowser.open(self.commands_data[section_name][app]['url'], new=2), "arch"))
+                except:
+                    pass
         # Filter based on the current platform
         available_browsers = [
             (name, command) for name, command, platforms in browsers if self.detectDistro() in platforms
@@ -541,23 +546,29 @@ class App(customtkinter.CTk):
                     try:
                         if self.commands_data[category][app]['windows-winget'] != "":
                             appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                          self.commands_data[category][app]['windows-winget'])
+                                          f"{self.commands_data[category][app]['windows-winget']} ")
                     except:
                         pass
                     try:
-                        if self.commands_data[category][app]['windows-choco'] != "":  # Add support for Chocolatey
+                        if self.commands_data[category][app]['windows-choco'] != "":
                             appendCommandChoco(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                          self.commands_data[category][app]['windows-choco'])
+                                          f"{self.commands_data[category][app]['windows-choco']} ")
                     except:
                         pass
                 elif self.detectDistro() == "macos":
-                    if self.commands_data[category][app]['macos-brew'] != "":
-                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                      self.commands_data[category][app]['macos-brew'])
+                    try:
+                        if self.commands_data[category][app]['macos-brew'] != "":
+                            appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                          f"{self.commands_data[category][app]['macos-brew']} ")
+                    except:
+                        pass
                 elif self.detectDistro() == "arch":
-                    if self.commands_data[category][app]['archlinux-pacman-aur'] != "":
-                        appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
-                                      self.commands_data[category][app]['archlinux-pacman-aur'])
+                    try:
+                        if self.commands_data[category][app]['archlinux-pacman-aur'] != "":
+                            appendCommand(getattr(self, f"{app.replace(' ', '').replace('.', '').replace('+', 'plus').lower()}Toggle"),
+                                          f"{self.commands_data[category][app]['archlinux-pacman-aur']} ")
+                    except:
+                        pass
                 else:
                     pass
         if self.detectDistro() == "windows":

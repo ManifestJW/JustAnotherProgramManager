@@ -1,131 +1,118 @@
 {
     "browsers": {
         "Arc": {
-            "windows-winget": "TheBrowserCompany.Arc ",
-            "macos-brew": "arc ",
-            "archlinux-pacman-aur": "",
+            "windows-winget": "TheBrowserCompany.Arc",
+            "macos-brew": "arc",
             "url": "https://arc.net"
         },
         "Brave": {
-            "windows-winget": "Brave.Brave ",
-            "macos-brew": "brave-browser ",
-            "archlinux-pacman-aur": "brave-browser ",
+            "windows-winget": "Brave.Brave",
+            "macos-brew": "brave-browser",
+            "archlinux-pacman-aur": "brave-browser",
             "url": "https://brave.com"
         },
-        "Chrome": {
-            "windows-winget": "Google.Chrome ",
-            "macos-brew": "google-chrome ",
-            "archlinux-pacman-aur": "google-chrome ",
-            "url": "https://www.google.com/chrome"
-        },
         "Chromium": {
-            "windows-winget": "Hibbiki.Chromium ",
-            "macos-brew": "chromium ",
-            "archlinux-pacman-aur": "chromium ",
+            "windows-winget": "Hibbiki.Chromium",
+            "macos-brew": "chromium",
+            "archlinux-pacman-aur": "chromium",
             "url": "https://www.chromium.org/Home/"
         },
         "Edge": {
-            "windows-winget": "Microsoft.Edge ",
-            "macos-brew": "microsoft-edge ",
-            "archlinux-pacman-aur": "microsoft-edge-stable-bin ",
+            "windows-winget": "Microsoft.Edge",
+            "macos-brew": "microsoft-edge",
+            "archlinux-pacman-aur": "microsoft-edge-stable-bin",
             "url": "https://www.microsoft.com/en-us/edge"
         },
         "Firefox": {
-            "windows-winget": "Mozilla.Firefox ",
-            "macos-brew": "firefox ",
-            "archlinux-pacman-aur": "firefox ",
+            "windows-winget": "Mozilla.Firefox",
+            "macos-brew": "firefox",
+            "archlinux-pacman-aur": "firefox",
             "url": "https://www.mozilla.org/en-US/firefox/new"
         },
         "Floorp": {
-            "windows-winget": "Ablaze.Floorp ",
-            "macos-brew": "floorp ",
-            "archlinux-pacman-aur": "floorp-bin ",
+            "windows-winget": "Ablaze.Floorp",
+            "macos-brew": "floorp",
+            "archlinux-pacman-aur": "floorp-bin",
             "url": "https://floorp.app"
         },
         "LibreWolf": {
-            "windows-winget": "LibreWolf.LibreWolf ",
-            "macos-brew": "librewolf ",
-            "archlinux-pacman-aur": "librewolf-bin ",
+            "windows-winget": "LibreWolf.LibreWolf",
+            "macos-brew": "librewolf",
+            "archlinux-pacman-aur": "librewolf-bin",
             "url": "https://librewolf.net"
         },
         "Opera": {
-            "windows-winget": "Opera.Opera ",
-            "macos-brew": "opera ",
-            "archlinux-pacman-aur": "opera ",
+            "windows-winget": "Opera.Opera",
+            "macos-brew": "opera",
+            "archlinux-pacman-aur": "opera",
             "url": "https://www.opera.com"
         },
         "Opera GX": {
-            "windows-winget": "Opera.OperaGX ",
-            "macos-brew": "opera-gx ",
+            "windows-winget": "Opera.OperaGX",
+            "macos-brew": "opera-gx",
             "archlinux-pacman-aur": "",
             "url": "https://www.opera.com/gx"
         },
-        "Orion": {
-            "windows-winget": "",
-            "macos-brew": "orion ",
-            "archlinux-pacman-aur": "",
-            "url": "https://kagi.com/orion"
-        },
         "Thorium": {
-            "windows-winget": "Alex313031.Thorium.AVX2 ",
-            "macos-brew": "alex313031-thorium ",
-            "archlinux-pacman-aur": "thorium-browser-bin ",
+            "windows-winget": "Alex313031.Thorium.AVX2",
+            "macos-brew": "alex313031-thorium",
+            "archlinux-pacman-aur": "thorium-browser-bin",
             "url": "https://thorium.rocks"
         },
         "Tor": {
-            "windows-winget": "TorProject.TorBrowser ",
-            "macos-brew": "tor-browser ",
-            "archlinux-pacman-aur": "tor-browser-bin ",
+            "windows-winget": "TorProject.TorBrowser",
+            "macos-brew": "tor-browser",
+            "archlinux-pacman-aur": "tor-browser-bin",
             "url": "https://www.torproject.org/download"
         },
         "Ungoogled Chromium": {
-            "windows-winget": "eloston.ungoogled-chromium ",
-            "macos-brew": "eloston-chromium ",
-            "archlinux-pacman-aur": "ungoogled-chromium-bin ",
+            "windows-winget": "eloston.ungoogled-chromium",
+            "macos-brew": "eloston-chromium",
+            "archlinux-pacman-aur": "ungoogled-chromium-bin",
             "url": "https://ungoogled-software.github.io/ungoogled-chromium-binaries"
         },
         "Vivaldi": {
-            "windows-winget": "VivaldiTechnologies.Vivaldi ",
-            "macos-brew": "vivaldi ",
-            "archlinux-pacman-aur": "vivaldi ",
+            "windows-winget": "VivaldiTechnologies.Vivaldi",
+            "macos-brew": "vivaldi",
+            "archlinux-pacman-aur": "vivaldi",
             "url": "https://vivaldi.com"
         },
         "Zen": {
-            "windows-winget": "Zen-Team.Zen-Browser ",
-            "macos-brew": "zen-browser ",
-            "archlinux-pacman-aur": "zen-browser-bin ",
+            "windows-winget": "Zen-Team.Zen-Browser",
+            "macos-brew": "zen-browser",
+            "archlinux-pacman-aur": "zen-browser-bin",
             "url": "https://zen-browser.app"
         }
     },
     "communication": {
         "Beeper": {
-            "windows-winget": "Beeper.Beeper ",
-            "macos-brew": "beeper ",
-            "archlinux-pacman-aur": "beeper ",
+            "windows-winget": "Beeper.Beeper",
+            "macos-brew": "beeper",
+            "archlinux-pacman-aur": "beeper",
             "url": "https://www.beeper.com"
         },
         "Discord": {
-            "windows-winget": "Discord.Discord ",
-            "macos-brew": "discord ",
-            "archlinux-pacman-aur": "discord ",
+            "windows-winget": "Discord.Discord",
+            "macos-brew": "discord",
+            "archlinux-pacman-aur": "discord",
             "url": "https://discord.com"
         },
         "Ferdium": {
-            "windows-winget": "Ferdium.Ferdium ",
-            "macos-brew": "ferdium ",
-            "archlinux-pacman-aur": "ferdium-bin ",
+            "windows-winget": "Ferdium.Ferdium",
+            "macos-brew": "ferdium",
+            "archlinux-pacman-aur": "ferdium-bin",
             "url": "https://ferdium.org"
         },
         "Guilded": {
-            "windows-winget": "Guilded.Guilded ",
-            "macos-brew": "guilded ",
-            "archlinux-pacman-aur": "guilded ",
+            "windows-winget": "Guilded.Guilded",
+            "macos-brew": "guilded",
+            "archlinux-pacman-aur": "guilded",
             "url": "https://guilded.gg"
         },
         "TeamSpeak": {
-            "windows-winget": "TeamSpeakSystems.TeamSpeakClient ",
-            "macos-brew": "teamspeak-client ",
-            "archlinux-pacman-aur": "teamspeak ",
+            "windows-winget": "TeamSpeakSystems.TeamSpeakClient",
+            "macos-brew": "teamspeak-client",
+            "archlinux-pacman-aur": "teamspeak",
             "url": "https://teamspeak.com"
         },
         "Textual": {
@@ -135,306 +122,355 @@
             "url": "https://www.codeux.com/textual/"
         },
         "Google Chat": {
-            "windows-winget": "squalou.google-chat-linux ",
+            "windows-winget": "squalou.google-chat-linux",
             "macos-brew": "",
-            "archlinux-pacman-aur": "google-chat-linux-bin ",
+            "archlinux-pacman-aur": "google-chat-linux-bin",
             "url": "https://github.com/squalou/google-chat-linux"
         },
         "Chatterino": {
-            "windows-winget": "ChatterinoTeam.Chatterino ",
-            "macos-brew": "chatterino ",
-            "archlinux-pacman-aur": "chatterino2-bin ",
+            "windows-winget": "ChatterinoTeam.Chatterino",
+            "macos-brew": "chatterino",
+            "archlinux-pacman-aur": "chatterino2-bin",
             "url": "https://chatterino.com"
         },
         "HexChat": {
-            "windows-winget": "HexChat.HexChat ",
+            "windows-winget": "HexChat.HexChat",
             "macos-brew": "",
             "archlinux-pacman-aur": "hexchat",
             "url": "https://hexchat.github.io/"
         },
         "Jami": {
-            "windows-winget": "SFLinux.Jami ",
-            "macos-brew": "jami ",
-            "archlinux-pacman-aur": "jami ",
+            "windows-winget": "SFLinux.Jami",
+            "macos-brew": "jami",
+            "archlinux-pacman-aur": "jami",
             "url": "https://jami.net/"
         },
         "Linphone": {
-            "windows-winget": "BelledonneCommunications.Linphone ",
-            "macos-brew": "linphone ",
-            "archlinux-pacman-aur": "linphone-desktop ",
+            "windows-winget": "BelledonneCommunications.Linphone",
+            "macos-brew": "linphone",
+            "archlinux-pacman-aur": "linphone-desktop",
             "url": "https://www.linphone.org/"
         },
         "Element": {
-            "windows-winget": "Element.Element ",
-            "macos-brew": "element ",
-            "archlinux-pacman-aur": "element-desktop ",
+            "windows-winget": "Element.Element",
+            "macos-brew": "element",
+            "archlinux-pacman-aur": "element-desktop",
             "url": "https://element.io"
         },
         "Session": {
-            "windows-winget": "Oxen.Session ",
-            "macos-brew": "session ",
-            "archlinux-pacman-aur": "session-desktop-bin ",
+            "windows-winget": "Oxen.Session",
+            "macos-brew": "session",
+            "archlinux-pacman-aur": "session-desktop-bin",
             "url": "https://getsession.org"
         },
         "Signal": {
-            "windows-winget": "OpenWhisperSystems.Signal ",
-            "macos-brew": "signal ",
-            "archlinux-pacman-aur": "signal-desktop-beta-bin ",
+            "windows-winget": "OpenWhisperSystems.Signal",
+            "macos-brew": "signal",
+            "archlinux-pacman-aur": "signal-desktop-beta-bin",
             "url": "https://signal.org/"
         },
         "Skype": {
-            "windows-winget": "Microsoft.Skype ",
-            "macos-brew": "skype ",
-            "archlinux-pacman-aur": "skypeforlinux-bin ",
+            "windows-winget": "Microsoft.Skype",
+            "macos-brew": "skype",
+            "archlinux-pacman-aur": "skypeforlinux-bin",
             "url": "https://www.skype.com/"
         },
         "Slack": {
-            "windows-winget": "SlackTechnologies.Slack ",
-            "macos-brew": "slack ",
-            "archlinux-pacman-aur": "slack-desktop ",
+            "windows-winget": "SlackTechnologies.Slack",
+            "macos-brew": "slack",
+            "archlinux-pacman-aur": "slack-desktop",
             "url": "https://slack.com"
         },
         "Teams": {
-            "windows-winget": "Microsoft.Teams ",
-            "macos-brew": "microsoft-teams ",
-            "archlinux-pacman-aur": "teams ",
+            "windows-winget": "Microsoft.Teams",
+            "macos-brew": "microsoft-teams",
+            "archlinux-pacman-aur": "teams",
             "url": "https://www.microsoft.com/en-us/microsoft-teams/group-chat-software"
         },
         "Telegram": {
-            "windows-winget": "Telegram.TelegramDesktop ",
-            "macos-brew": "telegram ",
-            "archlinux-pacman-aur": "telegram-desktop ",
+            "windows-winget": "Telegram.TelegramDesktop",
+            "macos-brew": "telegram",
+            "archlinux-pacman-aur": "telegram-desktop",
             "url": "https://telegram.org/"
         },
         "Thunderbird": {
-            "windows-winget": "Mozilla.Thunderbird ",
-            "macos-brew": "thunderbird ",
-            "archlinux-pacman-aur": "thunderbird ",
+            "windows-winget": "Mozilla.Thunderbird",
+            "macos-brew": "thunderbird",
+            "archlinux-pacman-aur": "thunderbird",
             "url": "https://www.thunderbird.net/"
+        },
+        "Zoom": {
+            "windows-winget": "Zoom.Zoom",
+            "macos-brew": "zoom",
+            "archlinux-pacman-aur": "zoom",
+            "url": "https://zoom.us"
         }
     },
     "documents": {
         "Adobe Reader DC": {
-            "windows-winget": "Adobe.Acrobat.Reader.64-bit ",
-            "macos-brew": "adobe-acrobat-reader ",
+            "windows-winget": "Adobe.Acrobat.Reader.64-bit",
+            "macos-brew": "adobe-acrobat-reader",
             "archlinux-pacman-aur": "",
             "url": "https://www.adobe.com/acrobat/pdf-reader.html"
+        },
+        "Notion": {
+            "windows-winget": "Notion.Notion",
+            "macos-brew": "notion",
+            "archlinux-pacman-aur": "notion-app-electron",
+            "url": "https://www.notion.so/"
+        },
+        "Notion Calendar": {
+            "windows-winget": "Notion.NotionCalendar",
+            "macos-brew": "notion-calendar",
+            "archlinux-pacman-aur": "notion-calendar-electron",
+            "url": "https://www.notion.so/"
+        },
+        "LibreOffice": {
+            "windows-winget": "ONLYOFFICE.DesktopEditors",
+            "macos-brew": "onlyoffice",
+            "archlinux-pacman-aur": "libreoffice",
+            "url": "https://www.libreoffice.org/"
+        },
+        "OnlyOffice": {
+            "windows-winget": "TheDocumentFoundation.LibreOffice",
+            "macos-brew": "libreoffice",
+            "archlinux-pacman-aur": "libreoffice",
+            "url": "https://www.onlyoffice.com/"
         }
     },
     "development": {
         "Android Studio": {
-            "windows-winget": "Google.AndroidStudio ",
-            "macos-brew": "android-studio ",
-            "archlinux-pacman-aur": "android-studio ",
+            "windows-winget": "Google.AndroidStudio",
+            "macos-brew": "android-studio",
+            "archlinux-pacman-aur": "android-studio",
             "url": "https://developer.android.com/studio"
         },
         "Bootstrap Studio": {
             "windows-winget": "",
-            "macos-brew": "bootstrap-studio ",
-            "archlinux-pacman-aur": "bootstrap-studio ",
+            "macos-brew": "bootstrap-studio",
+            "archlinux-pacman-aur": "bootstrap-studio",
             "url": "https://bootstrapstudio.io/"
         },
         "Cursor": {
-            "windows-winget": "Anysphere.Cursor ",
-            "macos-brew": "cursor ",
-            "archlinux-pacman-aur": "cursor-bin ",
+            "windows-winget": "Anysphere.Cursor",
+            "macos-brew": "cursor",
+            "archlinux-pacman-aur": "cursor-bin",
             "url": "https://www.cursor.com/"
         },
         "Docker Desktop": {
-            "windows-winget": "Docker.DockerDesktop ",
-            "macos-brew": "docker ",
-            "archlinux-pacman-aur": "docker-desktop ",
+            "windows-winget": "Docker.DockerDesktop",
+            "macos-brew": "docker",
+            "archlinux-pacman-aur": "docker-desktop",
             "url": "https://www.docker.com/products/docker-desktop/"
         },
         "Eclipse": {
-            "windows-choco": "eclipse-java-oxygen ",
-            "macos-brew": "eclipse-ide ",
-            "archlinux-pacman-aur": "eclipse-java-bin ",
+            "windows-choco": "eclipse-java-oxygen",
+            "macos-brew": "eclipse-ide",
+            "archlinux-pacman-aur": "eclipse-java-bin",
             "url": "https://eclipseide.org/"
         },
         "Git": {
-            "windows-winget": "Git.Git ",
-            "macos-brew": "git ",
-            "archlinux-pacman-aur": "git ",
+            "windows-winget": "Git.Git",
+            "macos-brew": "git",
+            "archlinux-pacman-aur": "git",
             "url": "https://git-scm.com"
         },
         "Github Desktop": {
-            "windows-winget": "GitHub.GitHubDesktop ",
-            "macos-brew": "github ",
-            "archlinux-pacman-aur": "github-desktop-bin ",
+            "windows-winget": "GitHub.GitHubDesktop",
+            "macos-brew": "github",
+            "archlinux-pacman-aur": "github-desktop-bin",
             "url": "https://github.com/apps/desktop"
         },
         "Golang": {
-            "windows-winget": "GoLang.Go ",
-            "macos-brew": "go ",
-            "archlinux-pacman-aur": "go ",
+            "windows-winget": "GoLang.Go",
+            "macos-brew": "go",
+            "archlinux-pacman-aur": "go",
             "url": "https://go.dev/"
         },
         "IntelliJ IDEA Community": {
-            "windows-winget": "JetBrains.IntelliJIDEA.Community ",
-            "macos-brew": "intellij-idea ",
-            "archlinux-pacman-aur": "intellij-idea-community-edition ",
+            "windows-winget": "JetBrains.IntelliJIDEA.Community",
+            "macos-brew": "intellij-idea",
+            "archlinux-pacman-aur": "intellij-idea-community-edition",
             "url": "https://www.jetbrains.com/idea/"
         },
         "Java Temurin 8": {
-            "windows-winget": "EclipseAdoptium.Temurin.8.JDK ",
-            "macos-brew": "temurin@8 ",
-            "archlinux-pacman-aur": "jdk8-temurin ",
+            "windows-winget": "EclipseAdoptium.Temurin.8.JDK",
+            "macos-brew": "temurin@8",
+            "archlinux-pacman-aur": "jdk8-temurin",
             "url": "https://adoptium.net/"
         },
         "Java Temurin 11": {
-            "windows-winget": "EclipseAdoptium.Temurin.11.JDK ",
-            "macos-brew": "temurin@11 ",
-            "archlinux-pacman-aur": "jdk11-temurin ",
+            "windows-winget": "EclipseAdoptium.Temurin.11.JDK",
+            "macos-brew": "temurin@11",
+            "archlinux-pacman-aur": "jdk11-temurin",
             "url": "https://adoptium.net/"
         },
         "Java Temurin 17": {
-            "windows-winget": "EclipseAdoptium.Temurin.17.JDK ",
-            "macos-brew": "temurin@17 ",
-            "archlinux-pacman-aur": "jdk17-temurin ",
+            "windows-winget": "EclipseAdoptium.Temurin.17.JDK",
+            "macos-brew": "temurin@17",
+            "archlinux-pacman-aur": "jdk17-temurin",
             "url": "https://adoptium.net/"
         },
         "Java Temurin 21": {
-            "windows-winget": "EclipseAdoptium.Temurin.21.JDK ",
-            "macos-brew": "temurin@21 ",
-            "archlinux-pacman-aur": "jdk21-temurin ",
+            "windows-winget": "EclipseAdoptium.Temurin.21.JDK",
+            "macos-brew": "temurin@21",
+            "archlinux-pacman-aur": "jdk21-temurin",
             "url": "https://adoptium.net/"
         },
         "NetBeans": {
-            "windows-winget": "Apache.NetBeans ",
-            "macos-brew": "netbeans ",
-            "archlinux-pacman-aur": "netbeans ",
+            "windows-winget": "Apache.NetBeans",
+            "macos-brew": "netbeans",
+            "archlinux-pacman-aur": "netbeans",
             "url": "https://netbeans.apache.org/front/main/index.html"
         },
         "Node.js 20": {
-            "windows-winget": "OpenJS.NodeJS.LTS ",
-            "macos-brew": "node@20 ",
-            "archlinux-pacman-aur": "nodejs-lts-iron ",
+            "windows-winget": "OpenJS.NodeJS.LTS",
+            "macos-brew": "node@20",
+            "archlinux-pacman-aur": "nodejs-lts-iron",
             "url": "https://nodejs.org/en"
         },
         "Node.js 22": {
-            "windows-winget": "OpenJS.NodeJS ",
-            "macos-brew": "node ",
-            "archlinux-pacman-aur": "nodejs ",
+            "windows-winget": "OpenJS.NodeJS",
+            "macos-brew": "node",
+            "archlinux-pacman-aur": "nodejs",
             "url": "https://nodejs.org/en"
         },
         "Notepad++": {
-            "windows-winget": "Notepad++.Notepad++ ",
+            "windows-winget": "Notepad++.Notepad++",
             "macos-brew": "",
             "archlinux-pacman-aur": "",
             "url": "https://notepad-plus-plus.org/"
         },
         "PyCharm Community": {
-            "windows-winget": "JetBrains.PyCharm.Community ",
-            "macos-brew": "pycharm-ce ",
-            "archlinux-pacman-aur": "pycharm-community-edition ",
+            "windows-winget": "JetBrains.PyCharm.Community",
+            "macos-brew": "pycharm-ce",
+            "archlinux-pacman-aur": "pycharm-community-edition",
             "url": "https://www.jetbrains.com/pycharm/"
         },
         "Python 2.7": {
-            "windows-winget": "Python.Python.2 ",
+            "windows-winget": "Python.Python.2",
             "macos-brew": "",
-            "archlinux-pacman-aur": "python2 ",
+            "archlinux-pacman-aur": "python2",
             "url": "https://www.python.org/"
         },
         "Python 3.12": {
-            "windows-winget": "Python.Python.3.12 ",
-            "macos-brew": "python ",
-            "archlinux-pacman-aur": "python ",
+            "windows-winget": "Python.Python.3.12",
+            "macos-brew": "python",
+            "archlinux-pacman-aur": "python",
             "url": "https://www.python.org/"
         },
         "Pulsar": {
-            "windows-winget": "Pulsar-Edit.Pulsar ",
-            "macos-brew": "pulsar ",
-            "archlinux-pacman-aur": "pulsar-bin ",
+            "windows-winget": "Pulsar-Edit.Pulsar",
+            "macos-brew": "pulsar",
+            "archlinux-pacman-aur": "pulsar-bin",
             "url": "https://pulsar-edit.dev/"
         },
         "Replit Desktop": {
-            "windows-winget": "Replit.Replit ",
-            "macos-brew": "replit ",
+            "windows-winget": "Replit.Replit",
+            "macos-brew": "replit",
             "archlinux-pacman-aur": "",
             "url": "https://replit.com/desktop"
         },
         "Rust": {
-            "windows-winget": "Rustlang.Rust.MSVC ",
-            "macos-brew": "rust ",
-            "archlinux-pacman-aur": "rust ",
+            "windows-winget": "Rustlang.Rust.MSVC",
+            "macos-brew": "rust",
+            "archlinux-pacman-aur": "rust",
             "url": "https://www.rust-lang.org/"
         },
         "Tortoise Git": {
-            "windows-winget": "TortoiseGit.TortoiseGit ",
+            "windows-winget": "TortoiseGit.TortoiseGit",
             "macos-brew": "",
             "archlinux-pacman-aur": "",
             "url": "https://tortoisegit.org/"
         },
         "Visual Studio Code": {
-            "windows-winget": "Microsoft.VisualStudioCode ",
-            "macos-brew": "visualstudiocode ",
-            "archlinux-pacman-aur": "visual-studio-code-bin ",
+            "windows-winget": "Microsoft.VisualStudioCode",
+            "macos-brew": "visualstudiocode",
+            "archlinux-pacman-aur": "visual-studio-code-bin",
             "url": "https://code.visualstudio.com/"
         },
         "Visual Studio Community": {
-            "windows-winget": "Microsoft.VisualStudio.2022.Community ",
+            "windows-winget": "Microsoft.VisualStudio.2022.Community",
             "macos-brew": "",
             "archlinux-pacman-aur": "",
             "url": "https://visualstudio.microsoft.com/vs/community/"
         },
         "VSCodium": {
-            "windows-winget": "VSCodium.VSCodium ",
-            "macos-brew": "vscodium ",
-            "archlinux-pacman-aur": "vscodium-bin ",
+            "windows-winget": "VSCodium.VSCodium",
+            "macos-brew": "vscodium",
+            "archlinux-pacman-aur": "vscodium-bin",
             "url": "https://vscodium.com/"
         },
         "Fleet Public Preview": {
-            "windows-winget": "JetBrains.FleetLauncher.Preview ",
-            "macos-brew": "fleet ",
-            "archlinux-pacman-aur": "jetbrains-fleet ",
+            "windows-winget": "JetBrains.FleetLauncher.Preview",
+            "macos-brew": "fleet",
+            "archlinux-pacman-aur": "jetbrains-fleet",
             "url": "https://www.jetbrains.com/help/fleet/"
         },
         "Ruby": {
-            "windows-winget": "RubyInstallerTeam.RubyWithDevKit.3.1 ",
-            "macos-brew": "ruby ",
-            "archlinux-pacman-aur": "ruby ",
+            "windows-winget": "RubyInstallerTeam.RubyWithDevKit.3.1",
+            "macos-brew": "ruby",
+            "archlinux-pacman-aur": "ruby",
             "url": "https://www.ruby-lang.org/en/"
+        },
+        "Lapce": {
+            "windows-winget": "Lapce.Lapce",
+            "macos-brew": "lapce",
+            "archlinux-pacman-aur": "lapce",
+            "url": "https://lapce.dev"
+        },
+        "CodeEdit": {
+            "windows-winget": "",
+            "macos-brew": "codeedit",
+            "archlinux-pacman-aur": "",
+            "url": "https://codeedit.app"
+        },
+        "Zed": {
+            "windows-winget": "",
+            "macos-brew": "zed",
+            "archlinux-pacman-aur": "zed",
+            "url": "https://zed.dev"
         }
     },
     "games": {
         "Minecraft: Java Edition": {
             "windows-winget": "Mojang.MinecraftLauncher",
-            "macos-brew": "minecraft ",
-            "archlinux-pacman-aur": "minecraft-launcher ",
+            "macos-brew": "minecraft",
+            "archlinux-pacman-aur": "minecraft-launcher",
             "url": "https://minecraft.net"
         },
         "Minecraft: Bedrock Edition": {
+            "Windows-winget": "",
             "macos-brew": "",
             "archlinux-pacman-aur": "mcpelauncher-linux",
             "url": "https://minecraft.net"
         },
         "CurseForge": {
-            "windows-winget": "Overwolf.CurseForge ",
-            "macos-brew": "curseforge ",
-            "archlinux-pacman-aur": "curseforge ",
+            "windows-winget": "Overwolf.CurseForge",
+            "macos-brew": "curseforge",
+            "archlinux-pacman-aur": "curseforge",
             "url": "https://www.curseforge.com/"
         },
         "Steam": {
-            "windows-winget": "Value.Steam ",
-            "macos-brew": "steam ",
-            "archlinux-pacman-aur": "steam ",
+            "windows-winget": "Value.Steam",
+            "macos-brew": "steam",
+            "archlinux-pacman-aur": "steam",
             "url": "https://store.steampowered.com/about/"
         },
         "Prism Launcher": {
-            "windows-winget": "PrismLauncher.PrismLauncher ",
-            "macos-brew": "prismlauncher ",
-            "archlinux-pacman-aur": "prismlauncher-qt5-bin ",
+            "windows-winget": "PrismLauncher.PrismLauncher",
+            "macos-brew": "prismlauncher",
+            "archlinux-pacman-aur": "prismlauncher-qt5-bin",
             "url": "https://https://prismlauncher.org/"
         },
         "Toontown Rewritten": {
-            "windows-winget": "TheTTRTeam.ToontownRewritten ",
-            "macos-brew": "toontown-rewritten ",
+            "windows-winget": "TheTTRTeam.ToontownRewritten",
+            "macos-brew": "toontown-rewritten",
             "archlinux-pacman-aur": "",
             "url": "https://toontownrewritten.com/"
         },
         "Toontown: Corporate Clash": {
-            "windows-winget": "CorporateClashCrew.ToontownCorporateClash ",
+            "windows-winget": "CorporateClashCrew.ToontownCorporateClash",
             "macos-brew": "",
             "archlinux-pacman-aur": "",
             "url": "https://corporateclash.net/"
@@ -476,6 +512,37 @@
             "macos-brew": "blender ",
             "archlinux-pacman-aur": "blender-bin ",
             "url": "https://www.blender.org/"
+        }
+    },
+    "utilities": {
+        "EarTrumpet": {
+            "windows-winget": "New-Project.EarTrumpet",
+            "macos-brew": "",
+            "archlinux-pacman-aur": "",
+            "url": "https://eartrumpet.app/"
+        },
+        "Google Drive": {
+            "windows-winget": "Google.GoogleDrive",
+            "macos-brew": "google-drive",
+            "archlinux-pacman-aur": "",
+            "url": "https://www.google.com/drive/"
+        },
+        "1Password": {
+            "windows-winget": "AgileBits.1Password",
+            "macos-brew": "1password",
+            "archlinux-pacman-aur": "1password",
+            "url": "https://1password.com"
+        },
+        "Bitwarden": {
+            "windows-winget": "Bitwarden.Bitwarden",
+            "macos-brew": "bitwarden",
+            "archlinux-pacman-aur": "bitwarden",
+            "url": "https://bitwarden.com"
+        },
+        "Padloc": {
+            "windows-choco": "padloc-tauri",
+            "macos-brew": "padloc",
+            "archlinux-pacman-aur": "padloc"
         }
     }
 }
