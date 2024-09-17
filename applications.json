@@ -225,6 +225,12 @@
             "macos-brew": "blender",
             "archlinux-pacman-aur": "blender",
             "url": "https://www.blender.org/"
+        },
+        "Audacity": {
+            "windows-winget": "Audacity.Audacity",
+            "macos-brew": "audacity",
+            "archlinux-pacman-aur": "audacity",
+            "url": "https://www.audacityteam.org/"
         }
     },
     "documents": {
