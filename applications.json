@@ -414,6 +414,30 @@
             "macos-brew": "curseforge ",
             "archlinux-pacman-aur": "curseforge ",
             "url": "https://www.curseforge.com/"
+        },
+        "Steam": {
+            "windows-winget": "Value.Steam ",
+            "macos-brew": "steam ",
+            "archlinux-pacman-aur": "steam ",
+            "url": "https://store.steampowered.com/about/"
+        },
+        "Prism Launcher": {
+            "windows-winget": "PrismLauncher.PrismLauncher ",
+            "macos-brew": "prismlauncher ",
+            "archlinux-pacman-aur": "prismlauncher-qt5-bin ",
+            "url": "https://https://prismlauncher.org/"
+        },
+        "Toontown Rewritten": {
+            "windows-winget": "TheTTRTeam.ToontownRewritten ",
+            "macos-brew": "toontown-rewritten ",
+            "archlinux-pacman-aur": "",
+            "url": "https://toontownrewritten.com/"
+        },
+        "Toontown: Corporate Clash": {
+            "windows-winget": "CorporateClashCrew.ToontownCorporateClash ",
+            "macos-brew": "",
+            "archlinux-pacman-aur": "",
+            "url": "https://corporateclash.net/"
         }
     }
 }
