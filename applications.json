@@ -50,7 +50,6 @@
         "Opera GX": {
             "windows-winget": "Opera.OperaGX",
             "macos-brew": "opera-gx",
-            "archlinux-pacman-aur": "",
             "url": "https://www.opera.com/gx"
         },
         "Thorium": {
@@ -121,7 +120,6 @@
         },
         "Google Chat": {
             "windows-winget": "squalou.google-chat-linux",
-            "macos-brew": "",
             "archlinux-pacman-aur": "google-chat-linux-bin",
             "url": "https://github.com/squalou/google-chat-linux"
         },
@@ -207,7 +205,6 @@
         "Adobe Reader DC": {
             "windows-winget": "Adobe.Acrobat.Reader.64-bit",
             "macos-brew": "adobe-acrobat-reader",
-            "archlinux-pacman-aur": "",
             "url": "https://www.adobe.com/acrobat/pdf-reader.html"
         },
         "Notion": {
@@ -243,7 +240,6 @@
             "url": "https://developer.android.com/studio"
         },
         "Bootstrap Studio": {
-            "windows-winget": "",
             "macos-brew": "bootstrap-studio",
             "archlinux-pacman-aur": "bootstrap-studio",
             "url": "https://bootstrapstudio.io/"
@@ -460,14 +456,11 @@
     "utilities": {
         "EarTrumpet": {
             "windows-winget": "New-Project.EarTrumpet",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://eartrumpet.app/"
         },
         "Google Drive": {
             "windows-winget": "Google.GoogleDrive",
             "macos-brew": "google-drive",
-            "archlinux-pacman-aur": "",
             "url": "https://www.google.com/drive/"
         },
         "1Password": {
