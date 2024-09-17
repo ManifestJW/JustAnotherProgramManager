@@ -533,7 +533,7 @@ class App(customtkinter.CTk):
         elif distro == "windows":
             commands += "winget install --accept-package-agreements --accept-source-agreements "
             localGSudo = resourceFetch.fetchResource('dependencies/win32/gsudo.exe')
-            commands2 += f"{localGSudo} choco install -y "
+            commands2 += f"\"{localGSudo}\" choco install -y "
         elif distro == "arch":
             commands += "yay -S --noconfirm "  # Initial command for yay on Arch
 
