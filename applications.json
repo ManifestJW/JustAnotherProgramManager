@@ -50,7 +50,6 @@
         "Opera GX": {
             "windows-winget": "Opera.OperaGX",
             "macos-brew": "opera-gx",
-            "archlinux-pacman-aur": "",
             "url": "https://www.opera.com/gx"
         },
         "Thorium": {
@@ -116,14 +115,11 @@
             "url": "https://teamspeak.com"
         },
         "Textual": {
-            "windows-winget": "",
             "macos-brew": "textual",
-            "archlinux-pacman-aur": "",
             "url": "https://www.codeux.com/textual/"
         },
         "Google Chat": {
             "windows-winget": "squalou.google-chat-linux",
-            "macos-brew": "",
             "archlinux-pacman-aur": "google-chat-linux-bin",
             "url": "https://github.com/squalou/google-chat-linux"
         },
@@ -135,7 +131,6 @@
         },
         "HexChat": {
             "windows-winget": "HexChat.HexChat",
-            "macos-brew": "",
             "archlinux-pacman-aur": "hexchat",
             "url": "https://hexchat.github.io/"
         },
@@ -210,7 +205,6 @@
         "Adobe Reader DC": {
             "windows-winget": "Adobe.Acrobat.Reader.64-bit",
             "macos-brew": "adobe-acrobat-reader",
-            "archlinux-pacman-aur": "",
             "url": "https://www.adobe.com/acrobat/pdf-reader.html"
         },
         "Notion": {
@@ -246,7 +240,6 @@
             "url": "https://developer.android.com/studio"
         },
         "Bootstrap Studio": {
-            "windows-winget": "",
             "macos-brew": "bootstrap-studio",
             "archlinux-pacman-aur": "bootstrap-studio",
             "url": "https://bootstrapstudio.io/"
@@ -337,8 +330,6 @@
         },
         "Notepad++": {
             "windows-winget": "Notepad++.Notepad++",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://notepad-plus-plus.org/"
         },
         "PyCharm Community": {
@@ -349,7 +340,6 @@
         },
         "Python 2.7": {
             "windows-winget": "Python.Python.2",
-            "macos-brew": "",
             "archlinux-pacman-aur": "python2",
             "url": "https://www.python.org/"
         },
@@ -368,7 +358,6 @@
         "Replit Desktop": {
             "windows-winget": "Replit.Replit",
             "macos-brew": "replit",
-            "archlinux-pacman-aur": "",
             "url": "https://replit.com/desktop"
         },
         "Rust": {
@@ -379,8 +368,6 @@
         },
         "Tortoise Git": {
             "windows-winget": "TortoiseGit.TortoiseGit",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://tortoisegit.org/"
         },
         "Visual Studio Code": {
@@ -391,8 +378,6 @@
         },
         "Visual Studio Community": {
             "windows-winget": "Microsoft.VisualStudio.2022.Community",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://visualstudio.microsoft.com/vs/community/"
         },
         "VSCodium": {
@@ -420,13 +405,10 @@
             "url": "https://lapce.dev"
         },
         "CodeEdit": {
-            "windows-winget": "",
             "macos-brew": "codeedit",
-            "archlinux-pacman-aur": "",
             "url": "https://codeedit.app"
         },
         "Zed": {
-            "windows-winget": "",
             "macos-brew": "zed",
             "archlinux-pacman-aur": "zed",
             "url": "https://zed.dev"
@@ -440,8 +422,6 @@
             "url": "https://minecraft.net"
         },
         "Minecraft: Bedrock Edition": {
-            "Windows-winget": "",
-            "macos-brew": "",
             "archlinux-pacman-aur": "mcpelauncher-linux",
             "url": "https://minecraft.net"
         },
@@ -466,13 +446,10 @@
         "Toontown Rewritten": {
             "windows-winget": "TheTTRTeam.ToontownRewritten",
             "macos-brew": "toontown-rewritten",
-            "archlinux-pacman-aur": "",
             "url": "https://toontownrewritten.com/"
         },
         "Toontown: Corporate Clash": {
             "windows-winget": "CorporateClashCrew.ToontownCorporateClash",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://corporateclash.net/"
         },
         "Roblox": {
@@ -517,14 +494,11 @@
     "utilities": {
         "EarTrumpet": {
             "windows-winget": "New-Project.EarTrumpet",
-            "macos-brew": "",
-            "archlinux-pacman-aur": "",
             "url": "https://eartrumpet.app/"
         },
         "Google Drive": {
             "windows-winget": "Google.GoogleDrive",
             "macos-brew": "google-drive",
-            "archlinux-pacman-aur": "",
             "url": "https://www.google.com/drive/"
         },
         "1Password": {
