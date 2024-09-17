@@ -203,27 +203,27 @@
     },
     "creative": {
         "GIMP": {
-            "windows-winget": "GIMP.GIMP ",
-            "macos-brew": "gimp ",
-            "archlinux-pacman-aur": "gimp ",
+            "windows-winget": "GIMP.GIMP",
+            "macos-brew": "gimp",
+            "archlinux-pacman-aur": "gimp",
             "url": "https://www.gimp.org/"
         },
         "FFmpeg": {
-            "windows-winget": "Gyan.FFmpeg ",
-            "macos-brew": "ffmpeg ",
-            "archlinux-pacman-aur": "ffmpeg ",
+            "windows-winget": "Gyan.FFmpeg",
+            "macos-brew": "ffmpeg",
+            "archlinux-pacman-aur": "ffmpeg",
             "url": "https://www.ffmpeg.org/"
         },
         "kdenlive": {
-            "windows-winget": "KDE.Kdenlive ",
-            "macos-brew": "kdenlive ",
-            "archlinux-pacman-aur": "kdenlive ",
+            "windows-winget": "KDE.Kdenlive",
+            "macos-brew": "kdenlive",
+            "archlinux-pacman-aur": "kdenlive",
             "url": "https://kdenlive.org/"
         },
         "Blender": {
-            "windows-winget": "BlenderFoundation.Blender ",
-            "macos-brew": "blender ",
-            "archlinux-pacman-aur": "blender ",
+            "windows-winget": "BlenderFoundation.Blender",
+            "macos-brew": "blender",
+            "archlinux-pacman-aur": "blender",
             "url": "https://www.blender.org/"
         }
     },
@@ -479,15 +479,13 @@
             "url": "https://corporateclash.net/"
         },
         "Roblox": {
-            "windows-winget": "Roblox.Roblox ",
-            "macos-brew": "roblox ",
-            "archlinux-pacman-aur": "",
+            "windows-winget": "Roblox.Roblox",
+            "macos-brew": "roblox",
             "url": "https://roblox.com/"
         },
         "Epic Games Launcher": {
-            "windows-winget": "EpicGames.EpicGamesLauncher ",
-            "macos-brew": "epic-games ",
-            "archlinux-pacman-aur": "",
+            "windows-winget": "EpicGames.EpicGamesLauncher",
+            "macos-brew": "epic-games",
             "url": "https://store.epicgames.com/en-US/download"
         }
     },
