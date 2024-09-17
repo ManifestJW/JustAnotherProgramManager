@@ -211,6 +211,12 @@
             "macos-brew": "thunderbird ",
             "archlinux-pacman-aur": "thunderbird ",
             "url": "https://www.thunderbird.net/"
+        },
+        "Zoom": {
+            "windows-winget": "Zoom.Zoom ",
+            "macos-brew": "zoom ",
+            "archlinux-pacman-aur": "zoom ",
+            "url": "https://zoom.us"
         }
     },
     "documents": {
@@ -219,6 +225,18 @@
             "macos-brew": "adobe-acrobat-reader ",
             "archlinux-pacman-aur": "",
             "url": "https://www.adobe.com/acrobat/pdf-reader.html"
+        },
+        "Notion": {
+            "windows-winget": "Notion.Notion ",
+            "macos-brew": "notion ",
+            "archlinux-pacman-aur": " notion-app-electron ",
+            "url": "https://www.notion.so/"
+        },
+        "Notion Calendar": {
+            "windows-winget": "Notion.NotionCalendar ",
+            "macos-brew": "notion-calendar ",
+            "archlinux-pacman-aur": "notion-calendar-electron ",
+            "url": "https://www.notion.so/"
         }
     },
     "development": {
@@ -438,6 +456,14 @@
             "macos-brew": "",
             "archlinux-pacman-aur": "",
             "url": "https://corporateclash.net/"
+        }
+    },
+    "utilities": {
+        "EarTrumpet": {
+            "windows-winget": "New-Project.EarTrumpet ",
+            "macos-brew": "",
+            "archlinux-pacman-aur": "",
+            "url": "https://eartrumpet.app/"
         }
     }
 }
