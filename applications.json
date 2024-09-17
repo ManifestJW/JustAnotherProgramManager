@@ -223,7 +223,7 @@
         "Blender": {
             "windows-winget": "BlenderFoundation.Blender ",
             "macos-brew": "blender ",
-            "archlinux-pacman-aur": "blender-bin ",
+            "archlinux-pacman-aur": "blender ",
             "url": "https://www.blender.org/"
         }
     },
