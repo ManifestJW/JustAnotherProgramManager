@@ -1,4 +1,18 @@
 {
+    "Audio Editing": {
+        "Audacity": {
+            "windows-winget": "Audacity.Audacity",
+            "macos-brew": "audacity",
+            "archlinux-pacman-aur": "audacity",
+            "url": "https://www.audacityteam.org/"
+        }
+    },
+    "File Editing": {
+        "BrawlCrate": {
+            "windows-winget": "soopercool101.BrawlCrate",
+            "url": "https://github.com/soopercool101/BrawlCrate" 
+        }
+    },
     "Wiimm's Tools": {
         "WIT": {
             "windows-choco": "wit",
@@ -9,12 +23,6 @@
             "windows-choco": "wszst",
             "archlinux-pacman-aur": "szs",
             "url": "https://szs.wiimm.de/"
-        }
-    },
-    "File Editing": {
-        "BrawlCrate": {
-            "windows-winget": "soopercool101.BrawlCrate",
-            "url": "https://github.com/soopercool101/BrawlCrate" 
         }
     }
 }
